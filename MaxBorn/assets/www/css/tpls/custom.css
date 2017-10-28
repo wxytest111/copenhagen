@@ -1,26 +1,34 @@
 /*全局定义 ===================================================*/
 html,body{ height: 100%;}
-body{ font-size: 14px; background-color: #f5f5f5; color: #333; overflow-y: auto;  }
+body{ font-size: 18px; background-color: #f5f5f5; color: #333; overflow-y: auto;  }
 ul,li{ padding: 0px; margin: 0px; list-style: none; }
 a:hover,a:visited,a:focus{ text-decoration: none; }
 
 
 #tpl_splash{display:block;width:100%;position:relative;background-color:#fafafa;}
 #tpl_splash .scroller{display:block;width:100%;position: absolute;-webkit-transform: translateZ(0);-moz-transform: translateZ(0);-ms-transform: translateZ(0);-o-transform: translateZ(0);transform: translateZ(0);padding-top:4.4rem;}
-#tpl_splash .tpl_splash_top_div{display:block;width:100%;height:4.4rem;background-color:#fff;position:relative;left:0rem;top:0rem;}
+#tpl_splash .tpl_splash_top_div{display:block;width:100%;background-color:#fff;position:relative;left:0rem;top:0rem;}
 #tpl_splash .tpl_splash_swiper{display:block;width:100%;position:relative;overflow:hidden;}
 #tpl_splash .tpl_splash_swiper img{display:block;width:100%;height:3.5rem;}
 #tpl_splash .tpl_splash_swiper:active img{opacity:0.9;}
-#tpl_splash .tpl_splash_avatar .avatar{display:block;width:1.4rem;height:1.4rem;position:absolute;left:0.1rem;top:0.1rem;background-size:cover;background-position:center center;}
+#tpl_splash .tpl_splash_avatar { max-width: 10rem;border-radius: 1rem;border: 1px #d5d5d6 solid; margin-bottom: 0.3rem;margin-top: 0.3rem;margin-left: 0.3rem;}
+#tpl_splash .tpl_splash_avatar .avatar{display:block;width:1.4rem;height:1.4rem;position:absolute;background-size:cover;background-position:center center;}
 #tpl_splash .tpl_splash_avatar .avatar .avatar_img{display:block;width:1.25rem;height:1.25rem;line-height:1.25rem;border-radius:0.625rem;background-size:cover;background-position:center center;margin-left:0.075rem;margin-top:0.075rem; background-image: url(../../res/tpls/tmp/head.png);}
 #tpl_splash .tpl_splash_avatar .avatar a{display:block;width:1.25rem;height:1.25rem;line-height:1.25rem;background-color:rgba(0,0,0,0.5);color:#fff;font-size:0.2rem;border-radius:0.625rem;position:absolute;left:0.075rem;top:0.075rem;}
-#tpl_splash .tpl_splash_avatar .right {min-width:1rem;height:1.0rem;border-left:1px dashed #eee;margin-left: 1.5rem;margin-top: 0.4rem;}
-#tpl_splash .tpl_splash_avatar .dot{display:block;color:#999;font-size:0.15rem;margin-top:0.05rem;}
+#tpl_splash .tpl_splash_avatar .info {margin-left: 1rem;padding-right: 0.5rem;}
+#tpl_splash .tpl_splash_avatar .right {min-width:1rem;height:1.0rem;margin-left: 0.2rem;margin-top: 0.4rem;}
+#tpl_splash .tpl_splash_avatar .dot{display:block;color:#999;font-size:0.20rem;margin-top:0.05rem;}
 #tpl_splash .tpl_splash_avatar .dot a{color:#333;margin-left:0.05rem;}
-#tpl_splash .tpl_splash_avatar .dot:before{display:inline-block;width:0.06rem;height:0.06rem;background-color:#51bdae;content:" ";position:relative;top:-0.04rem;border-radius:0.03rem;}
+#tpl_splash .tpl_splash_avatar .dot:before{display:inline-block;width:0.06rem;height:0.06rem;content:" ";position:relative;top:-0.04rem;border-radius:0.03rem;}/* background-color:#51bdae; */
+#tpl_splash .tpl_splash_tips {width: 100%; height: 1rem;}
+#tpl_splash .tpl_splash_tips span{width: 100%; text-align: center; font-size: 0.4rem; font-weight: 500;}
 #tpl_splash .row{display:block;width: 100%;;height:2.56rem;border-bottom:1px solid #e5e5e5;box-sizing:content-box;}
-#tpl_splash .row .cell{display:block;width: 33.3%;height:2.56rem;background-size:80%; background-image: url(../../res/tpls/tmp/prod.png); background-repeat:no-repeat; background-position: center;}
+#tpl_splash .row .cell{display:block;width: 33.3%;height:2.56rem;background-size:80%; background-repeat:no-repeat; background-position: center;}
 #tpl_splash .row .cell:active {opacity:0.5;} 
+#tpl_splash .row .cell_info {display:block;width: 33.3%;height:0.56rem;}
+#tpl_splash .row .cell_title { width: 100%;text-align: center;color: #999;font-size: 0.20rem;font-weight: 300;}
+#tpl_splash .row .cell_price {width: 100%;text-align: center;    color: #e64340;font-size: 0.24rem;font-weight: 500;}
+#tpl_splash .row .cell_content {width: 100%;text-align: center;}
 #tpl_splash .tpl_splash_prod_div{display:block;width:50%;padding:0.15rem 0.24rem;}
 #tpl_splash .tpl_splash_prod_row{display:block;width:100%;height:0.9rem;margin-top:0.1rem;background-color:#fff;border-radius:0.14rem;box-shadow:0px 0.13rem 0.08rem rgba(238,238,238,0.35);overflow:hidden}
 #tpl_splash .tpl_splash_prod_row:active{opacity:0.8;}

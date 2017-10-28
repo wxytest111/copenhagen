@@ -4,14 +4,6 @@
 
 	var scroller = null;
 
-	// function create_node(dat){
-	// 	var node = $(".tmp_tpl_splash_node").clone().removeClass("tmp_tpl_splash_node").show();
-	// 	node.off("tap").on("tap",function(){
-	// 		plt_router_ctrl.jump(8,"product_det/" + $(this).data("p_id"));
-	// 	});
-	// 	return node;
-	// }
-
 	function send_request(callback){
 		callback();
 	}
