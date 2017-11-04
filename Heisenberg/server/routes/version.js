@@ -13,7 +13,7 @@ router.get('/version/last', async (ctx, next) => {
   ctx.body = await v.findAll({
     order: [['createAt', 'DESC']],
     limit:1
-  });
+  })[0];
 })  
 
 module.exports = router;
