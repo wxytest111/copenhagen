@@ -1,0 +1,21 @@
+{
+    "development": {
+      "user": "root",
+      "password": "password01!",
+      "database": "copenhagen",
+      "host": "106.75.81.187"
+    },
+    "test": {
+      "user": "root",
+      "password": null,
+      "database": "database_test",
+      "host": "127.0.0.1"
+    },
+    "production": {
+      "username": "root",
+      "password": null,
+      "database": "database_production",
+      "host": "127.0.0.1"
+    }
+  }
+  
