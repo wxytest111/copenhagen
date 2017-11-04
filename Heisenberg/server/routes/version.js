@@ -10,10 +10,11 @@ router.get('/version/all', async (ctx, next) => {
 
 router.get('/version/last', async (ctx, next) => {
   var v = vm(db.sequelize,db.Sequelize.DataTypes);
-  ctx.body = await v.findAll({
+  var result = await v.findAll({
     order: [['createAt', 'DESC']],
     limit:1
-  })[0];
+  });
+  ctx.body = result[0];
 })  
 
 module.exports = router;
