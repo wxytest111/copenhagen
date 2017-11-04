@@ -4,6 +4,7 @@ const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
+var compress = require('koa-compress')
 
 const version = require('./routes/version')
 
@@ -25,6 +26,12 @@ app.use(async (ctx, next) => {
   const ms = new Date() - start
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
+
+// compress
+app.use(compress({
+  threshold: 2048,
+  flush: require('zlib').Z_SYNC_FLUSH
+}))
 
 // routes
 app.use(version.routes(), version.allowedMethods())
