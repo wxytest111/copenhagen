@@ -2,21 +2,18 @@ package com.tongmen.app.maxborn;
 
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.Toast;
 
-import com.tongmen.app.maxborn.api.CustomApiResult;
 import com.tongmen.app.maxborn.model.VersionModel;
+import com.tongmen.app.maxborn.network.Api;
+import com.tongmen.app.maxborn.network.Network;
 import com.tongmen.app.maxborn.utils.DownloadService;
-import com.zhouyou.http.callback.CallBackProxy;
-import com.zhouyou.http.callback.SimpleCallBack;
-import com.zhouyou.http.exception.ApiException;
-import com.zhouyou.http.request.GetRequest;
 
 import java.util.concurrent.TimeUnit;
 
@@ -24,20 +21,21 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends Activity {
 
-    private Button mButton;
-
+    Context mContext;
     DownloadService.DownloadBinder mDownloadBinder;
-    private Disposable mDisposable;
+    private Disposable mDownloadDisposable;
+    private Disposable mNetworkDisposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        mContext = this;
         Intent intent = new Intent(this, DownloadService.class);
         startService(intent);
         bindService(intent, mConnection, BIND_AUTO_CREATE);//绑定服务
@@ -48,40 +46,40 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onDestroy() {
-        if (mDisposable != null) {
+        if (mDownloadDisposable != null) {
             //取消监听
-            mDisposable.dispose();
+            mDownloadDisposable.dispose();
         }
         super.onDestroy();
     }
 
     private void initView() {
-        mButton = (Button) findViewById(R.id.install_apk);
 
-        mButton.setOnClickListener(v -> {
-            installApk();
-        });
     }
 
 
     private void initData() {
-        //todo: 接口返回格式有问题 不可以解析
-        GetRequest request = new GetRequest("/version/last");
-        request.readTimeOut(30 * 1000)//局部定义读超时
-                .execute(new CallBackProxy<CustomApiResult<VersionModel>, VersionModel>(new SimpleCallBack<VersionModel>() {
 
+        final Api api = Network.getApi();
+        mNetworkDisposable = api.lastVersion()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<VersionModel>() {
                     @Override
-                    public void onError(ApiException e) {
-
+                    public void accept(VersionModel versionModel) throws Exception {
+                        Integer versionCode=mContext.getPackageManager().
+                                getPackageInfo(mContext.getPackageName(), 0).versionCode;
+                        if(versionCode < Integer.parseInt(versionModel.getVersion())){
+                            Toast.makeText(MainActivity.this, "发现新版本，开始下载", Toast.LENGTH_SHORT).show();
+                            installApk(versionModel.getUrl());
+                        }
                     }
-
+                }, new Consumer<Throwable>() {
                     @Override
-                    public void onSuccess(VersionModel versionModel) {
-
+                    public void accept(Throwable throwable) {
+                        Log.d("version:","error");
                     }
-                }) {
                 });
-
 
     }
 
@@ -97,10 +95,9 @@ public class MainActivity extends Activity {
         }
     };
 
-    private void installApk(){
-        String APK_URL = "https://pro-app-qn.fir.im/9110dae75bc82036bcc9c480510393bc5936b752.apk?attname=app-release.apk_1.0.apk&e=1509826667&token=LOvmia8oXF4xnLh0IdH05XMYpH6ENHNpARlmPc-T:IUPK3hMM1xX2_spjDHStyl5BYDQ=";
+    private void installApk(String url){
             if (mDownloadBinder != null) {
-                long downloadId = mDownloadBinder.startDownload(APK_URL);
+                long downloadId = mDownloadBinder.startDownload(url);
                 startCheckProgress(downloadId);
             }
     }
@@ -125,7 +122,7 @@ public class MainActivity extends Activity {
 
         @Override
         public void onSubscribe(Disposable d) {
-            mDisposable = d;
+            mDownloadDisposable = d;
         }
 
         @Override
