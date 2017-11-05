@@ -1,5 +1,5 @@
 const DB = require('../models/db');
-const VersionRepo = require('../services/VersionRepo');
+const VersionRepo = require('../services/versionRepo');
 const router = require('koa-router')();
 
 router.prefix("/api/version");
