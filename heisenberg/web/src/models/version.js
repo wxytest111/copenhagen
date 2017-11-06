@@ -1,10 +1,10 @@
-import { queryFakeList } from '../services/api';
+import { queryVersionList } from '../services/api';
 
 export default {
-  namespace: 'list',
+  namespace: 'vlist',
 
   state: {
-    list: [],
+    vlist: [],
     loading: false,
   },
 
@@ -14,9 +14,9 @@ export default {
         type: 'changeLoading',
         payload: true,
       });
-      const response = yield call(queryFakeList, payload);
+      const response = yield call(queryVersionList, payload);
       yield put({
-        type: 'appendList',
+        type: 'appendVList',
         payload: Array.isArray(response) ? response : [],
       });
       yield put({
@@ -27,10 +27,10 @@ export default {
   },
 
   reducers: {
-    appendList(state, action) {
+    appendVList(state, action) {
       return {
         ...state,
-        list: state.list.concat(action.payload),
+        vlist: state.vlist.concat(action.payload),
       };
     },
     changeLoading(state, action) {

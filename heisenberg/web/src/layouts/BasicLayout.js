@@ -341,21 +341,21 @@ class BasicLayout extends React.PureComponent {
             </Switch>
             <GlobalFooter
               links={[{
-                title: 'Pro 首页',
-                href: 'http://pro.ant.design',
+                title: '瞳门首页',
+                href: 'http://www.tman.ai',
                 blankTarget: true,
               }, {
-                title: 'GitHub',
-                href: 'https://github.com/ant-design/ant-design-pro',
+                title: '管理控制台',
+                href: 'http://console.tman.ai',
                 blankTarget: true,
               }, {
-                title: 'Ant Design',
-                href: 'http://ant.design',
+                title: 'Deepglint',
+                href: 'http://deepglint.com/',
                 blankTarget: true,
               }]}
               copyright={
                 <div>
-                  Copyright <Icon type="copyright" /> 2017 蚂蚁金服体验技术部出品
+                  Copyright <Icon type="copyright" /> 2017 瞳门科技
                 </div>
               }
             />
