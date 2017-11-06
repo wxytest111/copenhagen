@@ -46,6 +46,11 @@ module.exports = function(sequelize, DataTypes) {
     createAt: {
       type: DataTypes.DATE,
       allowNull: true
+    },
+    icon: {
+      type: DataTypes.STRING(300),
+      allowNull: true,
+      defaultValue: ''
     }
   }, {
     tableName: 'version',

@@ -33,6 +33,8 @@ import Login from '../routes/User/Login';
 import Register from '../routes/User/Register';
 import RegisterResult from '../routes/User/RegisterResult';
 
+import VersionList from '../routes/Version/VersionList';
+
 const data = [{
   component: BasicLayout,
   layout: 'BasicLayout',
@@ -54,6 +56,15 @@ const data = [{
       name: '工作台',
       path: 'workplace',
       component: Workplace,
+    }],
+  }, {
+    name: '应用管理',
+    path: 'version',
+    icon: 'form',
+    children: [{
+      name: '应用列表',
+      path: 'basic-form',
+      component: VersionList,
     }],
   }, {
     name: '表单页',

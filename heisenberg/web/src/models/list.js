@@ -1,4 +1,4 @@
-import { queryFakeList } from '../services/api';
+import { queryVersionList } from '../services/api';
 
 export default {
   namespace: 'list',
@@ -14,7 +14,7 @@ export default {
         type: 'changeLoading',
         payload: true,
       });
-      const response = yield call(queryFakeList, payload);
+      const response = yield call(queryVersionList, payload);
       yield put({
         type: 'appendList',
         payload: Array.isArray(response) ? response : [],
