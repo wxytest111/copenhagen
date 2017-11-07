@@ -3,10 +3,10 @@ const promotion = require('../models/promotion');
 var compress = require('koa-compress');
 
 /**
- * @author Lucas
+ * @author Gary
  * @desc promotion class, 
  */
-class promotionRepo{
+class PromotionRepo{
     constructor(props){
         
     }
@@ -34,4 +34,4 @@ class promotionRepo{
     }
 }
 
-module.exports = VersionRepo;
+module.exports = PromotionRepo;

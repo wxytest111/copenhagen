@@ -10,17 +10,17 @@ module.exports = function(sequelize, DataTypes) {
       },
       name: {
         type: DataTypes.STRING(100),
-        allowNull: false,
+        allowNull: true,
         defaultValue: ''
       },
       desc: {
         type: DataTypes.STRING(1000),
-        allowNull: false,
+        allowNull: true,
         defaultValue: ''
       }
     
     }, {
-      tableName: 'promotion'
+      tableName: 'promotion',    timestamps: false,  
     });
   };
   

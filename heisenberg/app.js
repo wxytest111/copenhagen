@@ -8,6 +8,7 @@ const logger = require('koa-logger')
 const compress = require('koa-compress')
 const VersionRoute = require('./routes/versionRoute')
 const SocketRoute = require('./routes/socketRoute')
+const PromotionRoute = require('./routes/promotionRoute')
 
 // error handler
 onerror(app)
@@ -40,6 +41,7 @@ app.use(compress({
 
 // routes
 app.use(VersionRoute.routes(), VersionRoute.allowedMethods())
+app.use(PromotionRoute.routes(), PromotionRoute.allowedMethods())
 
 
 
