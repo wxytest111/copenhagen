@@ -6,7 +6,6 @@ const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const compress = require('koa-compress')
-const websockify = require('koa-websocket');
 const VersionRoute = require('./routes/versionRoute')
 const SocketRoute = require('./routes/socketRoute')
 
