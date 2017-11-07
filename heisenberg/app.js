@@ -9,7 +9,7 @@ const compress = require('koa-compress')
 const websockify = require('koa-websocket');
 const VersionRoute = require('./routes/versionRoute')
 const SocketRoute = require('./routes/socketRoute')
-const router = require('koa-router')();
+
 // error handler
 onerror(app)
 
@@ -42,23 +42,7 @@ app.use(compress({
 // routes
 app.use(VersionRoute.routes(), VersionRoute.allowedMethods())
 
-const sapp = websockify(new Koa());
-sapp.ws.use(function(ctx, next) {
-  console.log("sfdsfsdfs")
-  // return `next` to pass the context (ctx) on to the next ws middleware
-  return next(ctx);
-});
 
-sapp.ws.use(router.all('/', (ctx) => {
-  console.log("sfdsfs")
- ctx.websocket.send('successfuly connect!'+i);
-  // the websocket is added to the context as `ctx.websocket`.
- ctx.websocket.on('message', function(message) {
-   // print message from the client
-   console.log(message);
- });
-}));
-//sapp.ws.use(SocketRoute.routes(), SocketRoute.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {
