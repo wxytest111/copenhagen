@@ -43,7 +43,6 @@ class PromotionRepo{
             proinfo.id=result[0].id;
             proinfo.name=result[0].name;
             proinfo.desc=result[0].desc;
-            var SKUlist = new Array();
             var s = promotionsku(db.sequelize,db.Sequelize.DataTypes);
             var promolist = await s.findAll({
                 limit: 3,
@@ -53,6 +52,7 @@ class PromotionRepo{
                 order: [ [ 'priority' ]]
             });
             
+            var SKUlist = new Array();
             var skuDao = SKUDao(db.sequelize,db.Sequelize.DataTypes);
             for (var i=0; i<promolist.length;i++)
             {     
@@ -62,7 +62,12 @@ class PromotionRepo{
                         id: promolist[i].SKUid
                     }
                 });      
-                SKUlist[i]=skuObject; 
+                var ss=  require('./SKUInfo');
+                ss.name = skuObject[0].name; 
+                ss.id = skuObject[0].id;
+                ss.desc = skuObject[0].desc;
+                ss.pic = skuObject[0].pic;
+                SKUlist[i]=ss;
             }
             proinfo.SKUlist=SKUlist;
             return proinfo;

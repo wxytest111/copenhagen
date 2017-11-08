@@ -23,8 +23,10 @@ class SKURepo{
         if(result.length >0) return result[0];
         return [];
     }   
-    add(){
-
+    async add(skuObject){
+        var v = skuRepo(db.sequelize,db.Sequelize.DataTypes);
+        return await v.create({name:skuObject.name, pic:skuObject.pic, desc: skuObject.desc});
+        
     }
     remove(){
 
@@ -34,4 +36,4 @@ class SKURepo{
     }
 }
 
-module.exports = VersionRepo;
+module.exports = SKURepo;
