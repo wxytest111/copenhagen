@@ -1,13 +1,22 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Card, Button, Icon, List } from 'antd';
+import { Card, Button, Icon, List, Modal } from 'antd';
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 import styles from './VersionList.less';
 
+
+const downloadApp = (url) => {
+  const elem = document.createElement('iframe');
+  elem.src = url;
+  elem.style.display = 'none';
+  document.body.appendChild(elem);
+};
+
 @connect(state => ({
   vlist: state.vlist,
+  visible: false,
 }))
 export default class VersionList extends PureComponent {
   componentDidMount() {
@@ -18,8 +27,6 @@ export default class VersionList extends PureComponent {
       },
     });
   }
-
-  
 
   render() {
     const { vlist: { vlist, loading } } = this.props;
@@ -43,6 +50,12 @@ export default class VersionList extends PureComponent {
       </div>
     );
 
+    const showDialog = () => {
+      this.setState({
+        visible: true,
+      });
+    };
+
     const extraContent = (
       <div className={styles.extraImg}>
         <img alt="这是一个标题" src="https://gw.alipayobjects.com/zos/rmsportal/RzwpdLnhmvDJToTdfDPe.png" />
@@ -53,8 +66,7 @@ export default class VersionList extends PureComponent {
       <PageHeaderLayout
         title="应用列表"
         content={content}
-        extraContent={extraContent}
-      >
+        extraContent={extraContent} >
         <div className={styles.cardList}>
           <List
             rowKey="id"
@@ -63,10 +75,10 @@ export default class VersionList extends PureComponent {
             dataSource={['', ...vlist]}
             renderItem={item => (item ? (
               <List.Item key={item.id}>
-                <Card hoverable className={styles.card} actions={[<a>详细</a>, <a>下载</a>]}>
+                <Card hoverable className={styles.card} actions={[<a>详细</a>, <a onClick={downloadApp.bind(this, item.url)}>下载</a>]}>
                   <Card.Meta
-                    avatar={<img alt="" className={styles.cardAvatar} src={item.icon} />}
-                    title={<a href="">{item.message}</a>}
+                    avatar={<img alt={item.message} className={styles.cardAvatar} src={item.icon} />}
+                    title={item.message}
                     description={(
                       <p className={styles.cardDescription}>
                         <span>{item.content}</span>
@@ -77,9 +89,14 @@ export default class VersionList extends PureComponent {
               </List.Item>
               ) : (
                 <List.Item>
-                  <Button type="dashed" className={styles.newButton}>
+                  <Button type="dashed" className={styles.newButton} onClick={showDialog}>
                     <Icon type="plus" /> 上传应用
                   </Button>
+                  <Modal title="Basic Modal" visible={this.visible}>
+                      <p>Some contents...</p>
+                      <p>Some contents...</p>
+                      <p>Some contents...</p>
+                  </Modal>
                 </List.Item>
               )
             )}
