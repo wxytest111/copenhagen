@@ -18,4 +18,9 @@ router.get('/last', async function (ctx, next) {
   ctx.body = vr;
 })
 
+router.get('/promotion', async function (ctx, next) {
+  ctx.compress = true;
+  var vr = await new PromotionRepo().getPromotion(); 
+  ctx.body = vr;
+})
 module.exports = router;
