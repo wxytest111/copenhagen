@@ -29,6 +29,7 @@ router.post('/add', async function (ctx, next) {
   skuInfo.name =  ctx.request['name'];
   skuInfo.desc = ctx.request['desc'];
   skuInfo.pic = '';
+  console.log(skuInfo)
   // console.log('uploading %s -> %s', file.name, stream.path);
   ctx.compress = true;
   var vr = await new SKURepo().add(skuInfo); 
