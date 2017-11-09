@@ -1,6 +1,7 @@
 const DB = require('../models/db');
 const SKURepo = require('../services/SKURepo');
 const router = require('koa-router')();
+const bodyParser = require('koa-bodyparser');
 const fs = require('fs');
 router.prefix("/api/SKU");
 
@@ -19,10 +20,9 @@ router.get('/last', async function (ctx, next) {
 })
 
 router.post('/add', async function (ctx, next) {
-  console.log(ctx.request.body.lenth);
-  console.log('name is '+ctx.request['name']);
-  console.log('querystring is '+ctx.querystring);
-  console.log('url is '+ctx.url);
+  ctx.body = ctx.request.body;
+  console.log(ctx.body.name)
+  
   // const file = ctx.request.body.files.file;
   // const reader = fs.createReadStream(file.path);
   // var filepath = path.join(os.tmpdir(), Math.random().toString())
