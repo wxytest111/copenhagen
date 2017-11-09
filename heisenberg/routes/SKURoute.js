@@ -1,9 +1,7 @@
-
 const DB = require('../models/db');
 const SKURepo = require('../services/SKURepo');
-const SKUInfo = require('..//services/SKUInfo');
 const router = require('koa-router')();
-
+const fs = require('fs');
 router.prefix("/api/SKU");
 
 router.get('/all', async function (ctx, next) {
@@ -21,19 +19,23 @@ router.get('/last', async function (ctx, next) {
 })
 
 router.post('/add', async function (ctx, next) {
+  console.log(ctx.request.body.lenth);
+  console.log('name is '+ctx.request['name']);
+  console.log('querystring is '+ctx.querystring);
+  console.log('url is '+ctx.url);
   // const file = ctx.request.body.files.file;
   // const reader = fs.createReadStream(file.path);
-  // const stream = fs.createWriteStream(path.join(os.tmpdir(), Math.random().toString()));
+  // var filepath = path.join(os.tmpdir(), Math.random().toString())
+  // const stream = fs.createWriteStream(filepath);
   // reader.pipe(stream);
-  var skuInfo = new SKUInfo();
-  skuInfo.name =  ctx.request['name'];
-  skuInfo.desc = ctx.request['desc'];
-  skuInfo.pic = '';
-  console.log(skuInfo)
-  // console.log('uploading %s -> %s', file.name, stream.path);
-  ctx.compress = true;
-  var vr = await new SKURepo().add(skuInfo); 
-  ctx.body = skuInfo.toString();
+  // var skuInfo = require('..//services/SKUInfo');
+  // skuInfo.name =  ctx.request['name'];
+  // skuInfo.desc = ctx.request['desc'];
+  // skuInfo.pic = filepath;
+  // // console.log('uploading %s -> %s', file.name, stream.path);
+  // ctx.compress = true;
+  // var vr = await new SKURepo().add(skuInfo); 
+  // ctx.body = '添加成功';
 })
 
 
