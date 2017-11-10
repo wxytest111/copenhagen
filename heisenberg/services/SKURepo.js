@@ -1,6 +1,6 @@
 const db = require('../models/db');
 const skuRepo = require('../models/SKU');
-var compress = require('koa-compress');
+const compress = require('koa-compress');
 const ucloud = require('./ucloud_put');
 /**
  * @author Gary

@@ -61,7 +61,7 @@ export async function queryFakeList(params) {
 }
 
 export async function queryVersionList() {
-  return request('http://106.75.81.187/api/version/all');
+  return request('http://localhost:3000/api/version/all');
 }
 
 export async function fakeAccountLogin(params) {
