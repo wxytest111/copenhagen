@@ -5,6 +5,7 @@ var compress = require('koa-compress');
 const proinfo=require('./promoteinfo');
 const SKUDao = require('../models/SKU');
 const opersonInfo = require('./personInfo');
+const SKUInfo =require('./SKUInfo');
 /**
  * @author Gary
  * @desc promotion class, 
@@ -57,20 +58,23 @@ class PromotionRepo{
             var skuDao = SKUDao(db.sequelize,db.Sequelize.DataTypes);
             for (var i=0; i<promolist.length;i++)
             {     
+                console.log(promolist[i].SKUid);
                 var skuObject = await skuDao.findAll({
                     limit:1,
                     where:{
                         id: promolist[i].SKUid
                     }
                 });      
-                var ss=  require('./SKUInfo');
-                ss.name = skuObject[0].name; 
-                ss.id = skuObject[0].id;
-                ss.desc = skuObject[0].desc;
-                ss.pic = skuObject[0].pic;
-                ss.price = skuObject[0].price;
+                var ss=  new SKUInfo();
+                ss.Name = skuObject[0].name; 
+                ss.Id = skuObject[0].id;
+                ss.Desc = skuObject[0].desc;
+                ss.Pic = skuObject[0].pic;
+                ss.Price = skuObject[0].price;
+                console.log(ss)
                 SKUlist[i]=ss;
             }
+            console.log(SKUlist)
             proinfo.SKUlist=SKUlist;
             opersonInfo.gender= '女';
             opersonInfo.age = 27;
