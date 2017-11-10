@@ -4,6 +4,7 @@ exports.SKUInfo = function (){
     oSKUObject.name='';
     oSKUObject.desc='';
     oSKUObject.pic = '';
+    oSKUObject.price = 0;
     return oSKUObject;
 }  
 

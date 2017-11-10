@@ -4,5 +4,6 @@ exports.promotonInfo = function (){
     oPromotionInfo.name='';
     oPromotionInfo.desc='';
     oPromotionInfo.SKUlist=new Array();
+    oPromotionInfo.personInfo = new object();
     return oPromotionInfo;
 }   

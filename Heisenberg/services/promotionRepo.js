@@ -4,6 +4,7 @@ const promotionsku= require('../models/promotionSKU');
 var compress = require('koa-compress');
 const proinfo=require('./promoteinfo');
 const SKUDao = require('../models/SKU');
+const opersonInfo = require('./personInfo');
 /**
  * @author Gary
  * @desc promotion class, 
@@ -67,9 +68,18 @@ class PromotionRepo{
                 ss.id = skuObject[0].id;
                 ss.desc = skuObject[0].desc;
                 ss.pic = skuObject[0].pic;
+                ss.price = skuObject[0].price;
                 SKUlist[i]=ss;
             }
             proinfo.SKUlist=SKUlist;
+            opersonInfo.gender= '女';
+            opersonInfo.age = 27;
+            opersonInfo.isGlass = '否';
+            opersonInfo.isHat = '否';
+            opersonInfo.frequency = 59;
+            opersonInfo.preferSKU = '饮品';
+            opersonInfo.pic = 'http://fujian.cn-bj.ufileos.com/thumbnailPhoto.jpg';
+            proinfo.personInfo = opersonInfo;
             return proinfo;
         }
         return [];
