@@ -80,6 +80,7 @@ class PromotionRepo{
             opersonInfo.preferSKU = '饮品';
             opersonInfo.pic = 'http://fujian.cn-bj.ufileos.com/thumbnailPhoto.jpg';
             proinfo.personInfo = opersonInfo;
+            proinfo.updateTime = new Date();
             return proinfo;
         }
         return [];
