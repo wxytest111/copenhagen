@@ -27,14 +27,25 @@
   },
   "devDependencies": {
     "async": "^2.5.0",
+    "async-busboy": "^0.6.2",
     "babel-cli": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-register": "^6.26.0",
+    "crypto": "^1.0.1",
     "koa-json": "^2.0.2",
+    "koa-multer": "^1.0.2",
+    "mime": "^1.4.1",
+    "mime-types": "^2.1.17",
+    "multimap": "*",
     "mysql2": "^1.4.2",
     "nodemon": "^1.8.1",
     "orm": "^4.0.1",
+    "request": "*",
     "sequelize": "^4.22.4",
+    "streamifier": "*",
+    "ufile": "0.0.15",
+    "underscore": "*",
+    "utf8": "*",
     "ws": "^3.3.0"
   }
 }
