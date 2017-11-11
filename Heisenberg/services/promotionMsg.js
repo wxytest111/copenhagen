@@ -5,12 +5,10 @@ const promotionRepo = require('./promotionRepo');
 const socket = require("../routes/socketRoute");
 var schedule = require('node-schedule');
 
-const isRunning = false;
 async function subscription(s) {
     console.log("subscription")
     var succCount = 0;
-    s.on("data", async(message) => {
-        isRunning = true;
+    s.on("data", async (message) => {
         var msgId = message.messageID;
         var msg = message.content.toString();
         console.log("receive message", msgId, msg);
@@ -22,7 +20,7 @@ async function subscription(s) {
         s.ackMessage([msgId]).then(() => {
             console.log("ack message " + msgId + '\n');
         }).catch(err => {
-            isRunning = false;
+            
             console.error(err);
         });
     });
@@ -32,14 +30,14 @@ function scheduleMonitor() {
     
     schedule.scheduleJob('10 * * * * *', function(){
         console.log("schedule: "+isRunning);
-        if(isRunning == false){
-            publish();
-        }
+        // if(isRunning == false){
+        //     publish();
+        // }
     }); 
 }
 
 
-module.exports = async function() {
+async function publish() {
     const client = umqclient.newUmqClient({
         host: config.Host,
         projectId: config.ProjectId,
@@ -49,6 +47,6 @@ module.exports = async function() {
     subscription(s);
     //scheduleMonitor();
 }
-// module.exports = {
-//     publish : publish
-// };
+module.exports = {
+    publish : publish
+};
