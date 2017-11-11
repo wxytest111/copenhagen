@@ -11,14 +11,15 @@
         android:layout_height="@dimen/activity_user_head_height"
         android:layout_marginLeft="@dimen/activity_margin"
         android:layout_gravity="center"
+        app:cardPreventCornerOverlap="true"
+        app:cardBackgroundColor="@android:color/transparent"
         app:cardCornerRadius="@dimen/activity_user_head_radius">
 
         <ImageView
-            android:id="@+id/userHeadImageView"
-            android:layout_width="@dimen/activity_user_head_width"
-            android:layout_height="@dimen/activity_user_head_height"
+            android:id="@+id/iv_user_head"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher_background"
             />
     </android.support.v7.widget.CardView>
 
@@ -64,18 +65,18 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
-                android:id="@+id/sex_textView"
+                android:id="@+id/tv_gender"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:text="女"
+                android:text=""
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/text_size_head_info" />
 
             <TextView
-                android:id="@+id/age_textView"
+                android:id="@+id/tv_age"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="28"
+                android:text=""
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/text_size_head_info" />
         </LinearLayout>
@@ -105,18 +106,18 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
-                android:id="@+id/hat_textView"
+                android:id="@+id/tv_hat"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:text="否"
+                android:text=""
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/text_size_head_info" />
 
             <TextView
-                android:id="@+id/glasses_textView"
+                android:id="@+id/tv_glasses"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="否"
+                android:text=""
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/text_size_head_info" />
         </LinearLayout>
@@ -124,7 +125,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_max_margin"
+            android:layout_marginStart="@dimen/activity_max_margin"
             android:orientation="vertical">
 
             <TextView
@@ -148,27 +149,19 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/count_textView"
+                android:id="@+id/tv_frequency"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:text="39次"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/text_size_head_info" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/tv_prefer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="饮品"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/text_size_head_info" />
         </LinearLayout>
     </LinearLayout>
-
-    <Button
-        android:id="@+id/install_apk"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="安装APK"/>
 
 </LinearLayout>

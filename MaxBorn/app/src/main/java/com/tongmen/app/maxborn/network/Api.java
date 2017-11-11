@@ -1,5 +1,6 @@
 package com.tongmen.app.maxborn.network;
 
+import com.tongmen.app.maxborn.model.PromotionModel;
 import com.tongmen.app.maxborn.model.VersionModel;
 
 import io.reactivex.Observable;
@@ -12,4 +13,7 @@ import retrofit2.http.GET;
 public interface Api {
     @GET("version/last")
     Observable<VersionModel> lastVersion();
+
+    @GET("promotion/promotion")
+    Observable<PromotionModel> getPromotion();
 }
