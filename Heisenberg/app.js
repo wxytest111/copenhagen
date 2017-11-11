@@ -10,6 +10,7 @@ const VersionRoute = require('./routes/versionRoute')
 const SocketRoute = require('./routes/socketRoute')
 const PromotionRoute = require('./routes/promotionRoute')
 const SKURoute = require('./routes/SKURoute')
+const TestRoute = require('./routes/testRoute');
 
 // error handler
 onerror(app)
