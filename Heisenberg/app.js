@@ -45,6 +45,7 @@ app.use(compress({
 app.use(VersionRoute.routes(), VersionRoute.allowedMethods());
 app.use(PromotionRoute.routes(), PromotionRoute.allowedMethods());
 app.use(SKURoute.routes(), SKURoute.allowedMethods());
+app.use(TestRoute.routes(), TestRoute.allowedMethods());
 
 
 
