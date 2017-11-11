@@ -8,14 +8,14 @@ var schedule = require('node-schedule');
 const isRunning = false;
 function subscription(s) {
     var succCount = 0;
-    s.on("data", (message) => {
+    s.on("data", async (message) => {
         isRunning = true;
         var msgId = message.messageID;
         var msg = message.content.toString();
         console.log("receive message", msgId, msg);
         if (msg != '') {
             console.log(msg);
-            var vr = new promotionRepo().getPromotion(msg);
+            var vr = await (new promotionRepo()).getPromotion(msg);
             socket.sendMsg(vr);
         }
         s.ackMessage([msgId]).then(() => {
