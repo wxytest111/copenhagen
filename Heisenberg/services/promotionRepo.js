@@ -2,9 +2,9 @@ const db = require('../models/db');
 const promotion = require('../models/promotion');
 const promotionsku= require('../models/promotionSKU');
 var compress = require('koa-compress');
-const proinfo=require('./promoteinfo');
+const PromotionInfo=require('./promoteinfo');
 const SKUDao = require('../models/SKU');
-const opersonInfo = require('./personInfo');
+const PersonInfo = require('./personInfo');
 const SKUInfo =require('./SKUInfo');
 /**
  * @author Gary
@@ -42,6 +42,7 @@ class PromotionRepo{
             order: [ [ 'id', 'DESC' ]]
         });
         if(result.length >0){
+            var proinfo = new PromotionInfo();
             proinfo.id=result[0].id;
             proinfo.name=result[0].name;
             proinfo.desc=result[0].desc;
@@ -75,7 +76,8 @@ class PromotionRepo{
                 SKUlist[i]=ss;
             }
             console.log(SKUlist)
-            proinfo.SKUlist=SKUlist;
+            proinfo.SetSKUlist=SKUlist;
+            var opersonInfo = new PersonInfo();
             opersonInfo.gender= '女';
             opersonInfo.age = 27;
             opersonInfo.isGlass = '否';
