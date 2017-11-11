@@ -4,7 +4,7 @@ var wss;
 const connect = function(server){
     wss = new WebSocket.Server({server})
     wss.on('connection', function connection(ws, req) {
-        ws.send('1');
+        console.log('connect successfully!');
     });
 }
 const sendMsg = function(data){
