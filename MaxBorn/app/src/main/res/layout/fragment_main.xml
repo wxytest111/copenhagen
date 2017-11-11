@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <include layout="@layout/item_user_info"
+            android:layout_width="@dimen/activity_user_info_width"
+            android:layout_height="@dimen/activity_user_info_height"
+            android:layout_marginTop="@dimen/activity_margin"
+            android:layout_marginLeft="@dimen/activity_margin"></include>
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:textSize="@dimen/text_size_small"
+            android:layout_marginTop="@dimen/activity_max_margin"
+            android:layout_marginEnd="@dimen/activity_max_margin"
+            />
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/tv_promotion_title"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_marginTop="@dimen/activity_min_margin"
+        android:text=""
+        android:textColor="@color/colorRed"
+        android:textStyle="bold"
+        android:textSize="@dimen/text_size_banner_title"
+        android:gravity="center"
+        />
+
+
+    <include layout="@layout/item_prod_list"
+        android:layout_marginTop="@dimen/activity_margin"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"></include>
+
+</LinearLayout>

@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="/工作/H5/copenhagen/MaxBorn/autobahn/src/main/assets"/><source path="/工作/H5/copenhagen/MaxBorn/autobahn/build/generated/assets/shaders/debug"/></dataSet><dataSet config="debug"><source path="/工作/H5/copenhagen/MaxBorn/autobahn/src/debug/assets"/></dataSet></merger>
