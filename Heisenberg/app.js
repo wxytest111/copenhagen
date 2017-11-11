@@ -60,6 +60,6 @@ app.on('error', (err, ctx) => {
 
 // monitor uCloud MQ subscription
  
-PromotionMsg(); 
+PromotionMsg.publish(); 
 
 module.exports = app
