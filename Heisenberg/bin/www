@@ -7,7 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('demo:server');
 var http = require('http');
-const WebSocket = require('ws');
+var socket = require("../routes/socketRoute");
 const url = require('url');
 /**
  * Get port from environment and store in Express.
@@ -21,24 +21,11 @@ var port = normalizePort(process.env.PORT || '3000');
  */
 
 var server = http.createServer(app.callback());
-
+socket.connect(server);
 /**
  * Listen on provided port, on all network interfaces.
  */
 
-
-const wss = new WebSocket.Server({ server });
-wss.on('connection', function connection(ws, req) {
-  const location = url.parse(req.url, true);
-  // You might use location.query.access_token to authenticate or share sessions
-  // or req.headers.cookie (see http://stackoverflow.com/a/16395220/151312)
-
-  ws.on('message', function incoming(message) {
-    console.log('received: %s', message);
-  });
-
-  ws.send('hello world');
-});
 
 server.listen(port);
 server.on('error', onError);

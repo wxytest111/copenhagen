@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Form, Row,Col, Input, Card, Button, Icon, List, Modal, Upload } from 'antd';
+import { Form, message, Row, Col, Input, Card, Button, Icon, List, Modal, Upload } from 'antd';
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
@@ -18,8 +18,6 @@ const { TextArea } = Input;
 export default class VersionList extends PureComponent {
   state = {
       visible:false,
-      previewVisible: false,
-      previewImage: '',
       fileList: [],
     };
   componentDidMount() {
@@ -30,17 +28,34 @@ export default class VersionList extends PureComponent {
       },
     });
   }
-  handleCancel = () => this.setState({ previewVisible: false })
-  
-  handlePreview = (file) => {
-    this.setState({
-      previewImage: file.url || file.thumbUrl,
-      previewVisible: true,
+
+  handleChange = (info) => {
+    let fileList = info.fileList;
+
+    // 1. Limit the number of uploaded files
+    //    Only to show two recent uploaded files, and old ones will be replaced by the new
+    fileList = fileList.slice(-2);
+
+    // 2. read from response and show file link
+    fileList = fileList.map((file) => {
+      if (file.response) {
+        // Component will show file.url as link
+        file.url = file.response.url;
+      }
+      return file;
     });
+
+    // 3. filter successfully uploaded files according to response from server
+    fileList = fileList.filter((file) => {
+      if (file.response) {
+        return file.response.status === 'success';
+      }
+      return true;
+    });
+
+    this.setState({ fileList });
   }
-
-  handleChange = ({ fileList }) => this.setState({ fileList })
-
+  
   downloadApp = (url) => {
     const elem = document.createElement('iframe');
     elem.src = url;
@@ -63,15 +78,15 @@ export default class VersionList extends PureComponent {
       visible: false,
     });
   }
+  
 
   render() {
-    const { previewVisible, previewImage, fileList } = this.state;
-    const uploadButton = (
-      <div>
-        <Icon type="plus" />
-        <div className="ant-upload-text">上传应用图标</div>
-      </div>
-    );
+    const initProps = {
+      name: 'file',
+      action: 'http://localhost:3000/api/version/add',
+      onChange: this.handleChange,
+      multiple: false,
+    };
     const { vlist: { vlist, loading } } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
 
@@ -179,19 +194,13 @@ export default class VersionList extends PureComponent {
                           <TextArea style={{ minHeight: 32 }} placeholder="请输入内容描述" rows={4} />
                         )}
                       </FormItem>
-                      <Row>
+                      <Row >
                         <Col span={6} offset={5}>
-                          <Upload
-                            action="//jsonplaceholder.typicode.com/posts/"
-                            listType="picture-card"
-                            fileList={fileList}
-                            onPreview={this.handlePreview}
-                            onChange={this.handleChange}>
-                            {fileList.length >= 1 ? null : uploadButton}
+                          <Upload {...initProps} fileList={this.state.fileList}>
+                            <Button>
+                              <Icon type="upload" /> 上传应用
+                            </Button>
                           </Upload>
-                          <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-                            <img alt="应用程序图标" style={{ width: '100%' }} src={previewImage} />
-                          </Modal>
                         </Col>
                       </Row>
                     </Form>
