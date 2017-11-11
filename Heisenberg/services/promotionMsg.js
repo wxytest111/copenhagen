@@ -6,9 +6,9 @@ const socket = require("../routes/socketRoute");
 var schedule = require('node-schedule');
 
 const isRunning = false;
-function subscription(s) {
+async function subscription(s) {
     var succCount = 0;
-    s.on("data", async (message) => {
+    s.on("data", async(message) => {
         isRunning = true;
         var msgId = message.messageID;
         var msg = message.content.toString();
@@ -38,16 +38,16 @@ function scheduleMonitor() {
 }
 
 
-function publish() {
+module.exports = async function() {
     const client = umqclient.newUmqClient({
         host: config.Host,
         projectId: config.ProjectId,
         timeout: 5000,
     });
-    const s = client.createSubscription(config.ConsumerId, config.ConsumerToken, config.Topic, 10);
+    const s = await client.createSubscription(config.ConsumerId, config.ConsumerToken, config.Topic, 10);
     subscription(s);
     //scheduleMonitor();
 }
-module.exports = {
-    publish : publish
-};
+// module.exports = {
+//     publish : publish
+// };

@@ -52,7 +52,10 @@ app.use(SKURoute.routes(), SKURoute.allowedMethods());
 app.use(TestRoute.routes(), TestRoute.allowedMethods());
 
 
-
+process.on('unhandledRejection', (reason, p) => {
+  console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
+  // application specific logging, throwing an error, or other logic here
+});
 // error-handling
 app.on('error', (err, ctx) => {
   console.error('server error', err, ctx)
@@ -60,6 +63,6 @@ app.on('error', (err, ctx) => {
 
 // monitor uCloud MQ subscription
  
-PromotionMsg.publish(); 
+PromotionMsg(); 
 
 module.exports = app
