@@ -23,8 +23,7 @@ function pub(p) {
     //let d = "umq test pubsub" + Date.now();
     let d= JSON.stringify(j);
     p.publishMessage(config.Topic, d).then((msgId) => {
-           console.log("send message ", msgId)
-           console.log("message is "+d);
+           console.log("send message ", msgId);
     }).catch(err => {
       console.error(err);
     });

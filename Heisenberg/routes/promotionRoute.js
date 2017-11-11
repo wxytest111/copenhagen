@@ -22,7 +22,6 @@ router.get('/last', async function (ctx, next) {
 router.get('/promotion', async function (ctx, next) {
   ctx.compress = true;
   var vr = await new PromotionRepo().getPromotion();
-  socket.sendMsg(vr);
   ctx.body = vr;
 })
 module.exports = router;
