@@ -46,6 +46,6 @@ async function publish() {
     });
     const s = client.createSubscription(config.ConsumerId, config.ConsumerToken, config.Topic, 10);
     await subscription(s);
-    scheduleMonitor();
+    //scheduleMonitor();
 }
 module.exports = publish;
