@@ -14,10 +14,7 @@ const TestRoute = require('./routes/testRoute');
 const socket = require("./routes/socketRoute");
 
 // test only, will move to other module later
-var umqclient = require('umq-nodejs-sdk')
-var config = require('./config/uCloudConfig');
-var assert = require('assert');
-const promotionRepo = require('./services/promotionRepo');
+const PromotionMsg = require("./services/promotionMsg")
 
 // error handler
 onerror(app)
@@ -62,42 +59,7 @@ app.on('error', (err, ctx) => {
 });
 
 // monitor uCloud MQ subscription
- async function sub(s) {
-  var succCount = 0;
-  
-  s.on("data", async (message) => {
-    var msgId = message.messageID;
-    var msg= message.content.toString();
-    console.log("receive message", msgId, msg);
-    if(msg!='')
-    {
-      // var p = new PromotionRepo();
-      
-      var vr =  await (new promotionRepo()).getPromotion(msg);
-      console.log('before send to socket: '+msg);
-      socket.sendMsg(vr);
-      
-    }
-    s.ackMessage([msgId]).then(() => {
-      console.log("ack message " + msgId+'\n');
-    }).catch(err => {
-      console.error(err);
-      testPubSub();
-    });
-    
-   
-  });
-  
-}
- function testPubSub() {
-  let client = umqclient.newUmqClient({
-    host: config.Host,
-    projectId: config.ProjectId,
-    timeout: 5000,
-  });
-  let s = client.createSubscription(config.ConsumerId, config.ConsumerToken, config.Topic, 10);
-  sub(s);
-}
+ 
+PromotionMsg(); 
 
-testPubSub();
 module.exports = app

@@ -34,7 +34,9 @@ class PromotionRepo{
             return proinfo;
         }
         return [];
-    }   
+    } 
+    
+     
     // async getPromotion(){
     //     var v = promotion(db.sequelize,db.Sequelize.DataTypes);
     //     var result = await v.findAll({

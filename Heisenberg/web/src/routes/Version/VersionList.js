@@ -77,7 +77,6 @@ export default class VersionList extends PureComponent {
       visible: false,
     });
   }
-  
 
   render() {
     const initProps = {
