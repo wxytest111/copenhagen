@@ -43,7 +43,7 @@ router.post('/add', upload.single('file'),async (ctx, next) => {
   var pathName = path.join(__dirname,'/../'+file.path);
   var result = await ucloud(pathName, key);
   console.log(result)
-  //fs.unlink(path)
+  fs.unlink(path)
   ctx.body ={
     url: "http://fujian.ufile.ucloud.com.cn/"+key,
     status:"success"
