@@ -4,8 +4,21 @@ const router = require('koa-router')();
 const bodyParser = require('koa-bodyparser');
 const fs = require('fs');
 const ucloud = require('../services/ufileUpload');
+const crypto = require('crypto');
+const path = require('path');
 const multer = require('koa-multer');
-const upload = multer({ dest: 'files/' });
+var storage = multer.diskStorage({
+  destination: './files/',
+  filename: function (req, file, cb) {
+    crypto.pseudoRandomBytes(16, function (err, raw) {
+      if (err) return cb(err)
+
+      cb(null, raw.toString('hex') + path.extname(file.originalname))
+    })
+  }
+})
+
+const upload = multer({ storage: storage })
 
 router.prefix("/api/version");
 
@@ -27,11 +40,14 @@ router.post('/add', upload.single('file'),async (ctx, next) => {
   var file = ctx.req.file;
   console.log(file)
   var key = new Date().getTime();
-  await ucloud.save(file,key);
+  var pathName = path.join(__dirname,'/../'+file.path);
+  var result = await ucloud(pathName, key);
+  console.log(result)
   //fs.unlink(path)
-  ctx.body = {  
-    filename: ctx.req.file//返回文件名  
-  }  
+  ctx.body ={
+    url: "http://fujian.ufile.ucloud.com.cn/"+key,
+    status:"success"
+  };
 });
 
 module.exports = router;

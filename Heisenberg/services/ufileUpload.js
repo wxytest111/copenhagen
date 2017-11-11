@@ -1,6 +1,5 @@
 var HttpRequest = require('ufile').HttpRequest;
 var AuthClient = require('ufile').AuthClient;
-var ucloud = require("../services/ucloud_put");
 var util = require('util');
 var path = require('path')
 var fs = require('fs')
@@ -22,23 +21,7 @@ const getSuffixName = function( fileName ) {
     return nameList[nameList.length - 1]
   }
 
-
-const saveToPath = async function(file,key){
-    var filename = file.filename;
-    let fileName = '../files/'+key+filename;
-    let saveTo = path.join(__dirname,fileName);
-    var stream = file.pipe(fs.createWriteStream(saveTo)) 
-    stream.on('finish', function () {
-        saveToUcloud(saveTo,key);
-    });
-    return new Promise(resolve => {
-        stream.on('finish', async () => {
-            await saveToUcloud(saveTo,key);
-        });
-      })
-}
-
-const saveToUcloud = function(filepath,key){
+module.exports = async function(filepath,key){
     var bucket =  'fujian';
     var key = key;
     var file_path = filepath;
@@ -50,27 +33,15 @@ const saveToUcloud = function(filepath,key){
         'ucloud_private_key':'765df8aa634ee26965848c4f6ae82ae82d13a350',
         'proxy_suffix':'ufile.ucloud.cn'
     }
-    
+    console.log(url_path_params)
+    console.log(file_path)
     
     var req = new HttpRequest(method, url_path_params, bucket, key, file_path);
     var client =  new AuthClient(req,options);
     
-    function callback(res) {
-
-        var raw = "http://"+bucket+options.proxy_suffix+"/"+key;
-        console.log(client)
-        if (res instanceof Error) {
-            console.log(util.inspect(res));
-        } else {
-            console.log(util.inspect(res));
-        }
-    }
-
-    return new Promise(resolve => {
-        client.SendRequest(resolve);
+   
+   var raw = "http://"+bucket+options.proxy_suffix+"/"+key;
+    return new Promise(res => {
+        client.SendRequest(res);
       });
-}
-
-module.exports = {
-    save:saveToPath
 }

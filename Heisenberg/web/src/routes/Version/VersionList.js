@@ -30,8 +30,8 @@ export default class VersionList extends PureComponent {
   }
 
   handleChange = (info) => {
+    console.log(info)
     let fileList = info.fileList;
-
     // 1. Limit the number of uploaded files
     //    Only to show two recent uploaded files, and old ones will be replaced by the new
     fileList = fileList.slice(-2);
@@ -52,16 +52,15 @@ export default class VersionList extends PureComponent {
       }
       return true;
     });
-
     this.setState({ fileList });
   }
   
-  downloadApp = (url) => {
-    const elem = document.createElement('iframe');
-    elem.src = url;
-    elem.style.display = 'none';
-    document.body.appendChild(elem);
-  };
+  // downloadApp = (url) => {
+  //   const elem = document.createElement('iframe');
+  //   elem.src = url;
+  //   elem.style.display = 'none';
+  //   document.body.appendChild(elem);
+  // };
 
   showModal = () => {
     this.setState({
@@ -148,7 +147,7 @@ export default class VersionList extends PureComponent {
             dataSource={['', ...vlist]}
             renderItem={item => (item ? (
               <List.Item key={item.id}>
-                <Card hoverable className={styles.card} actions={[<a>详细</a>, <a onClick={this.downloadApp.bind(this, item.url)}>下载</a>]}>
+                <Card hoverable className={styles.card} actions={[<a>详细</a>, <a href={item.url}>下载</a>]}>
                   <Card.Meta
                     avatar={<img alt={item.message} className={styles.cardAvatar} src={item.icon} />}
                     title={item.message}
@@ -195,7 +194,7 @@ export default class VersionList extends PureComponent {
                         )}
                       </FormItem>
                       <Row >
-                        <Col span={6} offset={5}>
+                        <Col span={12} offset={5}>
                           <Upload {...initProps} fileList={this.state.fileList}>
                             <Button>
                               <Icon type="upload" /> 上传应用
