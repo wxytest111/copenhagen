@@ -23,6 +23,7 @@ router.post('/add', async function (ctx, next) {
   ctx.body = ctx.request.body;
   console.log(ctx.body.name);
   console.log('ctx.body.files'+ctx.body.file);
+  
 
  // console.log('the file content is : '+ctx.body.files.length.toString());
   
