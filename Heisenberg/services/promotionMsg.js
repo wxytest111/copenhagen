@@ -7,6 +7,7 @@ var schedule = require('node-schedule');
 
 const isRunning = false;
 async function subscription(s) {
+    console.log("subscription")
     var succCount = 0;
     s.on("data", async(message) => {
         isRunning = true;
