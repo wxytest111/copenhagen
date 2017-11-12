@@ -1,0 +1,33 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /工作/H5/copenhagen/MaxBorn/autobahn/src/main/AndroidManifest.xml:2:1-9:12
+INJECTED from /工作/H5/copenhagen/MaxBorn/autobahn/src/main/AndroidManifest.xml:2:1-9:12
+INJECTED from /工作/H5/copenhagen/MaxBorn/autobahn/src/main/AndroidManifest.xml:2:1-9:12
+	package
+		ADDED from /工作/H5/copenhagen/MaxBorn/autobahn/src/main/AndroidManifest.xml:3:7-37
+		INJECTED from /工作/H5/copenhagen/MaxBorn/autobahn/src/main/AndroidManifest.xml
+		INJECTED from /工作/H5/copenhagen/MaxBorn/autobahn/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /工作/H5/copenhagen/MaxBorn/autobahn/src/main/AndroidManifest.xml:2:11-69
+application
+ADDED from /工作/H5/copenhagen/MaxBorn/autobahn/src/main/AndroidManifest.xml:4:5-8:19
+	android:supportsRtl
+		ADDED from /工作/H5/copenhagen/MaxBorn/autobahn/src/main/AndroidManifest.xml:7:9-35
+	android:label
+		ADDED from /工作/H5/copenhagen/MaxBorn/autobahn/src/main/AndroidManifest.xml:6:9-41
+	android:allowBackup
+		ADDED from /工作/H5/copenhagen/MaxBorn/autobahn/src/main/AndroidManifest.xml:5:9-35
+uses-sdk
+INJECTED from /工作/H5/copenhagen/MaxBorn/autobahn/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /工作/H5/copenhagen/MaxBorn/autobahn/src/main/AndroidManifest.xml
+INJECTED from /工作/H5/copenhagen/MaxBorn/autobahn/src/main/AndroidManifest.xml
+INJECTED from /工作/H5/copenhagen/MaxBorn/autobahn/src/main/AndroidManifest.xml
+INJECTED from /工作/H5/copenhagen/MaxBorn/autobahn/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /工作/H5/copenhagen/MaxBorn/autobahn/src/main/AndroidManifest.xml
+		ADDED from /工作/H5/copenhagen/MaxBorn/autobahn/src/main/AndroidManifest.xml
+		INJECTED from /工作/H5/copenhagen/MaxBorn/autobahn/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /工作/H5/copenhagen/MaxBorn/autobahn/src/main/AndroidManifest.xml
+		ADDED from /工作/H5/copenhagen/MaxBorn/autobahn/src/main/AndroidManifest.xml
+		INJECTED from /工作/H5/copenhagen/MaxBorn/autobahn/src/main/AndroidManifest.xml
