@@ -33,14 +33,11 @@ module.exports = async function(filepath,key){
         'ucloud_private_key':'765df8aa634ee26965848c4f6ae82ae82d13a350',
         'proxy_suffix':'ufile.ucloud.cn'
     }
-    console.log(url_path_params)
-    console.log(file_path)
-    
     var req = new HttpRequest(method, url_path_params, bucket, key, file_path);
     var client =  new AuthClient(req,options);
     
    
-   var raw = "http://"+bucket+options.proxy_suffix+"/"+key;
+    var raw = "http://"+bucket+options.proxy_suffix+"/"+key;
     return new Promise(res => {
         client.SendRequest(res);
       });

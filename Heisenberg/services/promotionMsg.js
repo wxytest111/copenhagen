@@ -6,7 +6,6 @@ const socket = require("../routes/socketRoute");
 var schedule = require('node-schedule');
 
 async function subscription(s) {
-    console.log("subscription")
     var succCount = 0;
     s.on("data", async (message) => {
         var msgId = message.messageID;

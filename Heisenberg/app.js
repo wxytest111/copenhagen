@@ -7,11 +7,9 @@ const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const compress = require('koa-compress')
 const VersionRoute = require('./routes/versionRoute')
-const SocketRoute = require('./routes/socketRoute')
 const PromotionRoute = require('./routes/promotionRoute')
 const SKURoute = require('./routes/SKURoute')
 const TestRoute = require('./routes/testRoute');
-const socket = require("./routes/socketRoute");
 
 // test only, will move to other module later
 const PromotionMsg = require("./services/promotionMsg")
@@ -59,7 +57,7 @@ app.on('error', (err, ctx) => {
 });
 
 // monitor uCloud MQ subscription
- 
+
 PromotionMsg.publish(); 
 
 module.exports = app

@@ -10,7 +10,6 @@ const connect = function(server){
 const sendMsg = function(data){
     wss.clients.forEach(function each(client) {
         if (client.readyState === WebSocket.OPEN) {
-            
             client.send(JSON.stringify(data));
         }
     });
