@@ -40,6 +40,24 @@ export async function fakeSubmitForm(params) {
   });
 }
 
+export async function addVersion(params) {
+  return request('http://localhost:3000/api/version/add', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+export async function addSKU(params) {
+  return request('http://localhost:3000/api/sku/add', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+export async function removeSKU(params) {
+  return request('http://localhost:3000/api/sku/remove/'+params);
+}
+
 export async function fakeChartData() {
   return request('/api/fake_chart_data');
 }
@@ -59,6 +77,50 @@ export async function queryAdvancedProfile() {
 export async function queryFakeList(params) {
   return request(`/api/fake_list?${stringify(params)}`);
 }
+
+export async function querySKUList() {
+  return request('http://localhost:3000/api/sku/all');
+}
+
+
+export async function addPromotion(params) {
+  return request('http://localhost:3000/api/promotion/add', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+export async function removePromotion(params) {
+  return request('http://localhost:3000/api/promotion/remove/'+params);
+}
+
+export async function queryPromotionList() {
+  return request('http://localhost:3000/api/promotion/all');
+}
+
+export async function addPS(params) {
+  return request('http://localhost:3000/api/promotion/ps', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+
+export async function addps(params) {
+  return request('http://localhost:3000/api/promotion/add', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+export async function removeps(params) {
+  return request('http://localhost:3000/api/promotion/remove/'+params);
+}
+
+export async function querypsList() {
+  return request('http://localhost:3000/api/promotion/all');
+}
+
 
 export async function queryVersionList() {
   return request('http://localhost:3000/api/version/all');

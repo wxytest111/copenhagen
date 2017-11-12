@@ -3,6 +3,22 @@ const SKURepo = require('../services/SKURepo');
 const router = require('koa-router')();
 const bodyParser = require('koa-bodyparser');
 const fs = require('fs');
+const ucloud = require('../services/ufileUpload');
+const crypto = require('crypto');
+const path = require('path');
+const multer = require('koa-multer');
+var storage = multer.diskStorage({
+  destination: './files/',
+  filename: function (req, file, cb) {
+    crypto.pseudoRandomBytes(16, function (err, raw) {
+      if (err) return cb(err)
+
+      cb(null, raw.toString('hex') + path.extname(file.originalname))
+    })
+  }
+})
+const upload = multer({ storage: storage })
+
 router.prefix("/api/SKU");
 
 router.get('/all', async function (ctx, next) {
@@ -19,28 +35,40 @@ router.get('/last', async function (ctx, next) {
   ctx.body = vr;
 })
 
-router.post('/add', async function (ctx, next) {
-  ctx.body = ctx.request.body;
-  console.log(ctx.body.name);
-  console.log('ctx.body.files'+ctx.body.file);
-  
-
- // console.log('the file content is : '+ctx.body.files.length.toString());
-  
-  // const file = ctx.request.body.files.file;
-  // const reader = fs.createReadStream(file.path);
-  // var filepath = path.join(os.tmpdir(), Math.random().toString())
-  // const stream = fs.createWriteStream(filepath);
-  // reader.pipe(stream);
-  // var skuInfo = require('..//services/SKUInfo');
-  // skuInfo.name =  ctx.request['name'];
-  // skuInfo.desc = ctx.request['desc'];
-  // skuInfo.pic = filepath;
-  // // console.log('uploading %s -> %s', file.name, stream.path);
-  // ctx.compress = true;
-  // var vr = await new SKURepo().add(skuInfo); 
-  // ctx.body = '添加成功';
+router.get('/remove/:id', async function (ctx, next) {
+  ctx.compress = true;
+  var id = parseInt(ctx.params.id);
+  var vr = await new SKURepo().remove(id);
+  ctx.body = {
+    status: '删除成功',
+    code:200,
+    result:vr
+  };;
 })
 
+router.post('/add', async function (ctx, next) {
+  ctx.body = ctx.request.body;
+  ctx.body.createAt = new Date().toDateString();
+  var result = await new SKURepo().add(ctx.body);
+  ctx.body = {
+    status: '上传成功',
+    code:200,
+    result:result
+  };
+  
+})
+router.post('/pic', upload.single('file'),async function (ctx, next) {
+  var file = ctx.req.file;
+  console.log(file)
+  var key = new Date().getTime();
+  var pathName = path.join(__dirname,'/../'+file.path);
+  var result = await ucloud(pathName, key);
+  console.log(result)
+  fs.unlink(pathName)
+  ctx.body ={
+    url: "http://fujian.ufile.ucloud.com.cn/"+key,
+    status:"success"
+  };
+})
 
 module.exports = router;

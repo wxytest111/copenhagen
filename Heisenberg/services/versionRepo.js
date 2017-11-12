@@ -23,8 +23,9 @@ class VersionRepo{
         if(result.length >0) return result[0];
         return [];
     }   
-    add(){
-
+    async add(model){
+        var v = version(db.sequelize,db.Sequelize.DataTypes);
+        return await v.create(model);
     }
     remove(){
 

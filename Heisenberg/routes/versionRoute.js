@@ -36,14 +36,26 @@ router.get('/last', async function (ctx, next) {
   ctx.body = vr;
 })
 
-router.post('/add', upload.single('file'),async (ctx, next) => {  
+router.post('/add', async (ctx, next) => {  
+  ctx.body = ctx.request.body;
+  ctx.body.createAt = new Date().toDateString();
+  ctx.body.icon = 'http://fujian.ufile.ucloud.com.cn/android.png';
+  var result = await new VersionRepo().add(ctx.body);
+  ctx.body = {
+    status: '上传成功',
+    code:200,
+    result:result
+  };
+});
+
+router.post('/file', upload.single('file'),async (ctx, next) => {  
   var file = ctx.req.file;
   console.log(file)
   var key = new Date().getTime();
   var pathName = path.join(__dirname,'/../'+file.path);
   var result = await ucloud(pathName, key);
   console.log(result)
-  fs.unlink(path)
+  fs.unlink(pathName)
   ctx.body ={
     url: "http://fujian.ufile.ucloud.com.cn/"+key,
     status:"success"

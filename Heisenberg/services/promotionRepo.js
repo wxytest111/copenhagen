@@ -35,6 +35,23 @@ class PromotionRepo{
         }
         return [];
     } 
+    async remove(id){
+        var p = promotion(db.sequelize,db.Sequelize.DataTypes);
+        var result = await p.findById(id);
+        return await result.destroy()
+    }
+
+    async add(model){
+        console.log(model)
+        var p = promotion(db.sequelize,db.Sequelize.DataTypes);
+        console.log(model)
+        return await p.create(model);
+    }
+    async ps(model){
+        var ps = promotionsku(db.sequelize,db.Sequelize.DataTypes);
+        console.log(model)
+        return await ps.create(model);
+    }
     
      
     // async getPromotion(){
@@ -150,15 +167,7 @@ class PromotionRepo{
         }
         return [];
     } 
-    add(){
-
-    }
-    remove(){
-
-    }
-    update(){
-
-    }
+    
 }
 
 module.exports = PromotionRepo;

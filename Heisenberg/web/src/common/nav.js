@@ -34,165 +34,50 @@ import Register from '../routes/User/Register';
 import RegisterResult from '../routes/User/RegisterResult';
 
 import VersionList from '../routes/Version/VersionList';
+import SKUList from '../routes/SKU/SKUList';
+import PromotionList from '../routes/Promotion/PromotionList';
 
 const data = [{
   component: BasicLayout,
   layout: 'BasicLayout',
   name: '首页', // for breadcrumb
   path: '',
-  children: [{
-    name: 'Dashboard',
-    icon: 'dashboard',
-    path: 'dashboard',
-    children: [{
-      name: '分析页',
-      path: 'analysis',
-      component: Analysis,
-    }, {
-      name: '监控页',
-      path: 'monitor',
-      component: Monitor,
-    }, {
-      name: '工作台',
-      path: 'workplace',
-      component: Workplace,
-    }],
-  }, {
+  children: [ {
     name: '应用管理',
-    path: 'version',
-    icon: 'form',
+    path: 'vlist',
+    icon: 'appstore',
     children: [{
       name: '应用列表',
       path: 'version-list',
       component: VersionList,
     }],
   }, {
-    name: '表单页',
-    path: 'form',
-    icon: 'form',
+    name: '商品管理',
+    path: 'sku',
+    icon: 'barcode',
     children: [{
-      name: '基础表单',
-      path: 'basic-form',
-      component: BasicForm,
-    }, {
-      name: '分步表单',
-      path: 'step-form',
-      component: StepForm,
-      children: [{
-        path: 'confirm',
-        component: Step2,
-      }, {
-        path: 'result',
-        component: Step3,
-      }],
-    }, {
-      name: '高级表单',
-      path: 'advanced-form',
-      component: AdvancedForm,
+      name: '商品列表',
+      path: 'sku-list',
+      component: SKUList,
     }],
   }, {
-    name: '列表页',
-    path: 'list',
-    icon: 'table',
+    name: '推荐管理',
+    path: 'promotion',
+    icon: 'gift',
     children: [{
-      name: '查询表格',
-      path: 'table-list',
-      component: TableList,
-    }, {
-      name: '标准列表',
-      path: 'basic-list',
-      component: BasicList,
-    }, {
-      name: '卡片列表',
-      path: 'card-list',
-      component: CardList,
-    }, {
-      name: '搜索列表（项目）',
-      path: 'cover-card-list',
-      component: CoverCardList,
-    }, {
-      name: '搜索列表（应用）',
-      path: 'filter-card-list',
-      component: FilterCardList,
-    }, {
-      name: '搜索列表（文章）',
-      path: 'search',
-      component: SearchList,
-    }],
-  }, {
-    name: '详情页',
-    path: 'profile',
-    icon: 'profile',
-    children: [{
-      name: '基础详情页',
-      path: 'basic',
-      component: BasicProfile,
-    }, {
-      name: '高级详情页',
-      path: 'advanced',
-      component: AdvancedProfile,
-    }],
-  }, {
-    name: '结果',
-    path: 'result',
-    icon: 'check-circle-o',
-    children: [{
-      name: '成功',
-      path: 'success',
-      component: Success,
-    }, {
-      name: '失败',
-      path: 'fail',
-      component: Error,
-    }],
-  }, {
-    name: '异常',
-    path: 'exception',
-    icon: 'warning',
-    children: [{
-      name: '403',
-      path: '403',
-      component: Exception403,
-    }, {
-      name: '404',
-      path: '404',
-      component: Exception404,
-    }, {
-      name: '500',
-      path: '500',
-      component: Exception500,
+      name: '推荐列表',
+      path: 'promotion-list',
+      component: PromotionList,
     }],
   }],
 }, {
   component: UserLayout,
   layout: 'UserLayout',
-  children: [{
-    name: '帐户',
-    icon: 'user',
-    path: 'user',
-    children: [{
-      name: '登录',
-      path: 'login',
-      component: Login,
-    }, {
-      name: '注册',
-      path: 'register',
-      component: Register,
-    }, {
-      name: '注册结果',
-      path: 'register-result',
-      component: RegisterResult,
-    }],
-  }],
+  children: [],
 }, {
   component: BlankLayout,
   layout: 'BlankLayout',
-  children: {
-    name: '使用文档',
-    path: 'http://pro.ant.design/docs/getting-started',
-    target: '_blank',
-    icon: 'book',
-  },
+  children: []
 }];
 
 export function getNavData() {

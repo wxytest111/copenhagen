@@ -19,7 +19,6 @@ async function subscription(s) {
         s.ackMessage([msgId]).then(() => {
             console.log("ack message " + msgId + '\n');
         }).catch(err => {
-            
             console.error(err);
         });
     });

@@ -21,6 +21,7 @@ export default class VersionList extends PureComponent {
       fileList: [],
     };
   componentDidMount() {
+    this.props.vlist.vlist = [];
     this.props.dispatch({
       type: 'vlist/fetch',
       payload: {
@@ -30,7 +31,6 @@ export default class VersionList extends PureComponent {
   }
 
   handleChange = (info) => {
-    console.log(info)
     let fileList = info.fileList;
     // 1. Limit the number of uploaded files
     //    Only to show two recent uploaded files, and old ones will be replaced by the new
@@ -67,25 +67,40 @@ export default class VersionList extends PureComponent {
       visible:true
     });
   };
-  handleOk = () => {
-    this.setState({
-      visible: false,
+  handleOk = (e) => {
+    e.preventDefault();
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      
+      if (!err) {
+        values.url = values.url.file.response.url;
+        this.props.dispatch({
+          type: 'vlist/addVersion',
+          payload: values,
+        });
+      }
     });
   }
   handleCancel = () => {
     this.setState({
       visible: false,
     });
+    this.props.vlist.vlist = [];
+    this.props.dispatch({
+      type: 'vlist/fetch',
+      payload: {
+        count: 8,
+      },
+    });
   }
 
   render() {
     const initProps = {
       name: 'file',
-      action: 'http://localhost:3000/api/version/add',
+      action: 'http://localhost:3000/api/version/file',
       onChange: this.handleChange,
       multiple: false,
     };
-    const { vlist: { vlist, loading } } = this.props;
+    const { vlist: { vlist, loading, versionSubmitting } } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
 
     const content = (
@@ -96,13 +111,13 @@ export default class VersionList extends PureComponent {
         
         <div className={styles.contentLink}>
           <a>
-            <img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/MjEImQtenlyueSmVEfUD.svg" /> 快速开始
+            <img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/MjEImQtenlyueSmVEfUD.svg" /> 上传应用
           </a>
           <a>
-            <img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/NbuDUAuBlIApFuDvWiND.svg" /> 产品简介
+            <img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/NbuDUAuBlIApFuDvWiND.svg" /> 应用说明
           </a>
           <a>
-            <img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/ohOEPSYdDTNnyMbGuyLb.svg" /> 产品文档
+            <img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/ohOEPSYdDTNnyMbGuyLb.svg" /> 配置推送
           </a>
         </div>
       </div>
@@ -163,7 +178,7 @@ export default class VersionList extends PureComponent {
                   <Button type="dashed" className={styles.newButton} onClick={this.showModal}>
                     <Icon type="plus" /> 上传应用
                   </Button>
-                  <Modal title="上传应用" visible={this.state.visible} onOk={this.handleOk} onCancel={this.handleCancel}>
+                  <Modal title="上传应用" visible={this.state.visible} onOk={this.handleOk} onCancel={this.handleCancel} confirmLoading={versionSubmitting}>
                     <Form onSubmit={this.handleSubmit} hideRequiredMark style={{ marginTop: 8 }}>
                       <FormItem {...formItemLayout} label="版本号" >
                         { getFieldDecorator('version', {
@@ -192,15 +207,21 @@ export default class VersionList extends PureComponent {
                           <TextArea style={{ minHeight: 32 }} placeholder="请输入内容描述" rows={4} />
                         )}
                       </FormItem>
-                      <Row >
-                        <Col span={12} offset={5}>
+                      <FormItem {...formItemLayout} label="上传应用">
+                      { getFieldDecorator('url', {
+                          rules: [{
+                            required: true, message: '请上传应用',
+                          }],
+                        })(
+                          
                           <Upload {...initProps} fileList={this.state.fileList}>
                             <Button>
                               <Icon type="upload" /> 上传应用
                             </Button>
+                            <Input type="hidden" />
                           </Upload>
-                        </Col>
-                      </Row>
+                        )}
+                      </FormItem>
                     </Form>
                   </Modal>
                 </List.Item>
