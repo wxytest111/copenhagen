@@ -30,9 +30,7 @@ class SKURepo{
                 code:code
               }
         });
-        if(result.length>0)
-            return await result[0];
-        return undefined;
+        return await result[0]
     }
     async add(model){
         var sku = SKU(db.sequelize,db.Sequelize.DataTypes);
