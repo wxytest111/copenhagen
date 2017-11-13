@@ -186,7 +186,7 @@ export default class PromotionList extends PureComponent {
                       required: true, message: '请输入商品编号',
                   }],
                   })(
-                    <InputNumber style={{ width: '100%' }} min={0} step={1} placeholder="请输入商品编号" />
+                    <Input style={{ width: '100%' }}  placeholder="请输入商品编号" />
                   )}
               </FormItem>
               </Form>
