@@ -39,7 +39,7 @@ router.post('/add', async function (ctx, next) {
 router.post('/ps', async function (ctx, next) {
   ctx.body = ctx.request.body;
   var s = new SKURepo().getByCode(ctx.body.SKUid);
-  console.log(s);
+  console.log("sid"+s.id);
   ctx.body.SKUid = s.id;
   var result = await new PromotionRepo().ps(ctx.body);
   ctx.body = {
