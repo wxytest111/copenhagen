@@ -22,6 +22,12 @@ class SKURepo{
         if(result.length >0) return result[0];
         return [];
     }   
+
+    async getById(id){
+        var sku = SKU(db.sequelize,db.Sequelize.DataTypes);
+        var result = await sku.findById(id);
+        return await result;
+    }
     async add(model){
         var sku = SKU(db.sequelize,db.Sequelize.DataTypes);
         return await sku.create(model);

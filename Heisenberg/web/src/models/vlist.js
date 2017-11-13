@@ -1,4 +1,4 @@
-import { queryVersionList, addSKU } from '../services/api';
+import { queryVersionList, addVersion } from '../services/api';
 import { message } from 'antd';
 export default {
   namespace: 'vlist',

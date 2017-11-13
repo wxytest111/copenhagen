@@ -96,7 +96,7 @@ export default class VersionList extends PureComponent {
   render() {
     const initProps = {
       name: 'file',
-      action: 'http://localhost:3000/api/version/file',
+      action: 'http://console.tman.ai/api/version/file',
       onChange: this.handleChange,
       multiple: false,
     };

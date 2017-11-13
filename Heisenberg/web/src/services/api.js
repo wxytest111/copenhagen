@@ -41,21 +41,21 @@ export async function fakeSubmitForm(params) {
 }
 
 export async function addVersion(params) {
-  return request('http://localhost:3000/api/version/add', {
+  return request('http://console.tman.ai/api/version/add', {
     method: 'POST',
     body: params,
   });
 }
 
 export async function addSKU(params) {
-  return request('http://localhost:3000/api/sku/add', {
+  return request('http://console.tman.ai/api/sku/add', {
     method: 'POST',
     body: params,
   });
 }
 
 export async function removeSKU(params) {
-  return request('http://localhost:3000/api/sku/remove/'+params);
+  return request('http://console.tman.ai/api/sku/remove/'+params);
 }
 
 export async function fakeChartData() {
@@ -79,27 +79,27 @@ export async function queryFakeList(params) {
 }
 
 export async function querySKUList() {
-  return request('http://localhost:3000/api/sku/all');
+  return request('http://console.tman.ai/api/sku/all');
 }
 
 
 export async function addPromotion(params) {
-  return request('http://localhost:3000/api/promotion/add', {
+  return request('http://console.tman.ai/api/promotion/add', {
     method: 'POST',
     body: params,
   });
 }
 
 export async function removePromotion(params) {
-  return request('http://localhost:3000/api/promotion/remove/'+params);
+  return request('http://console.tman.ai/api/promotion/remove/'+params);
 }
 
 export async function queryPromotionList() {
-  return request('http://localhost:3000/api/promotion/all');
+  return request('http://console.tman.ai/api/promotion/all');
 }
 
 export async function addPS(params) {
-  return request('http://localhost:3000/api/promotion/ps', {
+  return request('http://console.tman.ai/api/promotion/ps', {
     method: 'POST',
     body: params,
   });
@@ -107,23 +107,23 @@ export async function addPS(params) {
 
 
 export async function addps(params) {
-  return request('http://localhost:3000/api/promotion/add', {
+  return request('http://console.tman.ai/api/promotion/add', {
     method: 'POST',
     body: params,
   });
 }
 
 export async function removeps(params) {
-  return request('http://localhost:3000/api/promotion/remove/'+params);
+  return request('http://console.tman.ai/api/promotion/remove/'+params);
 }
 
 export async function querypsList() {
-  return request('http://localhost:3000/api/promotion/all');
+  return request('http://console.tman.ai/api/promotion/all');
 }
 
 
 export async function queryVersionList() {
-  return request('http://localhost:3000/api/version/all');
+  return request('http://console.tman.ai/api/version/all');
 }
 
 export async function fakeAccountLogin(params) {

@@ -105,7 +105,7 @@ export default class SKUList extends PureComponent {
   render() {
     const initProps = {
       name: 'file',
-      action: 'http://localhost:3000/api/sku/pic',
+      action: 'http://console.tman.ai/api/sku/pic',
       onChange: this.handleChange,
       multiple: false,
     };

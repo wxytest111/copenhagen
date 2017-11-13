@@ -1,5 +1,6 @@
 const DB = require('../models/db');
 const PromotionRepo = require('../services/promotionRepo');
+const SKURepo = require('../services/SKURepo');
 const router = require('koa-router')();
 const socket = require("./socketRoute");
 
@@ -37,6 +38,8 @@ router.post('/add', async function (ctx, next) {
 })
 router.post('/ps', async function (ctx, next) {
   ctx.body = ctx.request.body;
+  var sku = new SKURepo().getById(ctx.body.SKUid);
+  ctx.body.SKUid = sku.id;
   var result = await new PromotionRepo().ps(ctx.body);
   ctx.body = {
     status: '添加绑定成功',
