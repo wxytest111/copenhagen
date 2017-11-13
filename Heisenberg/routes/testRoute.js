@@ -50,6 +50,34 @@ router.get('/', async function (ctx, next) {
   testPubSub();
 });
 
+
+async function Subscription()
+{
+  let client = umqclient.newUmqClient({
+    host: config.Host,
+    projectId: config.ProjectId,
+    timeout: 10000,
+  });
+  //let p = client.createProducer(config.ProducerId, config.ProducerToken);
+ // let c = client.createConsumer(config.ConsumerId, config.ConsumerToken);
+  let s = client.createSubscription(config.ConsumerId, config.ConsumerToken, config.Topic, 10);
+  var succCount = 0;
+  s.on("data", async (message) => {
+      var msgId = message.messageID;
+      var msg = message.content.toString();
+      console.log("receive message", msgId, msg);
+      if (msg != '') {
+          console.log(msg);
+          var vr = await (new promotionRepo()).getPromotion(msg);
+          socket.sendMsg(vr);
+      }
+      s.ackMessage([msgId]).then(() => {
+          console.log("ack message " + msgId + '\n');
+      }).catch(err => {
+          console.error(err);
+      });
+  });
+}
 router.get('/send', async function (ctx, next) {
   let j = {
     "retCode": 0,
@@ -68,5 +96,33 @@ router.get('/send', async function (ctx, next) {
   console.log('get promotion information : '+vr);
   socket.sendMsg(vr);
   ctx.body = vr;
+});
+
+router.get('/send1', async function (ctx, next) {
+  
+  let client = umqclient.newUmqClient({
+    host: config.Host,
+    projectId: config.ProjectId,
+    timeout: 5000,
+  });
+  //let p = client.createProducer(config.ProducerId, config.ProducerToken);
+ let c = client.createConsumer(config.ConsumerId, config.ConsumerToken);
+  let s = client.createSubscription(config.ConsumerId, config.ConsumerToken, config.Topic, 10);
+  var succCount = 0;
+  s.on("data", async (message) => {
+      var msgId = message.messageID;
+      var msg = message.content.toString();
+      console.log("receive message", msgId, msg);
+      if (msg != '') {
+          console.log(msg);
+          var vr = await (new promotionRepo()).getPromotion(msg);
+          socket.sendMsg(vr);
+      }
+      s.ackMessage([msgId]).then(() => {
+          console.log("ack message " + msgId + '\n');
+      }).catch(err => {
+          console.error(err);
+      });
+  });
 });
 module.exports = router;
