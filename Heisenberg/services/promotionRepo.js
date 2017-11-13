@@ -48,8 +48,8 @@ class PromotionRepo{
         return await p.create(model);
     }
     async ps(model){
-        var ps = promotionsku(db.sequelize,db.Sequelize.DataTypes);
         console.log(model)
+        var ps = promotionsku(db.sequelize,db.Sequelize.DataTypes);
         return await ps.create(model);
     }
     

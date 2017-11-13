@@ -38,8 +38,9 @@ router.post('/add', async function (ctx, next) {
 })
 router.post('/ps', async function (ctx, next) {
   ctx.body = ctx.request.body;
-  var sku = new SKURepo().getByCode(ctx.body.SKUid);
-  ctx.body.SKUid = sku.id;
+  var s = new SKURepo().getByCode(ctx.body.SKUid);
+  console.log(s);
+  ctx.body.SKUid = s.id;
   var result = await new PromotionRepo().ps(ctx.body);
   ctx.body = {
     status: '添加绑定成功',
