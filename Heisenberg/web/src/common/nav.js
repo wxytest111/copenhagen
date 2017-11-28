@@ -36,6 +36,8 @@ import RegisterResult from '../routes/User/RegisterResult';
 import VersionList from '../routes/Version/VersionList';
 import SKUList from '../routes/SKU/SKUList';
 import PromotionList from '../routes/Promotion/PromotionList';
+import SKUType from '../routes/SKUType/SKUType';
+import Region from '../routes/Region/Region';
 
 const data = [{
   component: BasicLayout,
@@ -59,6 +61,10 @@ const data = [{
       name: '商品列表',
       path: 'sku-list',
       component: SKUList,
+    },{
+      name: '促销品SKU类型管理',
+      path: 'sku-type',
+      component: SKUType,
     }],
   }, {
     name: '推荐管理',
@@ -68,6 +74,15 @@ const data = [{
       name: '推荐列表',
       path: 'promotion-list',
       component: PromotionList,
+    }],
+  },{
+    name: '区域管理',
+    path: 'region',
+    icon: 'gift',
+    children: [{
+      name: '区域列表',
+      path: 'region-list',
+      component: Region,
     }],
   }],
 }, {

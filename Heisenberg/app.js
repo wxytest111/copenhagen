@@ -9,9 +9,14 @@ const compress = require('koa-compress')
 const VersionRoute = require('./routes/versionRoute')
 const PromotionRoute = require('./routes/promotionRoute')
 const SKURoute = require('./routes/SKURoute')
+const SKUTypeRoute = require('./routes/SKUTypeRoute')
+const RegionRoute = require('./routes/RegionRoute')
 const TestRoute = require('./routes/testRoute');
 const Index = require('./routes/indexRoute');
+var cors = require('koa-cors');
 
+
+app.use(cors());
 // test only, will move to other module later
 const PromotionMsg = require("./services/promotionMsg")
 
@@ -49,6 +54,8 @@ app.use(compress({
 app.use(VersionRoute.routes(), VersionRoute.allowedMethods());
 app.use(PromotionRoute.routes(), PromotionRoute.allowedMethods());
 app.use(SKURoute.routes(), SKURoute.allowedMethods());
+app.use(SKUTypeRoute.routes(), SKUTypeRoute.allowedMethods());
+app.use(RegionRoute.routes(), RegionRoute.allowedMethods());
 app.use(TestRoute.routes(), TestRoute.allowedMethods());
 app.use(Index.routes(), Index.allowedMethods());
 

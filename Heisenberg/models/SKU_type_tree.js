@@ -2,6 +2,12 @@
 
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('SKU_type_tree', {
+    id: {
+      type: DataTypes.INTEGER(11).UNSIGNED,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true
+    },
     ancestor_key: {
       type: DataTypes.INTEGER(11).UNSIGNED,
       allowNull: false
@@ -19,6 +25,6 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     }
   }, {
-    tableName: 'SKU_type_tree'
+    tableName: 'SKU_type_tree',timestamps: false,
   });
 };
