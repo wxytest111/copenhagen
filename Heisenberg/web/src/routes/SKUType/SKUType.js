@@ -226,7 +226,7 @@ export default class SKUType extends PureComponent {
                       required: false, message: '请输入类型id',
                   }],
                   })(
-                  <Input placeholder="请输入类型id" />
+                  <Input placeholder="请输入类型id" style={{display:'none'}}/>
                 )}
                 
             </FormItem>
@@ -241,7 +241,7 @@ export default class SKUType extends PureComponent {
                 }],
                 })(
                   // <Input placeholder="请选择添加类型的位置" disabled style={{display:'none'}}/>
-                  <Input placeholder="请选择添加类型的位置" disabled />
+                  <Input placeholder="请选择添加类型的位置" disabled style={{display:'none'}}/>
                 )}
                 <Table style={{border: '1px solid #d9d9d9'}}
                   loading={loading}
