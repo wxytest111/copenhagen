@@ -19,6 +19,6 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     }
   }, {
-    tableName: 'region_tree'
+    tableName: 'region_tree',timestamps: false,
   });
 };
