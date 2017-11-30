@@ -66,18 +66,18 @@ export default class SKUType extends PureComponent {
               ancestor_key: 0,
             },
           });
+          this.props.form.setFieldsValue({
+            parentid:null,
+            name:null,
+            id:null
+          })
+          this.setState({
+            modalVisible: false,
+            type: {},
+            parent: {},
+            dis:false
+          });
         }
-    });
-    this.props.form.setFieldsValue({
-      parentid:null,
-      name:null,
-      id:null
-    })
-    this.setState({
-      modalVisible: false,
-      type: {},
-      parent: {},
-      dis:false
     });
  }
   handleCancel = () => {

@@ -74,19 +74,19 @@ export default class Region extends PureComponent {
             ancestor_key: 0,
           },
         });
+        // this.props.reg.reg = {};
+        this.props.form.setFieldsValue({
+          parentid:null,
+          name:null,
+          id:null
+        })
+        this.setState({
+          modalVisible: false,
+          region: {},
+          parent: {},
+          dis:false
+        });
       }
-    });
-    // this.props.reg.reg = {};
-    this.props.form.setFieldsValue({
-      parentid:null,
-      name:null,
-      id:null
-    })
-    this.setState({
-      modalVisible: false,
-      region: {},
-      parent: {},
-      dis:false
     });
  }
   handleCancel = () => {
