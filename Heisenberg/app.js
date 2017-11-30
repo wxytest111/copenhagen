@@ -14,10 +14,10 @@ const RegionRoute = require('./routes/RegionRoute')
 const ShopRoute = require('./routes/ShopRoute')
 const TestRoute = require('./routes/testRoute');
 const Index = require('./routes/indexRoute');
-var cors = require('koa-cors');
+// var cors = require('koa-cors');
 
 
-app.use(cors());
+// app.use(cors());
 // test only, will move to other module later
 const PromotionMsg = require("./services/promotionMsg")
 
