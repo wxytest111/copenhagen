@@ -11,6 +11,7 @@ const PromotionRoute = require('./routes/promotionRoute')
 const SKURoute = require('./routes/SKURoute')
 const SKUTypeRoute = require('./routes/SKUTypeRoute')
 const RegionRoute = require('./routes/RegionRoute')
+const ShopRoute = require('./routes/ShopRoute')
 const TestRoute = require('./routes/testRoute');
 const Index = require('./routes/indexRoute');
 var cors = require('koa-cors');
@@ -56,6 +57,7 @@ app.use(PromotionRoute.routes(), PromotionRoute.allowedMethods());
 app.use(SKURoute.routes(), SKURoute.allowedMethods());
 app.use(SKUTypeRoute.routes(), SKUTypeRoute.allowedMethods());
 app.use(RegionRoute.routes(), RegionRoute.allowedMethods());
+app.use(ShopRoute.routes(), ShopRoute.allowedMethods());
 app.use(TestRoute.routes(), TestRoute.allowedMethods());
 app.use(Index.routes(), Index.allowedMethods());
 
