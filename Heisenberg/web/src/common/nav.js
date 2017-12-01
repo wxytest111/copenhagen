@@ -38,6 +38,7 @@ import SKUList from '../routes/SKU/SKUList';
 import PromotionList from '../routes/Promotion/PromotionList';
 import SKUType from '../routes/SKUType/SKUType';
 import Region from '../routes/Region/Region';
+import Shop from '../routes/Shop/Shop';
 
 const data = [{
   component: BasicLayout,
@@ -83,6 +84,15 @@ const data = [{
       name: '区域列表',
       path: 'region-list',
       component: Region,
+    }],
+  },{
+    name: '门店管理',
+    path: 'shop',
+    icon: 'gift',
+    children: [{
+      name: '门店列表',
+      path: 'shop-list',
+      component: Shop,
     }],
   }],
 }, {

@@ -26,7 +26,7 @@ router.get('/remove/:id', async function (ctx, next) {
     status: '删除成功',
     code:200,
     result:vr
-  };;
+  };
 })
 
 router.get('/tree', async function (ctx, next) {
