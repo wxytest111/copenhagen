@@ -17,10 +17,11 @@ router.post('/add', async function (ctx, next) {
   
 });
 
-router.get('/list', async function (ctx, next) {
+router.post('/list', async function (ctx, next) {
   ctx.compress = true;
+  ctx.body = ctx.request.body;
   // console.log(ctx.query)
-  var vr = await new ShopRepo().getShopList(ctx.query.region_id);
+  var vr = await new ShopRepo().getShopList(ctx.body.region_id);
   ctx.body = vr;
 });
 

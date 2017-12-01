@@ -31,12 +31,10 @@ class ShopRepo{
         
         var shopDao = shop(db.sequelize,db.Sequelize.DataTypes);
         if(region_id){
-            var list = [];
-            list.push(region_id);
             return await shopDao.findAll({
                 where:{
                     region_id:{
-                        [Op.in]: list
+                        [Op.in]: region_id
                     }
                 }      
             });

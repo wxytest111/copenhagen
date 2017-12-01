@@ -104,7 +104,11 @@ export async function queryRegionList(params) {
 }
 
 export async function queryShopList(params) {
-  return request(`http://console.tman.ai/api/shop/list?${stringify(params)}`);
+  return request(`http://console.tman.ai/api/shop/list`,
+    {
+      method: 'POST',
+      body: params,
+  });
 }
 
 export async function getParent(params) {

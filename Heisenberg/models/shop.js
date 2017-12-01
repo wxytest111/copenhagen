@@ -10,26 +10,41 @@ module.exports = function(sequelize, DataTypes) {
     },
     region_id: {
       type: DataTypes.INTEGER(11).UNSIGNED,
-      allowNull: false,
-      defaultValue: '0'
+      allowNull: false
+    },
+    region_name: {
+      type: DataTypes.STRING(255),
+      allowNull: false
+    },
+    code: {
+      type: DataTypes.STRING(10),
+      allowNull: false
     },
     name: {
       type: DataTypes.STRING(100),
       allowNull: false,
       defaultValue: ''
     },
-    desc: {
-      type: DataTypes.STRING(1000),
-      allowNull: false,
-      defaultValue: ''
+    tel: {
+      type: DataTypes.INTEGER(11),
+      allowNull: true
+    },
+    nature: {
+      type: DataTypes.STRING(10),
+      allowNull: true
     },
     address: {
       type: DataTypes.STRING(1000),
-      allowNull: false,
+      allowNull: true,
       defaultValue: ''
     },
     pic: {
       type: DataTypes.STRING(200),
+      allowNull: true,
+      defaultValue: ''
+    },
+    desc: {
+      type: DataTypes.STRING(1000),
       allowNull: true,
       defaultValue: ''
     },
@@ -39,6 +54,6 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: '0'
     }
   }, {
-    tableName: 'shop'
+    tableName: 'shop',timestamps: false,
   });
 };
