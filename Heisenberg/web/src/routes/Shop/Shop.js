@@ -275,7 +275,7 @@ export default class Shop extends PureComponent {
   
     const submitForm = () => (
       <Modal title="添加/编辑门店" width={'800px'} style={{ top: 30}} visible={this.state.modalVisible} onOk={this.handleOk} onCancel={this.handleCancel} confirmLoading={shopSubmitting}>
-        <Form onSubmit={this.handleSubmit} style={{ marginTop: 8 }}>
+        <Form onSubmit={this.handleSubmit} >
           <FormItem {...formItemLayout} label="门店名称" hasFeedback>
                 { getFieldDecorator('id', {
                     rules: [{
@@ -314,14 +314,16 @@ export default class Shop extends PureComponent {
                   // <Input placeholder="请选择添加类型的位置" disabled style={{display:'none'}}/>
                   <Input placeholder="请选择添加门店的位置"  disabled style={{display:'none'}}/>
                 )}
-                <Table style={{border: '1px solid #d9d9d9'}}
+                <Table
+                  size="small"
+                  style={{border: '1px solid #d9d9d9'}}
                   loading={loading}
                   onRowClick={this.onRowClick}
                   rowKey={record => record.id}
                   showHeader={false}
                   pagination={false}
                   defaultExpandedRowKeys={[6]}
-                  scroll={{ x: true, y: 150 }}
+                  scroll={{ x: true, y: 120 }}
                   columns={columns} dataSource={region} />
                 
               
@@ -385,8 +387,8 @@ export default class Shop extends PureComponent {
       { title: '姓名', dataIndex: 'name', key: 'name',width:'20%', },
       { title: '代码', dataIndex: 'code', key: 'code',width:'20%', },
       { title: '性质', dataIndex: 'nature', key: 'nature',width:'20%', },
-      { title: '备注', dataIndex: 'desc', key: 'desc',width:'25%', },
-      { title: '操作', dataIndex: '', key: 'x', width:'14%', 
+      { title: '备注', dataIndex: 'desc', key: 'desc',width:'20%', },
+      { title: '操作', dataIndex: '', key: 'x', width:'16%', 
         className:'column-operations',
       render: (text, record) => {
         const { editable } = record;
@@ -448,15 +450,15 @@ export default class Shop extends PureComponent {
             
             <div style={{ height: 10,backgroundColor:'rgb(240, 242, 245)'}}/>
             <Row style={{padding: '10px 0px 0px' }}>
-              <Col span={6}>
+              <Col span={5}>
                 <Search
                   placeholder="请输入搜索关键词"
-                  style={{ width: 300 }}
+                  style={{ width: '95%' }}
                   onSearch={value => console.log(value)}
                 />
                 <Layout>
                   <div style={{ background: '#fff' }}>
-                    <Content style={{ overflow:'auto', border:'1px solid #d9d9d9',width: 300, height:300, maxHeight:300}}>
+                    <Content style={{ overflow:'auto', border:'1px solid #d9d9d9',width: '95%', height:300, maxHeight:300}}>
                       <Tree
                         onExpand={this.onExpand}
                         expandedKeys={this.state.expandedKeys?this.state.expandedKeys:['6']}
@@ -471,14 +473,15 @@ export default class Shop extends PureComponent {
                   </div>
                 </Layout>
               </Col>
-              <Col span={18}>
+              <Col span={19}>
                 <Table className='table'
+                  size="middle"
                   bordered={true}
                   loading={shoploading}
                   rowKey={record => record.id}
                   pagination={paginationProps}
                   showHeader={true}
-                  scroll={{ x: true, y: 380 }}
+                  scroll={{ x: true, y: 280 }}
                   columns={columns3}
                   expandedRowRender={record => <p>{record.address}</p>}
                   dataSource={shop}
