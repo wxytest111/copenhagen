@@ -5,7 +5,6 @@ const Search = Input.Search;
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 import styles from './SKUBrand.less';
-import { isNull } from 'util';
 const { TextArea } = Input;
 const FormItem = Form.Item;
 @Form.create()
@@ -15,7 +14,7 @@ const FormItem = Form.Item;
 export default class SKUBrand extends PureComponent {
   state = {
     brand: {},
-    fileList:[],
+    file:undefined,
     modalVisible: false,
   };
   
@@ -33,7 +32,6 @@ export default class SKUBrand extends PureComponent {
   showModal = () => {
     this.setState({
       modalVisible:true,
-      // dis:''
     });
   };
 
@@ -56,7 +54,6 @@ export default class SKUBrand extends PureComponent {
             ancestor_key: 0,
           },
         });
-        // this.props.reg.reg = {};
         this.props.form.setFieldsValue({
           name:null,
           id:null,
@@ -65,13 +62,12 @@ export default class SKUBrand extends PureComponent {
         })
         this.setState({
           modalVisible: false,
-          fileList:[]
+          file:undefined
         });
       }
     });
  }
   handleCancel = () => {
-    // this.props.reg.reg = {};
     this.props.form.setFieldsValue({
       name:null,
       id:null,
@@ -80,40 +76,39 @@ export default class SKUBrand extends PureComponent {
     })
     this.setState({
       modalVisible: false,
-      fileList:[]
+      file:undefined
     });
     
   }
 
   handleChange = (info) => {
-    let fileList = info.fileList;
+    let file = info.fileList;
     // 1. Limit the number of uploaded files
     //    Only to show two recent uploaded files, and old ones will be replaced by the new
-    fileList = fileList.slice(-2);
+    file = file.slice(-2);
 
     // 2. read from response and show file link
-    fileList = fileList.map((file) => {
-      if (file.response) {
+    file = file.map((f) => {
+      if (f.response) {
         // Component will show file.url as link
-        file.url = file.response.url;
+        f.url = f.response.url;
       }
-      return file;
+      return f;
     });
 
     // 3. filter successfully uploaded files according to response from server
-    fileList = fileList.filter((file) => {
-      if (file.response) {
-        return file.response.status === 'success';
+    file = file.filter((f) => {
+      if (f.response) {
+        return f.response.status === 'success';
       }
       return true;
     });
-    this.setState({ fileList });
+    this.setState({ 
+      file:file.length>0?file:undefined
+     });
   }
 
   save(brand) {
-    // console.log(region)
-    // console.log(region.tt.ancestor_key)
-    
    
     this.props.form.setFieldsValue({
       name:brand.name,
@@ -251,8 +246,9 @@ export default class SKUBrand extends PureComponent {
                 }],
                 })(
                     
-                  <Upload {...initProps} fileList={this.state.fileList}>
-                    <Button>
+                  
+                  <Upload {...initProps} fileList={this.state.file}>
+                    <Button disabled={this.state.file}>
                       <Icon type="upload" /> 上传品牌图片
                     </Button>
                     <Input type="hidden" />
