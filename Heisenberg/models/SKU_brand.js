@@ -34,6 +34,6 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: '0'
     }
   }, {
-    tableName: 'SKU_brand'
+    tableName: 'SKU_brand',timestamps: false,
   });
 };

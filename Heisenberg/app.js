@@ -10,6 +10,7 @@ const VersionRoute = require('./routes/versionRoute')
 const PromotionRoute = require('./routes/promotionRoute')
 const SKURoute = require('./routes/SKURoute')
 const SKUTypeRoute = require('./routes/SKUTypeRoute')
+const SKUBrandRoute = require('./routes/SKUBrandRoute')
 const RegionRoute = require('./routes/RegionRoute')
 const ShopRoute = require('./routes/ShopRoute')
 const TestRoute = require('./routes/testRoute');
@@ -56,6 +57,7 @@ app.use(VersionRoute.routes(), VersionRoute.allowedMethods());
 app.use(PromotionRoute.routes(), PromotionRoute.allowedMethods());
 app.use(SKURoute.routes(), SKURoute.allowedMethods());
 app.use(SKUTypeRoute.routes(), SKUTypeRoute.allowedMethods());
+app.use(SKUBrandRoute.routes(), SKUBrandRoute.allowedMethods());
 app.use(RegionRoute.routes(), RegionRoute.allowedMethods());
 app.use(ShopRoute.routes(), ShopRoute.allowedMethods());
 app.use(TestRoute.routes(), TestRoute.allowedMethods());

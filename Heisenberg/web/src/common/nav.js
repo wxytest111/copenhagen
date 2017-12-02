@@ -37,6 +37,7 @@ import VersionList from '../routes/Version/VersionList';
 import SKUList from '../routes/SKU/SKUList';
 import PromotionList from '../routes/Promotion/PromotionList';
 import SKUType from '../routes/SKUType/SKUType';
+import SKUBrand from '../routes/SKUBrand/SKUBrand';
 import Region from '../routes/Region/Region';
 import Shop from '../routes/Shop/Shop';
 
@@ -66,6 +67,10 @@ const data = [{
       name: '促销品SKU类型管理',
       path: 'sku-type',
       component: SKUType,
+    },{
+      name: '促销品SKU品牌管理',
+      path: 'sku-brand',
+      component: SKUBrand,
     }],
   }, {
     name: '推荐管理',

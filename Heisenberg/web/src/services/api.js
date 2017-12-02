@@ -75,6 +75,13 @@ export async function addShop(params) {
   });
 }
 
+export async function addSKUBrand(params) {
+  return request('http://console.tman.ai/api/skubrand/add', {
+    method: 'POST',
+    body: params,
+  });
+}
+
 export async function removeSKU(params) {
   return request('http://console.tman.ai/api/sku/remove/'+params);
 }
@@ -85,6 +92,10 @@ export async function removeType(params) {
 
 export async function removeShop(params) {
   return request('http://console.tman.ai/api/shop/remove/'+params);
+}
+
+export async function removeSKUBrand(params) {
+  return request('http://console.tman.ai/api/skubrand/remove/'+params);
 }
 
 export async function removeRegion(params) {
@@ -105,6 +116,14 @@ export async function queryRegionList(params) {
 
 export async function queryShopList(params) {
   return request(`http://console.tman.ai/api/shop/list`,
+    {
+      method: 'POST',
+      body: params,
+  });
+}
+
+export async function querySKUBrandList(params) {
+  return request(`http://console.tman.ai/api/skubrand/list`,
     {
       method: 'POST',
       body: params,
