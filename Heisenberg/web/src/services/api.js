@@ -76,7 +76,9 @@ export async function addShop(params) {
 }
 
 export async function addSKUBrand(params) {
-  console.log("params",params)
+  if(params.pic){
+    params.pic=params.pic.file.response.url
+  }
   return request('http://console.tman.ai/api/skubrand/add', {
     method: 'POST',
     body: params,

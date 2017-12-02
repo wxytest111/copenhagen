@@ -55,10 +55,11 @@ export default class SKUBrand extends PureComponent {
           },
         });
         this.props.form.setFieldsValue({
-          name:null,
-          id:null,
-          code:null,
-          desc:null,
+          name:undefined,
+          id:undefined,
+          code:undefined,
+          desc:undefined,
+          pic:undefined
         })
         this.setState({
           modalVisible: false,
@@ -69,10 +70,11 @@ export default class SKUBrand extends PureComponent {
  }
   handleCancel = () => {
     this.props.form.setFieldsValue({
-      name:null,
-      id:null,
-      code:null,
-      name:null,
+      name:undefined,
+      id:undefined,
+      code:undefined,
+      name:undefined,
+      pic:undefined
     })
     this.setState({
       modalVisible: false,
@@ -106,6 +108,9 @@ export default class SKUBrand extends PureComponent {
     this.setState({ 
       file:file.length>0?file:undefined
      });
+    //  this.props.form.setFieldsValue({
+    //   pic:file.length>0?file[0].response.url:undefined,
+    // })
   }
 
   save(brand) {
@@ -114,7 +119,7 @@ export default class SKUBrand extends PureComponent {
       name:brand.name,
       id:brand.id,
       code:brand.code,
-      desc:brand.desc
+      desc:brand.desc,
     })
     this.setState({
       modalVisible:true,

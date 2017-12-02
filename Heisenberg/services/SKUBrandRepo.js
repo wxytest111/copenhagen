@@ -36,10 +36,13 @@ class SKUBrandRepo{
                     name:{
                         [Op.like]: '%'+name+'%'
                     }
-                }      
+                },
+                order: [ [ 'id', 'DESC' ]]      
             });
         }
-        return await brandDao.findAll();
+        return await brandDao.findAll({
+            order: [ [ 'id', 'DESC' ]]
+        });
     };
 
     async remove(id){
