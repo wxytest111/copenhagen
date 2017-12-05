@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Popconfirm, Modal, InputNumber, Form, List, Card, Row, Col, Input, Upload, Button, Icon, Dropdown, Menu, Avatar } from 'antd';
+import { Popconfirm, Modal, InputNumber, Form, List, Card, Row, Col, Input, Upload, Button, Icon, Table, Menu, Avatar, TreeSelect, Tree, Select } from 'antd';
+const TreeNode = Tree.TreeNode;
+const Option = Select.Option;
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
@@ -10,11 +12,15 @@ const FormItem = Form.Item;
 @Form.create()
 @connect(state => ({
   skulist: state.skulist,
+  skutype: state.skutype,
+  sblist: state.sblist,
 }))
 export default class SKUList extends PureComponent {
   state = {
         fileList: [],
         modalVisible: false,
+        modalVisibleRule: false,
+        typeCode: undefined,
       };
   
   componentDidMount() {
@@ -25,15 +31,30 @@ export default class SKUList extends PureComponent {
         count: 5,
       },
     });
+    this.props.skutype.skutype = [];
+    this.props.dispatch({
+      type: 'skutype/fetch',
+      payload: {
+        ancestor_key: 0,
+      },
+    });
+    this.props.sblist.sblist = [];
+    this.props.dispatch({
+      type: 'sblist/fetch',
+      payload: {
+        
+      },
+    });
   }
 
 
 
-  showModal = () => {
+  showSKUModal = () => {
     this.setState({
       modalVisible:true
     });
   };
+  
   remove = async (id)=>{
     await this.props.dispatch({
       type: 'skulist/removeSKU',
@@ -51,15 +72,31 @@ export default class SKUList extends PureComponent {
   handleOk = (e) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll(async (err, values) => {
-        console.log(values)
+        // console.log('values',values)
         if (!err) {
           values.pic = values.pic.file.response.url;
+          // values.pic = 'http://fujian.cn-bj.ufileos.com/OMO.jpg';
           await this.props.dispatch({
               type: 'skulist/addSKU',
               payload: values,
           });
+
+          this.props.form.setFieldsValue({
+            name:undefined,
+            id:undefined,
+            code:undefined,
+            identity:undefined,
+            input_code:undefined,
+            SKU_type_code:undefined,
+            SKU_type_name:undefined,
+            SKU_brand_code:undefined,
+            SKU_brand_name:undefined,
+            price:undefined,
+            desc:undefined,
+          });
           this.setState({
-            modalVisible:false
+            modalVisible:false,
+            typeCode:undefined,
           });
           this.props.skulist.skulist = [];
           this.props.dispatch({
@@ -71,12 +108,85 @@ export default class SKUList extends PureComponent {
         }
     });
  }
+
+ handleOkRule = (e) => {
+  // e.preventDefault();
+  this.props.form.validateFieldsAndScroll(async (err, values) => {
+      console.log('values',values)
+      // if (!err) {
+        await this.props.dispatch({
+            type: 'rule/editRule',
+            payload: values,
+        });
+
+        this.props.form.setFieldsValue({
+          id: undefined,
+          rule_id: undefined,
+          sex: undefined,
+          age_start: undefined,
+          age_end: undefined,
+          eyeglasses: undefined,
+        });
+        this.setState({
+          modalVisibleRule:false,
+        });
+        this.props.skulist.skulist = [];
+        this.props.dispatch({
+          type: 'skulist/fetch',
+          payload: {
+            count: 5,
+          },
+        });
+      // }
+  });
+}
+
   handleCancel = () => {
+
+    this.props.form.setFieldsValue({
+      name:undefined,
+      id:undefined,
+      code:undefined,
+      input_code:undefined,
+      SKU_type_code:undefined,
+      SKU_type_name:undefined,
+      SKU_brand_code:undefined,
+      SKU_brand_name:undefined,
+      identity:undefined,
+      price:undefined,
+      desc:undefined,
+    })
     this.setState({
-      modalVisible: false,
-    });
+      modalVisible:false,
+      typeCode:undefined,
+    })
     
   }
+
+  handleCancelRule = () => {
+
+    this.props.form.setFieldsValue({
+      id:undefined,
+      rule_id:undefined,
+      sex: undefined,
+      age_start: undefined,
+      age_end: undefined,
+      eyeglasses: undefined,
+    })
+    this.setState({
+      modalVisibleRule:false,
+      
+    })
+    
+  }
+  
+  handleChangeBrand = (values) => {
+    this.props.form.setFieldsValue({
+      SKU_brand_code:values.key,
+      SKU_brand_name:values.label,
+    });
+  }
+
 
   handleChange = (info) => {
     let fileList = info.fileList;
@@ -102,6 +212,64 @@ export default class SKUList extends PureComponent {
     });
     this.setState({ fileList });
   }
+
+
+  save(sku) {
+    // console.log('sku',sku)
+     this.props.form.setFieldsValue({
+       name:sku.name,
+       id:sku.id,
+       code:sku.code,
+       input_code:sku.input_code,
+       SKU_type_code:sku.SKU_type_code,
+       SKU_type_name:sku.SKU_type_name,
+       SKU_brand_code:{ key: sku.SKU_brand_code, label: sku.SKU_brand_name },
+      //  SKU_brand_code:sku.SKU_brand_code,
+       SKU_brand_name:sku.SKU_brand_name,
+       identity:sku.identity,
+       price:sku.price,
+       desc:sku.desc,
+     })
+     this.setState({
+       modalVisible:true,
+       typeCode:sku.SKU_type_code,
+      //  brand:brand,
+     })
+   }
+
+  rule(sku) {
+    console.log('sku',sku)
+    if(sku.rule_id){
+      this.props.form.setFieldsValue({
+      rule_id:sku.rule_id.id,
+      sex: sku.rule_id.sex,
+      age_start:sku.rule_id.age_start,
+      age_end:sku.rule_id.age_end,
+      eyeglasses:sku.rule_id.eyeglasses,
+      })
+    } else {
+      this.props.form.setFieldsValue({
+        id:sku.id,
+        sex: '全部',
+        eyeglasses: '否',
+      })
+    }
+     this.setState({
+      modalVisibleRule:true,
+     })
+   }
+   
+  
+
+   onChange = (typeCode, title) => {
+     
+    this.props.form.setFieldsValue({
+      SKU_type_name:title[0].props.children,
+    });
+    this.setState({ typeCode: typeCode});
+  }
+
+
   render() {
     const initProps = {
       name: 'file',
@@ -110,7 +278,9 @@ export default class SKUList extends PureComponent {
       multiple: false,
     };
     
-    const { skulist: { skulist, loading, skuSubmitting } } = this.props;
+    const { skulist: { skulist, loading, skuSubmitting, ruleSubmitting } } = this.props;
+    const { skutype: { skutype } } = this.props;
+    const { sblist: { sblist } } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const Info = ({ title, value, bordered }) => (
       <div className={styles.headerInfo}>
@@ -121,34 +291,92 @@ export default class SKUList extends PureComponent {
     );
     
 
+
     const paginationProps = {
-      showSizeChanger: true,
+      // size:'small',
+      // showSizeChanger: true,
       showQuickJumper: true,
       pageSize: 5,
+      // current:this.state.current,
       total: skulist.length,
+      onChange:(page)=>{
+        // this.props.pspage.pslist =  {},
+        // // console.log(this.state.promotionid)
+        // this.props.dispatch({
+        //   type: 'pslist/queryPskuList',
+        //   payload: {
+        //     pageSize: 3,
+        //     pageNum: page,
+        //     // promotionid: pspage.rows[0].promotionSKU.promotionid,
+        //     promotionid: this.state.promotionid,
+        //   },
+        // });
+        
+        // this.setState({
+        //   current:page,
+        // });
+        console.log(page)
+      }
     };
 
-    const ListContent = ({ data: { price, createAt, code, status } }) => (
-      <div className={styles.listContent}>
-        <div>
-          <span>价格</span>
-          <p>￥{price}</p>
-        </div>
-        <div>
-          <span>更新时间</span>
-          <p>{createAt}</p>
-        </div>
-        <div>
-          <span>编码</span>
-          <p>{code}</p>
-        </div>
-        <div>
-          <span>商品状态</span>
-          <p>{status}</p>
-        </div>
-      </div>
-    );
 
+
+    const columns = [
+      { title: '缩略图', dataIndex: 'pic', key: 'pic',width:20, className:'column-operations',fixed: 'left',
+        render: (text, record) => {
+          return (
+            <Avatar style={{ backgroundColor: 'rgba(255,255,255,0.2)' }} src={record.pic} shape="square" size="large" />
+          );
+        },
+      },
+
+      { title: '店铺', dataIndex: 'shop', key: 'shop',width:100, className:'column-operations',},
+      { title: '商品编码', dataIndex: 'identity', key: 'identity',width:100, className:'column-operations',},
+      { title: '商品代码', dataIndex: 'code', key: 'code',width:100, className:'column-operations',},
+      { title: '输入码', dataIndex: 'input_code', key: 'input_code',width:100, className:'column-operations',},
+      { title: '商品名称', dataIndex: 'name', key: 'name',width:100, className:'column-operations',},
+      { title: '类别代码', dataIndex: 'SKU_type_code', key: 'SKU_type_code',width:100, className:'column-operations',},
+      { title: '类别名称', dataIndex: 'SKU_type_name', key: 'SKU_type_name',width:100, className:'column-operations',},
+      { title: '品牌', dataIndex: 'SKU_brand_name', key: 'SKU_brand_name',width:100, className:'column-operations',},
+      { title: '价格', dataIndex: 'price', key: 'price',width:100, className:'column-operations',},
+      { title: '备注', dataIndex: 'desc', key: 'desc',width:100, className:'column-operations',},
+      { title: '规则', dataIndex: 'rule_id.id', key: 'rule_id.id',width:100, className:'column-operations',
+        render: (text, record) => {
+          // console.log("record.rule_id",record.rule_id)
+          return (
+              record.rule_id?
+              <div>
+              {record.rule_id.sex==='全部'?'男/女':record.rule_id.sex}{record.rule_id.sex?<br/>:null}
+              {record.rule_id.age_start} {record.rule_id.age_start?'-':null} {record.rule_id.age_end} {record.rule_id.age_end?'岁':null}{record.rule_id.age_end?<br/>:null}
+              {record.rule_id.eyeglasses==='否'?'':'戴眼镜'}
+              </div>
+              :null
+          );
+        },
+      },
+
+      { title: '操作',  key: 'x', width:120, className:'column-operations', fixed: 'right',
+      render: (text, record) => {
+        return (
+          <div className="editable-row-operations">
+            {
+              <span>
+                <a onClick={() => console.log(record)}>门店</a>
+                <a onClick={() => this.rule(record)}>规则</a>
+                <div style={{ height: 8}}/>
+                <a onClick={() => this.save(record)}>编辑</a>
+                { 
+                  <Popconfirm title="Sure to delete?" onConfirm={() => this.remove(record.id)}>
+                    <a>删除</a>
+                  </Popconfirm>
+                }
+              </span>
+            }
+          </div>
+        );
+      },
+      },
+    ];
 
     const MoreBtn = ({data:id}) => (
       <Popconfirm title="是否要删除此行？" onConfirm={() => this.remove(id)}>
@@ -156,108 +384,304 @@ export default class SKUList extends PureComponent {
     </Popconfirm>
     );
     const formItemLayout = {
-        labelCol: {
-          xs: { span: 24 },
-          sm: { span: 5 },
-        },
-        wrapperCol: {
-          xs: { span: 24 },
-          sm: { span: 12 },
-          md: { span: 14 },
-        },
-      };
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 5 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 12 },
+        md: { span: 14 },
+      },
+    };
+
+    const loop = data => data.map((item) => {
+      // console.log('item',item)
+      const title = <span>{item.name}</span>;
+      if (item.children) {
+        return (
+          <TreeNode key={item.id} title={title} value={item.code} disabled>
+            {loop(item.children)}
+          </TreeNode>
+        );
+      }
+      return <TreeNode key={item.id} title={title} value={item.code}/>;
+    });
+    const loop2 = data => data.map((item) => {
+      // console.log('item',item)
+      
+      return <Option key={item.id} value={item.code}>{item.name}</Option>;
+    });
   
     const submitForm = () => (
-      <Modal title="添加/编辑商品" visible={this.state.modalVisible} onOk={this.handleOk} onCancel={this.handleCancel} confirmLoading={skuSubmitting}>
-        <Form onSubmit={this.handleSubmit} hideRequiredMark style={{ marginTop: 8 }}>
+      <Modal title="添加/编辑商品" visible={this.state.modalVisible} onOk={this.handleOk} onCancel={this.handleCancel} 
+      confirmLoading={skuSubmitting}>
+        <Form onSubmit={this.handleSubmit} hideRequiredMark style={{ marginTop: 8 }} >
           <FormItem {...formItemLayout} label="商品名称" >
-                { getFieldDecorator('name', {
-                    rules: [{
-                        required: true, message: '请输入商品名称',
-                    }],
-                    })(
-                    <Input placeholder="请输入商品名称" />
-                )}
-            </FormItem>
-            <FormItem {...formItemLayout} label="商品价格" >
-              { getFieldDecorator('price', {
+            { getFieldDecorator('name', {
+                rules: [{
+                    required: true, message: '请输入商品名称',
+                }],
+                })(
+                <Input placeholder="请输入商品名称" />
+            )}
+          </FormItem>
+          <FormItem {...formItemLayout} label="商品id" style={{display:'none'}}>
+              { getFieldDecorator('id', {
               rules: [{
-                  required: true, message: '请输入商品价格',
+                  required: false, message: '请输入商品id',
               }],
               })(
-                <InputNumber min={0} step={0.1} placeholder="商品价格" />
+              <Input placeholder="请输入商品id" disabled />
               )}
           </FormItem>
-            <FormItem {...formItemLayout} label="代码" >
-                { getFieldDecorator('code', {
-                rules: [{
-                    required: true, message: '请输入商品代码',
-                }],
-                })(
-                <Input placeholder="请输入商品代码" />
-                )}
-            </FormItem>
-            <FormItem {...formItemLayout} label="内容描述" >
-                { getFieldDecorator('desc', {
-                rules: [{
-                    required: true, message: '请输入内容描述',
-                }],
-                })(
-                <TextArea style={{ minHeight: 32 }} placeholder="请输入内容描述" rows={4} />
-                )}
-            </FormItem>
-            <FormItem {...formItemLayout} label="上传图片">
-            { getFieldDecorator('pic', {
-                rules: [{
-                    required: true, message: '请上传商品图片',
-                }],
-                })(
-                    
-                  <Upload {...initProps} fileList={this.state.fileList}>
-                    <Button>
-                      <Icon type="upload" /> 上传商品图片
-                    </Button>
-                    <Input type="hidden" />
-                  </Upload>
+          <FormItem {...formItemLayout} label="商品编码" >
+              { getFieldDecorator('identity', {
+              rules: [{
+                  required: true, message: '请输入商品编码',
+              }],
+              })(
+              <Input placeholder="请输入商品编码" />
+              )}
+          </FormItem>
+          <FormItem {...formItemLayout} label="商品代码" >
+              { getFieldDecorator('code', {
+              rules: [{
+                  required: true, message: '请输入商品代码',
+              }],
+              })(
+              <Input placeholder="请输入商品代码" />
+              )}
+          </FormItem>
+          <FormItem {...formItemLayout} label="输入码" >
+              { getFieldDecorator('input_code', {
+              rules: [{
+                  required: true, message: '请输入商品输入代码',
+              }],
+              })(
+              <Input placeholder="请输入商品输入代码" />
+              )}
+          </FormItem>
+          <FormItem {...formItemLayout} label="类别" >
+              { getFieldDecorator('SKU_type_code', {
+              rules: [{
+                  required: true, message: '请选择商品类别',
+              }],
+              })(
+                <TreeSelect
+                // style={{ width: 300 }}
+                // value={this.state.typeValue}
+                dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+               
+                // treeData={skutype}
+                placeholder="请选择商品类别"
+                treeDefaultExpandAll
+                onChange={this.onChange}
+              >
+                {loop(skutype)}
+              </TreeSelect>
+              )}
+          </FormItem>
+          <FormItem {...formItemLayout} label="类别代码" >
+            <Input placeholder="请选择商品类别" disabled value={this.state.typeCode}/>
+              { getFieldDecorator('SKU_type_name', {
+              rules: [{
+                  required: true, message: '请选择商品类别',
+              }],
+              })(
+              <Input placeholder="请选择商品类别" disabled style={{display:'none'}}/>
+              // <Input placeholder="请选择商品类别" disabled style={{display:'none'}}/>
+              )}
+          </FormItem>
+          <FormItem {...formItemLayout} label="商品价格" >
+            { getFieldDecorator('price', {
+            rules: [{
+                required: true, message: '请输入商品价格',
+            }],
+            })(
+              <InputNumber min={0} step={0.1} placeholder="商品价格" />
+            )}
+          </FormItem>
+          <FormItem {...formItemLayout} label="品牌" >
+              { getFieldDecorator('SKU_brand_code', {
+              rules: [{
+                  required: true, message: '请选择品牌',
+              }],
+              })(
+                <Select
+                  labelInValue 
+                  showSearch
+                  // style={{ width: 200 }}
+                  placeholder="请选择品牌"
+                  optionFilterProp="children"
+                  onChange={this.handleChangeBrand}
+                  // onFocus={handleFocus}
+                  // onBlur={handleBlur}
+                  filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                >
+                  {loop2(sblist)}
+                </Select>
+              )}
+          </FormItem>
+          <FormItem {...formItemLayout} label="品牌名称" style={{display:'none'}}>
+              { getFieldDecorator('SKU_brand_name', {
+              rules: [{
+                  required: true, message: '请选择品牌',
+              }],
+              })(
+              <Input placeholder="请选择品牌" disabled/>
+              )}
+          </FormItem>
+          <FormItem {...formItemLayout} label="内容描述" >
+              { getFieldDecorator('desc', {
+              rules: [{
+                  required: true, message: '请输入内容描述',
+              }],
+              })(
+              <TextArea style={{ minHeight: 32 }} placeholder="请输入内容描述" rows={3} />
+              )}
+          </FormItem>
+          <FormItem {...formItemLayout} label="上传图片">
+          { getFieldDecorator('pic', {
+              rules: [{
+                  required: false, message: '请上传商品图片',
+              }],
+              })(
+                  
+                <Upload {...initProps} fileList={this.state.fileList}>
+                  <Button>
+                    <Icon type="upload" /> 上传商品图片
+                  </Button>
+                  <Input type="hidden" />
+                </Upload>
 
-                )}
-            </FormItem>
-            </Form>
+              )}
+          </FormItem>
+        </Form>
+        </Modal>
+    );
+    const submitRuleForm = () => (
+      <Modal title="添加商品规则属性" visible={this.state.modalVisibleRule} onOk={this.handleOkRule} onCancel={this.handleCancelRule} 
+      confirmLoading={ruleSubmitting}>
+        <Form onSubmit={this.handleSubmit} hideRequiredMark style={{ marginTop: 8 }} >
+
+          <FormItem {...formItemLayout} label="商品id" style={{display:'none'}}>
+              { getFieldDecorator('id', {
+              rules: [{
+                  required: false, message: '请输入商品id',
+              }],
+              })(
+              <Input placeholder="请输入商品id" disabled />
+              )}
+          </FormItem>          
+          
+          <FormItem {...formItemLayout} label="规则id" style={{display:'none'}}>
+              { getFieldDecorator('rule_id', {
+              rules: [{
+                  required: false, message: '请输入规则id',
+              }],
+              })(
+              <Input placeholder="请输入规则id" disabled />
+              )}
+          </FormItem>          
+          <FormItem {...formItemLayout} label="性别" >
+              { getFieldDecorator('sex', {
+              rules: [{
+                  required: false, message: '请选择性别',
+              }],
+              })(
+                <Select
+                  // labelInValue 
+                  showSearch
+                  // style={{ width: 200 }}
+                  placeholder="请选择"
+                  optionFilterProp="children"
+                  onChange={this.handleChangeBrand}
+                  // defaultValue={'全部'}
+                  filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                >
+                  <Option value='全部'>全部</Option>
+                  <Option value='男'>男</Option>
+                  <Option value='女'>女</Option>
+                </Select>
+              )}
+          </FormItem>
+          <FormItem {...formItemLayout} label="年龄" >
+            { getFieldDecorator('age_start', {
+            rules: [{
+                required: false, message: '请输入年龄起始值',
+            }],
+            })(
+              <InputNumber min={0} step={1} placeholder="起始值" />
+            )}
+            &nbsp;—&nbsp;&nbsp;
+            { getFieldDecorator('age_end', {
+            rules: [{
+                required: false, message: '请输入年龄结束值',
+            }],
+            })(
+              <InputNumber min={0} step={1} placeholder="结束值" />
+            )}
+          </FormItem>
+          <FormItem {...formItemLayout} label="戴眼镜" >
+              { getFieldDecorator('eyeglasses', {
+              rules: [{
+                  required: false, message: '请选择是否戴眼镜',
+              }],
+              })(
+                <Select
+                  // labelInValue 
+                  showSearch
+                  // style={{ width: 200 }}
+                  placeholder="请选择"
+                  optionFilterProp="children"
+                  onChange={this.handleChangeBrand}
+                  // defaultValue={'否'}
+                  filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                >
+                  <Option value='是'>是</Option>
+                  <Option value='否'>否</Option>
+                </Select>
+              )}
+          </FormItem>
+        </Form>
         </Modal>
     );
 
     return (
       <PageHeaderLayout>
         <div className={styles.standardList}>
+          {/* <Card>
+            <h1>123</h1>
+          </Card> */}
           <Card
             className={styles.listCard}
             bordered={false}
             title="商品列表"
             style={{ marginTop: 24 }}
             bodyStyle={{ padding: '0 32px 40px 32px' }}>
-            <Button type="dashed" style={{ width: '100%', marginBottom: 8 }} icon="plus" onClick={this.showModal}>
-              添加
+            <Button type="dashed" style={{ width: '12%', marginBottom: 4 }} icon="upload" onClick={this.showSKUModal}>
+              导入SKU
+            </Button>
+            &nbsp;&nbsp;
+            <Button type="dashed" style={{ width: '12%', marginBottom: 4 }} icon="plus" onClick={this.showSKUModal}>
+              添加SKU
             </Button>
             {submitForm()}
-            <List
-              size="large"
-              rowKey="id"
-              loading={loading}
-              pagination={paginationProps}
-              dataSource={skulist}
-              renderItem={item => (
-                <List.Item
-                  actions={[<a>编辑</a>, <MoreBtn data={item.id}/>]}
-                >
-                  <List.Item.Meta
-                    avatar={<Avatar src={item.pic} shape="square" size="large" />}
-                    title={<a href={item.href}>{item.name}</a>}
-                    description={item.desc}
-                  />
-                  <ListContent data={item} />
-                </List.Item>
-              )}
-            />
+            {submitRuleForm()}
+            
+              <Table style={{padding: '8px 0px 0px' }}
+              // style={{border: '1px solid #d9d9d9'}}
+                // onRowClick={this.onRowClick}
+                loading={loading}
+                // size="middle"
+                bordered
+                rowKey={record => record.id}
+                // showHeader={false}
+                pagination={paginationProps}
+                scroll={{ x: 1300,}}
+                columns={columns} dataSource={skulist} />
+
           </Card>
         </div>
       </PageHeaderLayout>

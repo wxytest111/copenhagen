@@ -39,9 +39,9 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: ''
     },
     SKU_type_code: {
-      type: DataTypes.INTEGER(11),
+      type: DataTypes.STRING(100),
       allowNull: true,
-      defaultValue: '0'
+      defaultValue: ''
     },
     price: {
       type: DataTypes.DECIMAL,
@@ -49,9 +49,19 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: '0.00'
     },
     SKU_brand_code: {
-      type: DataTypes.INTEGER(11),
+      type: DataTypes.STRING(100),
       allowNull: true,
-      defaultValue: '0'
+      defaultValue: ''
+    },
+    SKU_type_name: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+      defaultValue: ''
+    },
+    SKU_brand_name: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+      defaultValue: ''
     },
     createAt: {
       type: DataTypes.DATE,
@@ -61,7 +71,11 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER(1),
       allowNull: true,
       defaultValue: '0'
-    }
+    },
+    rule_id: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false
+    },
   }, {
     tableName: 'SKU',    timestamps: false,  
   });

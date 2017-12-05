@@ -1,5 +1,5 @@
-import { queryRule, removeRule, addRule } from '../services/api';
-
+import { queryRule, removeRule, addRule, editRule } from '../services/api';
+import { message } from 'antd';
 export default {
   namespace: 'rule',
 
@@ -8,10 +8,23 @@ export default {
       list: [],
       pagination: {},
     },
+    ruleSubmitting:false,
     loading: true,
   },
 
   effects: {
+    *editRule({ payload }, { call, put }) {
+      yield put({
+        type: 'ruleSubmitting',
+        payload: true,
+      });
+      yield call(editRule, payload);
+      yield put({
+        type: 'ruleSubmitting',
+        payload: false,
+      });
+      message.success('编辑规则成功！');
+    },
     *fetch({ payload }, { call, put }) {
       yield put({
         type: 'changeLoading',
@@ -74,6 +87,12 @@ export default {
       return {
         ...state,
         loading: action.payload,
+      };
+    },
+    ruleSubmitting(state, { payload }) {
+      return {
+        ...state,
+        ruleSubmitting: payload,
       };
     },
   },

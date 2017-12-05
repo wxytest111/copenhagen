@@ -85,6 +85,13 @@ export async function addSKUBrand(params) {
   });
 }
 
+export async function editRule(params) {
+  return request('http://console.tman.ai/api/rule/add', {
+    method: 'POST',
+    body: params,
+  });
+}
+
 export async function removeSKU(params) {
   return request('http://console.tman.ai/api/sku/remove/'+params);
 }

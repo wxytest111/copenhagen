@@ -1,6 +1,8 @@
 const db = require('../models/db');
 const SKU = require('../models/SKU');
+const ruleDao = require('../models/rule');
 const compress = require('koa-compress');
+const SKUInfo =require('./SKUInfo');
 /**
  * @author Gary
  * @desc  
@@ -11,7 +13,20 @@ class SKURepo{
     }
     async getAll(){
         var v = SKU(db.sequelize,db.Sequelize.DataTypes);
-        return await v.findAll();
+        var r = ruleDao(db.sequelize,db.Sequelize.DataTypes);
+        var list = await v.findAll({
+            order: [ [ 'id', 'DESC' ]]
+        });
+        for (var i=0; i<list.length;i++){
+            if(list[i].rule_id){
+                var rule = await r.findById(list[i].rule_id);
+                // var rule = r.findById(1);
+                if(rule){
+                    list[i].rule_id=rule;
+                }
+            }
+        }
+        return list;
     }
     async getNew(){
         var v = SKU(db.sequelize,db.Sequelize.DataTypes);
@@ -33,8 +48,17 @@ class SKURepo{
         return result[0]
     }
     async add(model){
+        model.SKU_brand_code=model.SKU_brand_code.key;
         var sku = SKU(db.sequelize,db.Sequelize.DataTypes);
-        return await sku.create(model);
+
+        if(!model.id){
+            var t = await sku.create(model);
+        } else {
+            var t = await sku.update(model,{  
+                'where':{'id':model.id}
+            });
+        }
+        return t;
         
     }
     async remove(id){

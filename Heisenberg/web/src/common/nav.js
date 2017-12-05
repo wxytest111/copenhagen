@@ -82,23 +82,28 @@ const data = [{
       component: PromotionList,
     }],
   },{
+    name: '会员管理',
+    icon: 'team',
+    path: 'member',
+    // component: Member,
+    
+  },{
+    name: '统计分析',
+    icon: 'area-chart',
+    path: 'statistics',
+    
+  },{
     name: '区域管理',
+    icon: 'global',
     path: 'region',
-    icon: 'gift',
-    children: [{
-      name: '区域列表',
-      path: 'region-list',
-      component: Region,
-    }],
+    component: Region,
+   
   },{
     name: '门店管理',
+    icon: 'shop',
     path: 'shop',
-    icon: 'gift',
-    children: [{
-      name: '门店列表',
-      path: 'shop-list',
-      component: Shop,
-    }],
+    component: Shop,
+    
   }],
 }, {
   component: UserLayout,
