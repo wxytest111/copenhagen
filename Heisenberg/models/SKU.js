@@ -55,12 +55,12 @@ module.exports = function(sequelize, DataTypes) {
     },
     SKU_type_name: {
       type: DataTypes.STRING(100),
-      allowNull: false,
+      allowNull: true,
       defaultValue: ''
     },
     SKU_brand_name: {
       type: DataTypes.STRING(100),
-      allowNull: false,
+      allowNull: true,
       defaultValue: ''
     },
     createAt: {
@@ -74,7 +74,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     rule_id: {
       type: DataTypes.INTEGER(11),
-      allowNull: false
+      allowNull: true
     },
   }, {
     tableName: 'SKU',    timestamps: false,  
