@@ -75,6 +75,13 @@ export async function addShop(params) {
   });
 }
 
+export async function addEquipment(params) {
+  return request('http://console.tman.ai/api/equipment/add', {
+    method: 'POST',
+    body: params,
+  });
+}
+
 export async function addSKUBrand(params) {
   if(params.pic){
     params.pic=params.pic.file.response.url
@@ -104,6 +111,10 @@ export async function removeShop(params) {
   return request('http://console.tman.ai/api/shop/remove/'+params);
 }
 
+export async function removeEquipment(params) {
+  return request('http://console.tman.ai/api/equipment/remove/'+params);
+}
+
 export async function removeSKUBrand(params) {
   return request('http://console.tman.ai/api/skubrand/remove/'+params);
 }
@@ -124,8 +135,20 @@ export async function queryRegionList(params) {
   return request(`http://console.tman.ai/api/region/list?${stringify(params)}`);
 }
 
+export async function queryRSList(params) {
+  return request(`http://console.tman.ai/api/region/RSlist?${stringify(params)}`);
+}
+
 export async function queryShopList(params) {
   return request(`http://console.tman.ai/api/shop/list`,
+    {
+      method: 'POST',
+      body: params,
+  });
+}
+
+export async function queryEquipmentList(params) {
+  return request(`http://console.tman.ai/api/equipment/list`,
     {
       method: 'POST',
       body: params,

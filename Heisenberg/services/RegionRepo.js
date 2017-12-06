@@ -1,6 +1,7 @@
 const db = require('../models/db');
 const region = require('../models/region');
 const regiontree= require('../models/region_tree');
+const shop = require('../models/shop');
 const Sequelize = require('sequelize');
 var compress = require('koa-compress');
 const Op = Sequelize.Op;
@@ -84,6 +85,29 @@ class RegionRepo{
         return r;
     }
 
+    async getRSList(ancestor_key){
+        
+        var reg = region(db.sequelize,db.Sequelize.DataTypes);
+        var regt = regiontree(db.sequelize,db.Sequelize.DataTypes);
+        reg.belongsTo(regt,{foreignKey:'id',targetKey:'member_key',as:'tt'});
+ 
+        var regionlist=await reg.findAll({
+            where:'',      
+            include:{
+                where: {
+                    ancestor_key:6,
+                    distance:0
+                    },
+                    
+                    model:regt,
+                    as:'tt'
+                }
+        });
+        await this.getRSData(regionlist);
+        return regionlist;
+
+        };
+
     async getRegionList(ancestor_key){
         
         var reg = region(db.sequelize,db.Sequelize.DataTypes);
@@ -129,6 +153,41 @@ class RegionRepo{
             if(l.length > 0){
                 list[i].dataValues.children = l;
                 await this.getData(l);
+            }
+        }
+    };
+
+    async getRSData(list){
+        var shopDao = shop(db.sequelize,db.Sequelize.DataTypes);
+        var reg = region(db.sequelize,db.Sequelize.DataTypes);
+        var regt = regiontree(db.sequelize,db.Sequelize.DataTypes);
+        reg.belongsTo(regt,{foreignKey:'id',targetKey:'member_key',as:'tt'});
+
+        for (var i=0; i<list.length;i++){  
+            var l = await reg.findAll({
+                where:'',      
+                include:{
+                    where: {
+                        ancestor_key:list[i].id,
+                        distance:1
+                    },
+                    model:regt,
+                    as:'tt'
+                }
+            });
+            var sl = await shopDao.findAll({
+                where:{
+                    region_id:list[i].id,
+                },      
+            });
+            
+            if(sl.length > 0){
+                list[i].dataValues.shop = sl;
+                
+            }
+            if(l.length > 0){
+                list[i].dataValues.children = l;
+                await this.getRSData(l);
             }
         }
     };

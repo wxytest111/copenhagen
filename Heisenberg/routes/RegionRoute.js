@@ -41,6 +41,12 @@ router.get('/remove/:id', async function (ctx, next) {
   };;
 })
 
+router.get('/RSlist', async function (ctx, next) {
+  ctx.compress = true;
+  var vr = await new RegionRepo().getRSList(ctx.query.ancestor_key);
+  ctx.body = vr;
+});
+
 router.get('/list', async function (ctx, next) {
   ctx.compress = true;
   var vr = await new RegionRepo().getRegionList(ctx.query.ancestor_key);

@@ -13,6 +13,7 @@ const SKUTypeRoute = require('./routes/SKUTypeRoute')
 const SKUBrandRoute = require('./routes/SKUBrandRoute')
 const RegionRoute = require('./routes/RegionRoute')
 const ShopRoute = require('./routes/ShopRoute')
+const EquipmentRoute = require('./routes/EquipmentRoute')
 const RuleRoute = require('./routes/RuleRoute')
 const TestRoute = require('./routes/testRoute');
 const Index = require('./routes/indexRoute');
@@ -61,6 +62,7 @@ app.use(SKUTypeRoute.routes(), SKUTypeRoute.allowedMethods());
 app.use(SKUBrandRoute.routes(), SKUBrandRoute.allowedMethods());
 app.use(RegionRoute.routes(), RegionRoute.allowedMethods());
 app.use(ShopRoute.routes(), ShopRoute.allowedMethods());
+app.use(EquipmentRoute.routes(), EquipmentRoute.allowedMethods());
 app.use(RuleRoute.routes(), RuleRoute.allowedMethods());
 app.use(TestRoute.routes(), TestRoute.allowedMethods());
 app.use(Index.routes(), Index.allowedMethods());

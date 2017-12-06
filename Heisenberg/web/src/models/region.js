@@ -1,4 +1,4 @@
-import { queryRegionList, addRegion, removeRegion, getParent } from '../services/api';
+import { queryRegionList, addRegion, removeRegion, getParent, queryRSList } from '../services/api';
 import { message } from 'antd';
 export default {
   namespace: 'region',
@@ -18,6 +18,23 @@ export default {
       });
       
       const response = yield call(queryRegionList, payload);
+      yield put({
+        type: 'appendList',
+        payload: Array.isArray(response) ? response : [],
+      });
+      yield put({
+        type: 'changeLoading',
+        payload: false,
+      });
+      
+    },
+    *queryRSList({ payload }, { call, put }) {
+      yield put({
+        type: 'changeLoading',
+        payload: true,
+      });
+      
+      const response = yield call(queryRSList, payload);
       yield put({
         type: 'appendList',
         payload: Array.isArray(response) ? response : [],

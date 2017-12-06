@@ -3,10 +3,9 @@
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('shop', {
     id: {
-      type: DataTypes.INTEGER(11).UNSIGNED,
+      type: DataTypes.STRING(38),
       allowNull: false,
-      primaryKey: true,
-      autoIncrement: true
+      primaryKey: true
     },
     region_id: {
       type: DataTypes.INTEGER(11).UNSIGNED,

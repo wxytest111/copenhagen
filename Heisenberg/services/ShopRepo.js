@@ -2,6 +2,7 @@ const db = require('../models/db');
 const shop = require('../models/shop');
 const Sequelize = require('sequelize');
 var compress = require('koa-compress');
+var UUID = require('uuid');
 const Op = Sequelize.Op
 
 /**
@@ -17,6 +18,8 @@ class ShopRepo{
         var shopDao = shop(db.sequelize,db.Sequelize.DataTypes);
         
         if(!model.id){
+            var ID = UUID.v1();
+            model.id = ID;
             var t = await shopDao.create(model);
            
         } else {

@@ -40,6 +40,7 @@ import SKUType from '../routes/SKUType/SKUType';
 import SKUBrand from '../routes/SKUBrand/SKUBrand';
 import Region from '../routes/Region/Region';
 import Shop from '../routes/Shop/Shop';
+import Equipment from '../routes/Equipment/Equipment';
 
 const data = [{
   component: BasicLayout,
@@ -103,6 +104,12 @@ const data = [{
     icon: 'shop',
     path: 'shop',
     component: Shop,
+    
+  },{
+    name: '设备管理',
+    icon: 'hdd',
+    path: 'equipment',
+    component: Equipment,
     
   }],
 }, {

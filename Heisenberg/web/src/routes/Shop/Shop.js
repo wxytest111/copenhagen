@@ -279,7 +279,7 @@ export default class Shop extends PureComponent {
           <FormItem {...formItemLayout} label="门店名称" hasFeedback>
                 { getFieldDecorator('id', {
                     rules: [{
-                        required: true, message: '请输入门店名称',
+                        required: false, message: '请输入门店名称',
                     }],
                     })(
                     <Input placeholder="请输入门店名称"  disabled style={{display:'none'}}/>
