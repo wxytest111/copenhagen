@@ -16,6 +16,7 @@ const { Header, Content, Footer, Sider } = Layout;
 @connect(state => ({
   equipment: state.equipment,
   region: state.region,
+  shop: state.region,
   expandedKeys: [],
   autoExpandParent: true,
   selectedKeys: [],
@@ -29,11 +30,11 @@ export default class Equipment extends PureComponent {
       };
   
   componentDidMount() {
-    this.props.region.region = [];
+    this.props.region.shop = [];
     this.props.dispatch({
       type: 'region/queryRSList',
       payload: {
-        ancestor_key: 0,
+        // type: 0,
       },
     });
     this.props.equipment.equipment = [];
@@ -283,7 +284,7 @@ export default class Equipment extends PureComponent {
   render() {
         
     const { equipment: { equipment, equipmentloading, equipmentSubmitting } } = this.props;
-    const { region: { region, loading, skuSubmitting } } = this.props;
+    const { shop: { shop, loading, skuSubmitting } } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     
     const formItemLayout = {
@@ -345,9 +346,9 @@ export default class Equipment extends PureComponent {
                     })(
                       <Select placeholder="请选择设备类型"
                       >
-                      <Option value="1">抓拍机</Option>
-                      <Option value="2">PAD</Option>
-                      <Option value="3">双面POS机</Option>
+                      <Option value="1"><Icon type="camera" />抓拍机</Option>
+                      <Option value="2"><Icon type="tablet" />PAD</Option>
+                      <Option value="3"><Icon type="laptop" />双面POS机</Option>
                     </Select>
                 )}
             </FormItem>
@@ -443,7 +444,7 @@ export default class Equipment extends PureComponent {
                         onSelect={this.onSelect}
                         selectedKeys={this.state.selectedKeys}
                       >
-                        {this.renderTreeNodes(region)}
+                        {this.renderTreeNodes(shop)}
                       </Tree>
                     </Content>
                   </div>
@@ -457,9 +458,9 @@ export default class Equipment extends PureComponent {
                   onChange={this.handleNatureChange}>
                   
                   <Option value="0">查看所有设备</Option>
-                  <Option value="1">抓拍机</Option>
-                  <Option value="2">PAD</Option>
-                  <Option value="3">双面POS机</Option>
+                  <Option value="1"><Icon type="camera" />抓拍机</Option>
+                  <Option value="2"><Icon type="tablet" />PAD</Option>
+                  <Option value="3"><Icon type="laptop" />双面POS机</Option>
                 </Select>
                 &nbsp;&nbsp;
                 <Button type="dashed" style={{ marginBottom: 8 }} disabled={this.state.dis} icon="plus" onClick={this.showModal}>

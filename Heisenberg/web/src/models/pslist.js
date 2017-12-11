@@ -1,10 +1,11 @@
 
-import { querypsList, addps, removeps } from '../services/api';
+import { querypsList, addps, removeps, queryPskuList } from '../services/api';
 import { message } from 'antd';
 export default {
   namespace: 'pslist',
 
   state: {
+    pspage: {},
     pslist: [],
     loading: false,
     skuSubmitting: false,
@@ -26,6 +27,23 @@ export default {
         payload: false,
       });
     },
+
+    *queryPskuList({ payload }, { call, put }) {
+      yield put({
+        type: 'changeLoading',
+        payload: true,
+      });
+      const response = yield call(queryPskuList, payload);
+      yield put({
+        type: 'appendPage',
+        payload: response,
+      });
+      yield put({
+        type: 'changeLoading',
+        payload: false,
+      });
+    },
+
     *addps({ payload }, { call, put }) {
       yield put({
         type: 'changepsSubmitting',
@@ -45,6 +63,12 @@ export default {
   },
 
   reducers: {
+    appendPage(state, { payload }) {
+      return {
+        ...state,
+        pspage: payload,
+      };
+    },
     appendList(state, action) {
       return {
         ...state,

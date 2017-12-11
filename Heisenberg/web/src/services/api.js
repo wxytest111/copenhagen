@@ -54,6 +54,13 @@ export async function addSKU(params) {
   });
 }
 
+export async function editShop(params) {
+  return request('http://console.tman.ai/api/sku/addShop', {
+    method: 'POST',
+    body: params,
+  });
+}
+
 export async function addType(params) {
   return request('http://console.tman.ai/api/skutype/add', {
     method: 'POST',

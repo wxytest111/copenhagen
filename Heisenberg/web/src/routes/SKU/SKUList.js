@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Popconfirm, Modal, InputNumber, Form, List, Card, Row, Col, Input, Upload, Button, Icon, Table, Menu, Avatar, TreeSelect, Tree, Select } from 'antd';
+import { Popconfirm, Modal, InputNumber, Form, List, Card, Row, Col, Input, Upload, Button, Icon, Table, Menu, Avatar, TreeSelect, Tree, Select, Layout } from 'antd';
 const TreeNode = Tree.TreeNode;
 const Option = Select.Option;
 
@@ -9,10 +9,13 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './SKUList.less';
 const { TextArea } = Input;
 const FormItem = Form.Item;
+const { Header, Content, Footer, Sider } = Layout;
+
 @Form.create()
 @connect(state => ({
+  shop: state.skulist,
   skulist: state.skulist,
-  skutype: state.skutype,
+  skutype: state.skulist,
   sblist: state.sblist,
 }))
 export default class SKUList extends PureComponent {
@@ -20,29 +23,41 @@ export default class SKUList extends PureComponent {
         fileList: [],
         modalVisible: false,
         modalVisibleRule: false,
+        modalVisibleShop: false,
         typeCode: undefined,
+        expandedKeys: undefined,
+        autoExpandParent: true,
+        checkedKeys: [],
+        nature:'0',
       };
   
   componentDidMount() {
     this.props.skulist.skulist = [];
+    this.props.skulist.shop = [];
+    this.props.skulist.skutype = [];
+    this.props.sblist.sblist = [];
     this.props.dispatch({
       type: 'skulist/fetch',
       payload: {
         count: 5,
       },
     });
-    this.props.skutype.skutype = [];
     this.props.dispatch({
-      type: 'skutype/fetch',
+      type: 'skulist/querySTList',
       payload: {
         ancestor_key: 0,
       },
     });
-    this.props.sblist.sblist = [];
     this.props.dispatch({
       type: 'sblist/fetch',
       payload: {
         
+      },
+    });
+    this.props.dispatch({
+      type: 'skulist/queryRSList',
+      payload: {
+        ancestor_key: 0,
       },
     });
   }
@@ -112,7 +127,7 @@ export default class SKUList extends PureComponent {
  handleOkRule = (e) => {
   // e.preventDefault();
   this.props.form.validateFieldsAndScroll(async (err, values) => {
-      console.log('values',values)
+      // console.log('values',values)
       // if (!err) {
         await this.props.dispatch({
             type: 'rule/editRule',
@@ -129,6 +144,36 @@ export default class SKUList extends PureComponent {
         });
         this.setState({
           modalVisibleRule:false,
+        });
+        this.props.skulist.skulist = [];
+        this.props.dispatch({
+          type: 'skulist/fetch',
+          payload: {
+            count: 5,
+          },
+        });
+      // }
+  });
+}
+
+handleOkShop = (e) => {
+  // e.preventDefault();
+  this.props.form.validateFieldsAndScroll(async (err, values) => {
+      // console.log('values',values)
+      // if (!err) {
+        await this.props.dispatch({
+            type: 'skulist/editShop',
+            payload: values,
+        });
+
+        this.props.form.setFieldsValue({
+          params:undefined
+        });
+        this.setState({
+          nature:'0',
+          modalVisibleShop:false,
+          checkedKeys:[],
+          expandedKeys:undefined,
         });
         this.props.skulist.skulist = [];
         this.props.dispatch({
@@ -179,6 +224,20 @@ export default class SKUList extends PureComponent {
     })
     
   }
+  handleCancelShop = () => {
+
+    this.props.form.setFieldsValue({
+      params:undefined
+    })
+
+    this.setState({
+      modalVisibleShop:false,
+      checkedKeys:[],
+      expandedKeys:undefined,
+      nature:'0',
+    })
+    
+  }
   
   handleChangeBrand = (values) => {
     this.props.form.setFieldsValue({
@@ -213,6 +272,67 @@ export default class SKUList extends PureComponent {
     this.setState({ fileList });
   }
 
+  onCheck = (checkedKeys, info) => {
+    
+        // console.log('halfCheckedKeys',info.halfCheckedKeys)
+        // console.log('checkedKeys',checkedKeys)
+        // console.log('info',info)
+        var keys = checkedKeys.concat(info.halfCheckedKeys);
+        this.setState({ 
+          checkedKeys:checkedKeys,
+          expandedKeys:keys,
+        });
+        
+        this.props.form.setFieldsValue({
+          params:keys
+        })
+      }
+
+  renderTreeNodes = (data) => {
+    return data.map((item) => {
+      var shop = new Array();
+      if (item.shop) {
+        item.shop.map((s) => {(
+          shop.push(s)
+        );
+      });
+    }
+    if (item.children || shop.length>0) {
+      if(item.children){
+        item.children.map((s) => {(
+          shop.push(s)
+        );
+      });
+      }
+      // if(item.id.length>11){
+        var r = (
+          <TreeNode title={item.name} key={item.id} dataRef={item}>
+            {this.renderTreeNodes(shop)}
+          </TreeNode>
+            )
+      // } else {
+      //   var r = (
+      //     <TreeNode title={item.name} key={item.id} disabled dataRef={item}>
+      //       {this.renderTreeNodes(shop)}
+      //     </TreeNode>
+      //       )
+      // }
+      
+          return (
+            r
+          );
+          
+        }
+        // if(item.id.length>11){
+          var c = (<TreeNode title={item.name} key={item.id} dataRef={item}/>)
+        // } else {
+        //   var c = (<TreeNode title={item.name} key={item.id} disabled dataRef={item}/>)
+        // }
+    return (
+      c
+    );
+    });
+  }
 
   save(sku) {
     // console.log('sku',sku)
@@ -238,7 +358,7 @@ export default class SKUList extends PureComponent {
    }
 
   rule(sku) {
-    console.log('sku',sku)
+    // console.log('sku',sku)
     if(sku.rule_id){
       this.props.form.setFieldsValue({
       rule_id:sku.rule_id.id,
@@ -258,6 +378,37 @@ export default class SKUList extends PureComponent {
       modalVisibleRule:true,
      })
    }
+
+  shop(sku) {
+    // console.log('sku',sku)
+    if(sku.shop){
+      var keys = [];
+      for(var i=0; i<sku.shop.length; i++){
+        keys.push(sku.shop[i].id);
+      }
+      if(sku.region){
+        for(var j=0;j<sku.region.length;j++){
+          keys.push(sku.region[j].regionid+'')
+          // console.log(sku.region[j].regionid)
+        }
+      }
+      // console.log('keys',keys)
+      this.setState({
+        checkedKeys:keys,
+        expandedKeys:keys,
+      })
+      this.props.form.setFieldsValue({
+        id:sku.id,
+      })
+    } else {
+          this.props.form.setFieldsValue({
+            id:sku.id,
+          })
+    }
+     this.setState({
+      modalVisibleShop:true,
+     })
+   }
    
   
 
@@ -269,6 +420,29 @@ export default class SKUList extends PureComponent {
     this.setState({ typeCode: typeCode});
   }
 
+  handleNatureChange = (nature) => {
+    // console.log('nature',nature)
+    this.props.skulist.shop = [];
+    this.props.dispatch({
+      type: 'skulist/queryRSList',
+      payload: {
+        nature: nature,
+      },
+    });
+    this.setState({ nature });
+    
+  }
+
+  onExpand = (expandedKeys) => {
+    // console.log('onExpand', expandedKeys);
+    // console.log('onExpand', arguments);
+    // if not set autoExpandParent to false, if children expanded, parent can not collapse.
+    // or, you can remove all expanded children keys.
+    this.setState({
+      expandedKeys,
+      autoExpandParent: false,
+    });
+  }
 
   render() {
     const initProps = {
@@ -281,6 +455,7 @@ export default class SKUList extends PureComponent {
     const { skulist: { skulist, loading, skuSubmitting, ruleSubmitting } } = this.props;
     const { skutype: { skutype } } = this.props;
     const { sblist: { sblist } } = this.props;
+    const { shop: { shop } } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const Info = ({ title, value, bordered }) => (
       <div className={styles.headerInfo}>
@@ -315,7 +490,7 @@ export default class SKUList extends PureComponent {
         // this.setState({
         //   current:page,
         // });
-        console.log(page)
+        // console.log(page)
       }
     };
 
@@ -330,7 +505,22 @@ export default class SKUList extends PureComponent {
         },
       },
 
-      { title: '店铺', dataIndex: 'shop', key: 'shop',width:100, className:'column-operations',},
+      { title: '店铺', dataIndex: 'shop', key: 'shop',width:100, className:'column-operations',
+      render: (text, record) => {
+        // console.log("record.rule_id",record.rule_id)
+        // console.log('shop',record)
+        return (
+          record.shop?(record.shop.map((item) => {
+            //  console.log("item",item)
+            return ( 
+              <span>
+                {item.name}<br/>
+              </span>
+            )
+           })):null
+        );
+      },
+      },
       { title: '商品编码', dataIndex: 'identity', key: 'identity',width:100, className:'column-operations',},
       { title: '商品代码', dataIndex: 'code', key: 'code',width:100, className:'column-operations',},
       { title: '输入码', dataIndex: 'input_code', key: 'input_code',width:100, className:'column-operations',},
@@ -361,7 +551,7 @@ export default class SKUList extends PureComponent {
           <div className="editable-row-operations">
             {
               <span>
-                <a onClick={() => console.log(record)}>门店</a>
+                <a onClick={() => this.shop(record)}>门店</a>
                 <a onClick={() => this.rule(record)}>规则</a>
                 <div style={{ height: 8}}/>
                 <a onClick={() => this.save(record)}>编辑</a>
@@ -647,6 +837,63 @@ export default class SKUList extends PureComponent {
         </Form>
         </Modal>
     );
+    const submitShopForm = () => (
+      <Modal title="添加商品规则属性" visible={this.state.modalVisibleShop} onOk={this.handleOkShop} onCancel={this.handleCancelShop} 
+      confirmLoading={ruleSubmitting}>
+      <Row style={{padding: '10px 0px 0px' }}>
+        <Col>
+          门店类型：
+          <Select placeholder="请选择门店性质"
+            style={{width:'40%'}}
+            value={this.state.nature}
+            onChange={this.handleNatureChange}
+            >
+            <Option value="0">所有</Option>
+            <Option value="直营店">直营店</Option>
+            <Option value="加盟店">加盟店</Option>
+          </Select>
+        </Col>
+      </Row>
+      <Row style={{padding: '20px 0px 0px' }}>
+        <Col>
+          请选择门店：
+          <Content style={{ overflow:'auto', border:'1px solid #d9d9d9',width: '95%', height:300, maxHeight:300}}>
+            <Form onSubmit={this.handleSubmit} hideRequiredMark style={{ marginTop: 8 }} >
+              <FormItem {...formItemLayout} label="商品id" style={{display:'none'}}>
+                { getFieldDecorator('id', {
+                rules: [{
+                    required: false, message: '请输入商品id',
+                }],
+                })(
+                <Input placeholder="请输入商品id" disabled />
+                )}
+              </FormItem>
+              <FormItem {...formItemLayout} label="">
+                { getFieldDecorator('params', {
+                rules: [{
+                    required: false, message: '请选择是否戴眼镜',
+                }],
+                })(
+                  <Tree
+                      checkable
+                      onExpand={this.onExpand}
+                      expandedKeys={this.state.expandedKeys?this.state.expandedKeys.length>0?this.state.expandedKeys:['6']:['6']}
+                      autoExpandParent={this.state.autoExpandParent}
+                      checkedKeys={this.state.checkedKeys}
+                      onCheck={this.onCheck}
+                      // selectedKeys={this.state.selectedKeys}
+                    >
+                      {this.renderTreeNodes(shop)}
+                  </Tree>
+                )}
+              </FormItem>
+            </Form>
+          </Content>
+        </Col>
+      </Row>
+        
+    </Modal>
+    );
 
     return (
       <PageHeaderLayout>
@@ -669,6 +916,7 @@ export default class SKUList extends PureComponent {
             </Button>
             {submitForm()}
             {submitRuleForm()}
+            {submitShopForm()}
             
               <Table style={{padding: '8px 0px 0px' }}
               // style={{border: '1px solid #d9d9d9'}}

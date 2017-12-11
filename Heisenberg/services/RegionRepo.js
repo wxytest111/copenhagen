@@ -85,7 +85,7 @@ class RegionRepo{
         return r;
     }
 
-    async getRSList(ancestor_key){
+    async getRSList(nature){
         
         var reg = region(db.sequelize,db.Sequelize.DataTypes);
         var regt = regiontree(db.sequelize,db.Sequelize.DataTypes);
@@ -103,7 +103,7 @@ class RegionRepo{
                     as:'tt'
                 }
         });
-        await this.getRSData(regionlist);
+        await this.getRSData(regionlist, nature);
         return regionlist;
 
         };
@@ -157,7 +157,7 @@ class RegionRepo{
         }
     };
 
-    async getRSData(list){
+    async getRSData(list, nature){
         var shopDao = shop(db.sequelize,db.Sequelize.DataTypes);
         var reg = region(db.sequelize,db.Sequelize.DataTypes);
         var regt = regiontree(db.sequelize,db.Sequelize.DataTypes);
@@ -175,11 +175,21 @@ class RegionRepo{
                     as:'tt'
                 }
             });
-            var sl = await shopDao.findAll({
-                where:{
-                    region_id:list[i].id,
-                },      
-            });
+            if(nature && nature!='0'){
+                var sl = await shopDao.findAll({
+                    where:{
+                        nature:nature,
+                        region_id:list[i].id,
+                    },      
+                });
+            } else {
+                var sl = await shopDao.findAll({
+                    where:{
+                        region_id:list[i].id,
+                    },      
+                });
+                
+            }
             
             if(sl.length > 0){
                 list[i].dataValues.shop = sl;
@@ -187,7 +197,7 @@ class RegionRepo{
             }
             if(l.length > 0){
                 list[i].dataValues.children = l;
-                await this.getRSData(l);
+                await this.getRSData(l, nature);
             }
         }
     };

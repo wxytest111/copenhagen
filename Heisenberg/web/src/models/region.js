@@ -5,6 +5,7 @@ export default {
 
   state: {
     region: [],
+    shop: [],
     reg: {},
     loading: false,
     skuSubmitting: false,
@@ -36,7 +37,7 @@ export default {
       
       const response = yield call(queryRSList, payload);
       yield put({
-        type: 'appendList',
+        type: 'appendRSList',
         payload: Array.isArray(response) ? response : [],
       });
       yield put({
@@ -82,6 +83,12 @@ export default {
       return {
         ...state,
         reg: action.payload,
+      };
+    },
+    appendRSList(state, action) {
+      return {
+        ...state,
+        shop: state.shop.concat(action.payload),
       };
     },
     appendList(state, action) {

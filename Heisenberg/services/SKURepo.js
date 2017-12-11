@@ -1,6 +1,9 @@
 const db = require('../models/db');
 const SKU = require('../models/SKU');
 const ruleDao = require('../models/rule');
+const shopskuDao = require('../models/shopsku');
+const shopDao = require('../models/shop');
+const regionDao = require('../models/regionsku');
 const compress = require('koa-compress');
 const SKUInfo =require('./SKUInfo');
 /**
@@ -11,9 +14,48 @@ class SKURepo{
     constructor(props){
         
     }
+
+    async addShop(model){
+        var region = regionDao(db.sequelize,db.Sequelize.DataTypes);
+        var shopsku = shopskuDao(db.sequelize,db.Sequelize.DataTypes);
+        
+        await region.destroy({
+            where: {
+                SKUid:Number(model.id),
+            }
+        });
+
+        await shopsku.destroy({
+            where: {
+                SKUid:Number(model.id),
+            }
+        });
+
+
+        var t = 0;
+        for(var i=0; i<model.params.length; i++){
+            if(model.params[i].length>11){
+                await shopsku.create({shopid:model.params[i],SKUid:Number(model.id)});
+                t++;
+            } else {
+                t++;
+                await region.create({regionid:Number(model.params[i]),SKUid:Number(model.id)});
+                // var t = await sku.update(model,{  
+                //     'where':{'id':model.id}
+                // });
+            }
+        }
+        return t;
+        
+    }
+
     async getAll(){
         var v = SKU(db.sequelize,db.Sequelize.DataTypes);
         var r = ruleDao(db.sequelize,db.Sequelize.DataTypes);
+        var region = regionDao(db.sequelize,db.Sequelize.DataTypes);
+        var shopsku = shopskuDao(db.sequelize,db.Sequelize.DataTypes);
+        var shop = shopDao(db.sequelize,db.Sequelize.DataTypes);
+        shop.belongsTo(shopsku,{foreignKey:'id',targetKey:'shopid',as:'ss'});
         var list = await v.findAll({
             order: [ [ 'id', 'DESC' ]]
         });
@@ -24,6 +66,30 @@ class SKURepo{
                 if(rule){
                     list[i].rule_id=rule;
                 }
+            }
+            var shopInfo = await shop.findAll({
+                // where:{
+                //     SKUid:list[i].id,
+                // },
+                include:{
+                    where: {
+                        SKUid:list[i].id,
+                    },
+                    model:shopsku,
+                    as:'ss'
+                }
+            });
+            if(shopInfo.length>0){
+                list[i].dataValues.shop =shopInfo;
+            }
+
+            var regInfo = await region.findAll({
+                where:{
+                    SKUid:list[i].id,
+                },
+            });
+            if(regInfo.length>0){
+                list[i].dataValues.region =regInfo;
             }
         }
         return list;

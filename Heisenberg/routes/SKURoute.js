@@ -25,7 +25,6 @@ router.get('/all', async function (ctx, next) {
   ctx.compress = true;
   var vr = await new SKURepo().getAll();
   ctx.body = vr;
-  
 });
 
 
@@ -45,6 +44,17 @@ router.get('/remove/:id', async function (ctx, next) {
     result:vr
   };;
 })
+
+router.post('/addShop', async function (ctx, next) {
+  ctx.body = ctx.request.body;
+  var result = await new SKURepo().addShop(ctx.body);
+  ctx.body = {
+    status: '添加/编辑成功',
+    code:200,
+    result:result
+  };
+  
+});
 
 router.post('/add', async function (ctx, next) {
   ctx.body = ctx.request.body;

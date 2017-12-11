@@ -6,6 +6,7 @@ const PromotionInfo=require('./promoteinfo');
 const SKUDao = require('../models/SKU');
 const PersonInfo = require('./personInfo');
 const SKUInfo =require('./SKUInfo');
+
 /**
  * @author Gary
  * @desc promotion class, 
@@ -14,6 +15,26 @@ class PromotionRepo{
     constructor(props){
         
     }
+    
+    async gePromotionSku(promotionid, pageSize, pageNum){
+        var sku = SKUDao(db.sequelize,db.Sequelize.DataTypes);
+        var psku = promotionsku(db.sequelize,db.Sequelize.DataTypes);
+        sku.hasOne(psku,{foreignKey:'SKUid'});
+        psku.belongsTo(sku,{foreignKey:'SKUid'});
+        return await sku.findAndCountAll({
+            where:'',    
+            offset: (pageNum-1)*pageSize, 
+            limit: Number(pageSize),
+                 
+            include:{
+                where: {
+                    promotionid:promotionid
+                },
+               model:psku   
+            }
+        });
+    }
+
     async getAll(){
         var v = promotion(db.sequelize,db.Sequelize.DataTypes);
         return await v.findAll();
@@ -38,6 +59,11 @@ class PromotionRepo{
     async remove(id){
         var p = promotion(db.sequelize,db.Sequelize.DataTypes);
         var result = await p.findById(id);
+        return await result.destroy()
+    }
+    async removeps(id){
+        var ps = promotionsku(db.sequelize,db.Sequelize.DataTypes);
+        var result = await ps.findById(id);
         return await result.destroy()
     }
 

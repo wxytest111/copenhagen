@@ -1,10 +1,12 @@
-import { querySKUList, addSKU, removeSKU } from '../services/api';
+import { querySKUList, addSKU, removeSKU, queryRSList, querySKUTypeList, editShop } from '../services/api';
 import { message } from 'antd';
 export default {
   namespace: 'skulist',
 
   state: {
+    shop: [],
     skulist: [],
+    skutype: [],
     loading: false,
     skuSubmitting: false,
   },
@@ -25,6 +27,38 @@ export default {
         payload: false,
       });
     },
+    *querySTList({ payload }, { call, put }) {
+      yield put({
+        type: 'changeLoading',
+        payload: true,
+      });
+      const response = yield call(querySKUTypeList, payload);
+      yield put({
+        type: 'appendSKUTypeList',
+        payload: Array.isArray(response) ? response : [],
+      });
+      yield put({
+        type: 'changeLoading',
+        payload: false,
+      });
+    },
+    *queryRSList({ payload }, { call, put }) {
+      // yield put({
+      //   type: 'changeLoading',
+      //   payload: true,
+      // });
+      
+      const response = yield call(queryRSList, payload);
+      yield put({
+        type: 'appendRSList',
+        payload: Array.isArray(response) ? response : [],
+      });
+      // yield put({
+      //   type: 'changeLoading',
+      //   payload: false,
+      // });
+      
+    },
     *addSKU({ payload }, { call, put }) {
       yield put({
         type: 'changeSKUSubmitting',
@@ -37,6 +71,18 @@ export default {
       });
       message.success('添加商品成功！');
     },
+    *editShop({ payload }, { call, put }) {
+      yield put({
+        type: 'changeSKUSubmitting',
+        payload: true,
+      });
+      yield call(editShop, payload);
+      yield put({
+        type: 'changeSKUSubmitting',
+        payload: false,
+      });
+      message.success('添加/编辑门店成功！');
+    },
     *removeSKU({ payload }, { call, put }) {
       yield call(removeSKU, payload);
       message.success('删除商品成功！');
@@ -48,6 +94,18 @@ export default {
       return {
         ...state,
         skulist: state.skulist.concat(action.payload),
+      };
+    },
+    appendSKUTypeList(state, action) {
+      return {
+        ...state,
+        skutype: state.skutype.concat(action.payload),
+      };
+    },
+    appendRSList(state, action) {
+      return {
+        ...state,
+        shop: state.shop.concat(action.payload),
       };
     },
     changeLoading(state, action) {
