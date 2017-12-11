@@ -386,12 +386,12 @@ handleOkShop = (e) => {
       for(var i=0; i<sku.shop.length; i++){
         keys.push(sku.shop[i].id);
       }
-      if(sku.region){
-        for(var j=0;j<sku.region.length;j++){
-          keys.push(sku.region[j].regionid+'')
-          // console.log(sku.region[j].regionid)
-        }
-      }
+      // if(sku.region){
+      //   for(var j=0;j<sku.region.length;j++){
+      //     keys.push(sku.region[j].regionid+'')
+      //     // console.log(sku.region[j].regionid)
+      //   }
+      // }
       // console.log('keys',keys)
       this.setState({
         checkedKeys:keys,
@@ -859,7 +859,8 @@ handleOkShop = (e) => {
           请选择门店：
           <Content style={{ overflow:'auto', border:'1px solid #d9d9d9',width: '95%', height:300, maxHeight:300}}>
             <Form onSubmit={this.handleSubmit} hideRequiredMark style={{ marginTop: 8 }} >
-              <FormItem {...formItemLayout} label="商品id" style={{display:'none'}}>
+              <FormItem {...formItemLayout} label="商品id">
+              {/* <FormItem {...formItemLayout} label="商品id" style={{display:'none'}}> */}
                 { getFieldDecorator('id', {
                 rules: [{
                     required: false, message: '请输入商品id',
