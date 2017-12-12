@@ -198,8 +198,8 @@ export async function queryFakeList(params) {
   return request(`/api/fake_list?${stringify(params)}`);
 }
 
-export async function querySKUList() {
-  return request('http://console.tman.ai/api/sku/all');
+export async function querySKUList(params) {
+  return request(`http://console.tman.ai/api/sku/all?${stringify(params)}`);
 }
 
 export async function queryPskuList(params) {

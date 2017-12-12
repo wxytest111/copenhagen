@@ -17,15 +17,17 @@ const { Header, Content, Footer, Sider } = Layout;
   skulist: state.skulist,
   skutype: state.skulist,
   sblist: state.sblist,
+  rule:state.rule,
 }))
 export default class SKUList extends PureComponent {
   state = {
         fileList: [],
+        excel: [],
         modalVisible: false,
         modalVisibleRule: false,
         modalVisibleShop: false,
         typeCode: undefined,
-        expandedKeys: undefined,
+        expandedKeys: ['6'],
         autoExpandParent: true,
         checkedKeys: [],
         nature:'0',
@@ -173,7 +175,7 @@ handleOkShop = (e) => {
           nature:'0',
           modalVisibleShop:false,
           checkedKeys:[],
-          expandedKeys:undefined,
+          expandedKeys:['6'],
         });
         this.props.skulist.skulist = [];
         this.props.dispatch({
@@ -233,7 +235,7 @@ handleOkShop = (e) => {
     this.setState({
       modalVisibleShop:false,
       checkedKeys:[],
-      expandedKeys:undefined,
+      expandedKeys:['6'],
       nature:'0',
     })
     
@@ -270,6 +272,31 @@ handleOkShop = (e) => {
       return true;
     });
     this.setState({ fileList });
+  }
+
+  handleChange2 = (info) => {
+    let excel = info.excel;
+    // 1. Limit the number of uploaded files
+    //    Only to show two recent uploaded files, and old ones will be replaced by the new
+    excel = excel.slice(-2);
+
+    // 2. read from response and show file link
+    excel = excel.map((file) => {
+      if (file.response) {
+        // Component will show file.url as link
+        file.url = file.response.url;
+      }
+      return file;
+    });
+
+    // 3. filter successfully uploaded files according to response from server
+    excel = excel.filter((file) => {
+      if (file.response) {
+        return file.response.status === 'success';
+      }
+      return true;
+    });
+    this.setState({ excel });
   }
 
   onCheck = (checkedKeys, info) => {
@@ -451,11 +478,19 @@ handleOkShop = (e) => {
       onChange: this.handleChange,
       multiple: false,
     };
+
+    const importExcel = {
+      name: 'file',
+      action: 'http://console.tman.ai/api/sku/import',
+      onChange: this.handleChange2,
+      multiple: false,
+    };
     
-    const { skulist: { skulist, loading, skuSubmitting, ruleSubmitting } } = this.props;
+    const { skulist: { skulist, loading, skuSubmitting } } = this.props;
     const { skutype: { skutype } } = this.props;
     const { sblist: { sblist } } = this.props;
-    const { shop: { shop } } = this.props;
+    const { rule: { ruleSubmitting } } = this.props;
+    const { shop: { shop, shopSubmitting } } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const Info = ({ title, value, bordered }) => (
       <div className={styles.headerInfo}>
@@ -500,6 +535,7 @@ handleOkShop = (e) => {
       { title: '缩略图', dataIndex: 'pic', key: 'pic',width:20, className:'column-operations',fixed: 'left',
         render: (text, record) => {
           return (
+            
             <Avatar style={{ backgroundColor: 'rgba(255,255,255,0.2)' }} src={record.pic} shape="square" size="large" />
           );
         },
@@ -509,16 +545,14 @@ handleOkShop = (e) => {
       render: (text, record) => {
         // console.log("record.rule_id",record.rule_id)
         // console.log('shop',record)
-        return (
-          record.shop?(record.shop.map((item) => {
+        return record.shop?(record.shop.map((item) => {
             //  console.log("item",item)
             return ( 
-              <span>
+              <span key={item.id}>
                 {item.name}<br/>
               </span>
             )
            })):null
-        );
       },
       },
       { title: '商品编码', dataIndex: 'identity', key: 'identity',width:100, className:'column-operations',},
@@ -839,7 +873,7 @@ handleOkShop = (e) => {
     );
     const submitShopForm = () => (
       <Modal title="添加商品规则属性" visible={this.state.modalVisibleShop} onOk={this.handleOkShop} onCancel={this.handleCancelShop} 
-      confirmLoading={ruleSubmitting}>
+      confirmLoading={shopSubmitting}>
       <Row style={{padding: '10px 0px 0px' }}>
         <Col>
           门店类型：
@@ -875,9 +909,10 @@ handleOkShop = (e) => {
                 }],
                 })(
                   <Tree
+                      defaultExpandedKeys={['6']}
                       checkable
                       onExpand={this.onExpand}
-                      expandedKeys={this.state.expandedKeys?this.state.expandedKeys.length>0?this.state.expandedKeys:['6']:['6']}
+                      expandedKeys={this.state.expandedKeys?(this.state.expandedKeys.length>0?this.state.expandedKeys:['6']):['6']}
                       autoExpandParent={this.state.autoExpandParent}
                       checkedKeys={this.state.checkedKeys}
                       onCheck={this.onCheck}
@@ -907,13 +942,18 @@ handleOkShop = (e) => {
             title="商品列表"
             style={{ marginTop: 24 }}
             bodyStyle={{ padding: '0 32px 40px 32px' }}>
-            <Button type="dashed" style={{ width: '12%', marginBottom: 4 }} icon="upload" onClick={this.showSKUModal}>
-              导入SKU
-            </Button>
-            &nbsp;&nbsp;
-            <Button type="dashed" style={{ width: '12%', marginBottom: 4 }} icon="plus" onClick={this.showSKUModal}>
-              添加SKU
-            </Button>
+            <div style={{display:'flex'}}>
+              <Upload {...importExcel} style={{ width: '12%', marginBottom: 4 }}>
+              {/* <Upload {...importExcel} fileList={this.state.excel} style={{ width: '12%', marginBottom: 4 }}> */}
+                <Button type="dashed" icon="upload" style={{flex:1}}>
+                    导入SKU
+                </Button>
+              </Upload>
+              &nbsp;&nbsp;
+              <Button type="dashed" style={{ width: '12%', marginBottom: 4 }} icon="plus" onClick={this.showSKUModal}>
+                添加SKU
+              </Button>
+            </div>
             {submitForm()}
             {submitRuleForm()}
             {submitShopForm()}
@@ -929,7 +969,6 @@ handleOkShop = (e) => {
                 pagination={paginationProps}
                 scroll={{ x: 1300,}}
                 columns={columns} dataSource={skulist} />
-
           </Card>
         </div>
       </PageHeaderLayout>

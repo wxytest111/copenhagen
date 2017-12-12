@@ -2,6 +2,7 @@ const DB = require('../models/db');
 const SKURepo = require('../services/SKURepo');
 const router = require('koa-router')();
 const bodyParser = require('koa-bodyparser');
+const ejsExcel=require('ejsexcel');
 const fs = require('fs');
 const ucloud = require('../services/ufileUpload');
 const crypto = require('crypto');
@@ -23,7 +24,8 @@ router.prefix("/api/SKU");
 
 router.get('/all', async function (ctx, next) {
   ctx.compress = true;
-  var vr = await new SKURepo().getAll();
+  // ctx.body = ctx.request.body;
+  var vr = await new SKURepo().getAll(ctx.query.key);
   ctx.body = vr;
 });
 
@@ -67,6 +69,39 @@ router.post('/add', async function (ctx, next) {
   };
   
 })
+
+router.post('/import', upload.single('file'),async function (ctx, next) {
+  var file = ctx.req.file;
+  console.log(file)
+  var key = new Date().getTime();
+  var pathName = path.join(__dirname,'/../'+file.path);
+
+
+
+  
+  let exBuf=fs.readFileSync(pathName);
+  ejsExcel.getExcelArr(exBuf).then(exlJson=>{
+      console.log("************  read success:getExcelArr");
+      let workBook=exlJson;
+      let workSheets=workBook[0];
+      workSheets.forEach((item,index)=>{
+              console.log((index+1)+" row:"+item.join('    '));
+      })
+  }).catch(error=>{
+      console.log("************** had error!");
+      console.log(error);
+  });
+
+
+  // var result = await ucloud(pathName, key);
+  // console.log(result)
+  // fs.unlink(pathName)
+  ctx.body ={
+    url: "http://console.tman.ai/"+key,
+    status:"success"
+  };
+})
+
 router.post('/pic', upload.single('file'),async function (ctx, next) {
   var file = ctx.req.file;
   console.log(file)

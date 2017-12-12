@@ -41,6 +41,7 @@ import SKUBrand from '../routes/SKUBrand/SKUBrand';
 import Region from '../routes/Region/Region';
 import Shop from '../routes/Shop/Shop';
 import Equipment from '../routes/Equipment/Equipment';
+import ShopSKU from '../routes/ShopSKU/ShopSKU';
 
 const data = [{
   component: BasicLayout,
@@ -57,13 +58,17 @@ const data = [{
       component: VersionList,
     }],
   }, {
-    name: '商品管理',
+    name: '促销品管理',
     path: 'sku',
     icon: 'barcode',
     children: [{
-      name: '商品列表',
+      name: '促销品SKU列表',
       path: 'sku-list',
       component: SKUList,
+    },{
+      name: '门店SKU列表',
+      path: 'shop-sku',
+      component: ShopSKU,
     },{
       name: '促销品SKU类型管理',
       path: 'sku-type',

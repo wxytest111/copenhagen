@@ -35,9 +35,23 @@ class SKURepo{
         var t = 0;
         for(var i=0; i<model.params.length; i++){
             if(model.params[i].length>11){
+                // var ss = await shopsku.findAll({
+                //     where:{
+                //         shopid:model.params[i],
+                //         SKUid:Number(model.id),
+                //     }
+                // })
+                // if(ss && ss.length>0) break;
                 await shopsku.create({shopid:model.params[i],SKUid:Number(model.id)});
                 t++;
             } else {
+                var rs = await region.findAll({
+                    where:{
+                        regionid:model.params[i],
+                        SKUid:Number(model.id),
+                    }
+                })
+                if(rs && rs.length>0) break;
                 t++;
                 await region.create({regionid:Number(model.params[i]),SKUid:Number(model.id)});
                 // var t = await sku.update(model,{  
@@ -49,16 +63,45 @@ class SKURepo{
         
     }
 
-    async getAll(){
+    async getAll(key){
         var v = SKU(db.sequelize,db.Sequelize.DataTypes);
         var r = ruleDao(db.sequelize,db.Sequelize.DataTypes);
         var region = regionDao(db.sequelize,db.Sequelize.DataTypes);
         var shopsku = shopskuDao(db.sequelize,db.Sequelize.DataTypes);
         var shop = shopDao(db.sequelize,db.Sequelize.DataTypes);
         shop.belongsTo(shopsku,{foreignKey:'id',targetKey:'shopid',as:'ss'});
-        var list = await v.findAll({
-            order: [ [ 'id', 'DESC' ]]
-        });
+        v.belongsTo(shopsku,{foreignKey:'id',targetKey:'SKUid',as:'sv'});
+        v.belongsTo(region,{foreignKey:'id',targetKey:'SKUid',as:'rv'});
+        if(key && key.length>0){
+            if(key.length>11){
+                var list = await v.findAll({
+                    order: [ [ 'id', 'DESC' ]],
+                    include:{
+                        where: {
+                            shopid:key,
+                        },
+                        model:shopsku,
+                        as:'sv'
+                    }
+                });
+            } else {
+                var list = await v.findAll({
+                    order: [ [ 'id', 'DESC' ]],
+                    include:{
+                        where: {
+                            regionid:Number(key),
+                        },
+                        model:region,
+                        as:'rv'
+                    }
+                });
+            }
+
+        } else {
+            var list = await v.findAll({
+                order: [ [ 'id', 'DESC' ]]
+            });
+        }
         for (var i=0; i<list.length;i++){
             if(list[i].rule_id){
                 var rule = await r.findById(list[i].rule_id);

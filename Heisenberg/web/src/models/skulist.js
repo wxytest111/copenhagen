@@ -9,6 +9,8 @@ export default {
     skutype: [],
     loading: false,
     skuSubmitting: false,
+    shopSubmitting: false,
+    
   },
 
   effects: {
@@ -73,12 +75,12 @@ export default {
     },
     *editShop({ payload }, { call, put }) {
       yield put({
-        type: 'changeSKUSubmitting',
+        type: 'changeShopSubmitting',
         payload: true,
       });
       yield call(editShop, payload);
       yield put({
-        type: 'changeSKUSubmitting',
+        type: 'changeShopSubmitting',
         payload: false,
       });
       message.success('添加/编辑门店成功！');
@@ -118,6 +120,12 @@ export default {
       return {
         ...state,
         skuSubmitting: payload,
+      };
+    },
+    changeShopSubmitting(state, { payload }) {
+      return {
+        ...state,
+        shopSubmitting: payload,
       };
     },
   },
