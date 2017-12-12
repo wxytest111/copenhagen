@@ -943,13 +943,12 @@ handleOkShop = (e) => {
             style={{ marginTop: 24 }}
             bodyStyle={{ padding: '0 32px 40px 32px' }}>
             <div style={{display:'flex'}}>
-              <Upload {...importExcel} style={{ width: '12%', marginBottom: 4 }}>
-              {/* <Upload {...importExcel} fileList={this.state.excel} style={{ width: '12%', marginBottom: 4 }}> */}
-                <Button type="dashed" icon="upload" style={{flex:1}}>
-                    导入SKU
-                </Button>
-              </Upload>
-              &nbsp;&nbsp;
+              {/* <Upload {...importExcel} style={{ width: '12%', marginBottom: 4 }}> */}
+                {/* <Button type="dashed" icon="upload" style={{flex:1}}> */}
+                    {/* 导入SKU */}
+                {/* </Button> */}
+              {/* </Upload> */}
+              {/* &nbsp;&nbsp; */}
               <Button type="dashed" style={{ width: '12%', marginBottom: 4 }} icon="plus" onClick={this.showSKUModal}>
                 添加SKU
               </Button>
