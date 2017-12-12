@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Popconfirm, Modal, Tree, Form, Table, List, Card, Row, Col, Input, Upload, Button, Icon, Dropdown, Menu, Avatar, Select, Layout } from 'antd';
+import { Popconfirm, Modal, Tree, Form, Table, List, Card, Row, Col, Input, Upload, Button, Icon, Dropdown, Menu, Avatar, Select, Layout, message } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 import styles from './Equipment.less';
@@ -169,6 +169,9 @@ export default class Equipment extends PureComponent {
 
   onSelect = (selectedKeys, info) => {
 
+    if(selectedKeys.length>0 && selectedKeys[0].length<11){
+      message.info('请选择门店');
+    }
     // console.log('selectedKeys',selectedKeys)
     // console.log('info',info)
     if(selectedKeys.length>0 && selectedKeys[0].length>11){
@@ -254,11 +257,11 @@ export default class Equipment extends PureComponent {
           );
           
         }
-        // if(item.id.length>11){
+        if(item.id.length>11){
+          var c = (<TreeNode title={<span><Icon type='shop' style={{ fontSize: 16, color: '#08c'}} />&nbsp;{item.name}</span>} key={item.id} dataRef={item}/>)
+        } else {
           var c = (<TreeNode title={item.name} key={item.id} dataRef={item}/>)
-        // } else {
-        //   var c = (<TreeNode title={item.name} key={item.id} disabled dataRef={item}/>)
-        // }
+        }
     return (
       c
     );
@@ -327,15 +330,15 @@ export default class Equipment extends PureComponent {
       };
   
     const submitForm = () => (
-      <Modal title="添加/编辑门店"  style={{ top: 30}} visible={this.state.modalVisible} onOk={this.handleOk} onCancel={this.handleCancel} confirmLoading={equipmentSubmitting}>
+      <Modal title="添加/编辑设备"  style={{ top: 30}} visible={this.state.modalVisible} onOk={this.handleOk} onCancel={this.handleCancel} confirmLoading={equipmentSubmitting}>
         <Form onSubmit={this.handleSubmit} >
-          <FormItem {...formItemLayout} label="id" hasFeedback>
+          <FormItem {...formItemLayout} label="id" disabled style={{display:'none'}}>
                 { getFieldDecorator('id', {
                     rules: [{
                         required: false, message: '请输入id',
                     }],
                     })(
-                    <Input placeholder="请输入id"  disabled style={{display:'none'}}/>
+                    <Input placeholder="请输入id"/>
                 )}
             </FormItem>
             <FormItem {...formItemLayout} label="设备类型">

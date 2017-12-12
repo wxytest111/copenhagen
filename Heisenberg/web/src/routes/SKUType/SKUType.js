@@ -69,6 +69,7 @@ export default class SKUType extends PureComponent {
           this.props.form.setFieldsValue({
             parentid:null,
             name:null,
+            code:null,
             id:null
           })
           this.setState({
@@ -84,6 +85,7 @@ export default class SKUType extends PureComponent {
     this.props.form.setFieldsValue({
       parentid:null,
       name:null,
+      code:null,
       id:null
     })
     this.setState({
@@ -134,6 +136,7 @@ export default class SKUType extends PureComponent {
     this.props.form.setFieldsValue({
       parentid:type.stt.ancestor_key,
       name:type.name,
+      code:type.code,
       id:type.id
     })
     this.setState({
@@ -221,13 +224,25 @@ export default class SKUType extends PureComponent {
                     })(
                     <Input placeholder="请输入类型名称" />
                 )}
-                { getFieldDecorator('id', {
-                  rules: [{
-                      required: false, message: '请输入类型id',
-                  }],
-                  })(
-                  <Input placeholder="请输入类型id" style={{display:'none'}}/>
-                )}
+            </FormItem>
+            <FormItem {...formItemLayout} label="类型id" style={{display:'none'}}>
+              { getFieldDecorator('id', {
+                rules: [{
+                    required: false, message: '请输入类型id',
+                }],
+                })(
+                <Input placeholder="请输入类型id"/>
+              )}
+                
+            </FormItem>
+            <FormItem {...formItemLayout} label="类型代码">
+              { getFieldDecorator('code', {
+                rules: [{
+                    required: true, message: '请输入类型代码',
+                }],
+                })(
+                <Input placeholder="请输入类型代码"/>
+              )}
                 
             </FormItem>
             {/* <FormItem {...formItemLayout} label="添加位置"  style={{display:this.state.dis}}> */}
