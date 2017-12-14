@@ -113,60 +113,46 @@ class PromotionRepo{
                 }
             });
 
-
-
-            for(var i=0; i<model.keys.length; i++){
-                if(model.keys[i].length>11){
-                    await ps.create({shopid:model.keys[i],promotionid:Number(model.id)});
-                } else {
-                    var rs = await pr.findAll({
-                        where:{
-                            regionid:model.keys[i],
-                            promotionid:Number(model.id),
-                        }
-                    })
-                    if(rs && rs.length>0) break;
-                    await pr.create({regionid:Number(model.keys[i]),promotionid:Number(model.id)});
-                    
+            if(model.keys){
+                for(var i=0; i<model.keys.length; i++){
+                    if(model.keys[i] && model.keys[i].length>11){
+                        await ps.create({shopid:model.keys[i],promotionid:Number(model.id)});
+                    } else {
+                        var rs = await pr.findAll({
+                            where:{
+                                regionid:model.keys[i],
+                                promotionid:Number(model.id),
+                            }
+                        })
+                        if(rs && rs.length>0) break;
+                        await pr.create({regionid:Number(model.keys[i]),promotionid:Number(model.id)});
+                        
+                    }
                 }
             }
 
-
-
-
-            var promotion = await p.update(model,{  
+            var promotionInfo = await p.update(model,{  
                 'where':{'id':model.id}
             });
 
         } else {
 
-            var promotion = await p.create(model);
+            var promotionInfo = await p.create(model);
 
 
-
-
-            for(var i=0; i<model.keys.length; i++){
-                if(model.keys[i].length>11){
-                    await ps.create({shopid:model.keys[i],promotionid:Number(promotion.id)});
-                } else {
-                    var rs = await pr.findAll({
-                        where:{
-                            regionid:model.keys[i],
-                            promotionid:Number(model.id),
-                        }
-                    })
-                    if(rs && rs.length>0) break;
-                    await pr.create({regionid:Number(model.keys[i]),promotionid:Number(promotion.id)});
-                    
+            if(model.keys){
+                for(var i=0; i<model.keys.length; i++){
+                    if(model.keys[i] && model.keys[i].length>11){
+                        await ps.create({shopid:model.keys[i],promotionid:Number(promotionInfo.id)});
+                    } else {
+                        await pr.create({regionid:Number(model.keys[i]),promotionid:Number(promotionInfo.id)});
+                    }
                 }
             }
 
-
-
-
         }
 
-        return promotion;
+        return promotionInfo;
     }
 
 
