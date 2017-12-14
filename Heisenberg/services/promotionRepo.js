@@ -6,6 +6,8 @@ const PromotionInfo=require('./promoteinfo');
 const SKUDao = require('../models/SKU');
 const PersonInfo = require('./personInfo');
 const SKUInfo =require('./SKUInfo');
+const psDao = require('../models/promotion_shop');
+const prDao = require('../models/promotion_region');
 
 /**
  * @author Gary
@@ -68,11 +70,81 @@ class PromotionRepo{
     }
 
     async add(model){
-        console.log(model)
         var p = promotion(db.sequelize,db.Sequelize.DataTypes);
-        console.log(model)
-        return await p.create(model);
+        var ps = psDao(db.sequelize,db.Sequelize.DataTypes);
+        var pr = prDao(db.sequelize,db.Sequelize.DataTypes);
+
+        if(model.id){
+            
+            await ps.destroy({
+                where: {
+                    promotionid:Number(model.id),
+                }
+            });
+    
+            await pr.destroy({
+                where: {
+                    promotionid:Number(model.id),
+                }
+            });
+
+
+
+            for(var i=0; i<model.keys.length; i++){
+                if(model.keys[i].length>11){
+                    await ps.create({shopid:model.keys[i],promotionid:Number(model.id)});
+                } else {
+                    var rs = await pr.findAll({
+                        where:{
+                            regionid:model.keys[i],
+                            promotionid:Number(model.id),
+                        }
+                    })
+                    if(rs && rs.length>0) break;
+                    await pr.create({regionid:Number(model.keys[i]),promotionid:Number(model.id)});
+                    
+                }
+            }
+
+
+
+
+            var promotion = await p.update(model,{  
+                'where':{'id':model.id}
+            });
+
+        } else {
+
+            var promotion = await p.create(model);
+
+
+
+
+            for(var i=0; i<model.keys.length; i++){
+                if(model.keys[i].length>11){
+                    await ps.create({shopid:model.keys[i],promotionid:Number(promotion.id)});
+                } else {
+                    var rs = await pr.findAll({
+                        where:{
+                            regionid:model.keys[i],
+                            promotionid:Number(model.id),
+                        }
+                    })
+                    if(rs && rs.length>0) break;
+                    await pr.create({regionid:Number(model.keys[i]),promotionid:Number(promotion.id)});
+                    
+                }
+            }
+
+
+
+
+        }
+
+        return promotion;
     }
+
+
     async ps(model){
         console.log(model)
         var ps = promotionsku(db.sequelize,db.Sequelize.DataTypes);
