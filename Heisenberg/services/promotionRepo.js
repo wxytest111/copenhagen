@@ -39,8 +39,33 @@ class PromotionRepo{
 
     async getAll(){
         var v = promotion(db.sequelize,db.Sequelize.DataTypes);
-        return await v.findAll();
+        var ps = psDao(db.sequelize,db.Sequelize.DataTypes);
+        var pr = prDao(db.sequelize,db.Sequelize.DataTypes);
+
+        var list = await v.findAll();
+
+        for (var i=0; i<list.length;i++){
+            var shopInfo = await ps.findAll({
+                where:{
+                    promotionid:list[i].id,
+                }
+            });
+            if(shopInfo.length>0){
+                list[i].dataValues.shop =shopInfo;
+            }
+
+            // var regInfo = await pr.findAll({
+            //     where:{
+            //         promotionid:list[i].id,
+            //     },
+            // });
+            // if(regInfo.length>0){
+            //     list[i].dataValues.region =regInfo;
+            // }
+        }
+        return list;
     }
+
     async getNew(){
         var v = promotion(db.sequelize,db.Sequelize.DataTypes);
         var result = await v.findAll({

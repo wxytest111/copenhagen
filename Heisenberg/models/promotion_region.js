@@ -17,6 +17,6 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     }
   }, {
-    tableName: 'promotion_region'
+    tableName: 'promotion_region',    timestamps: false,
   });
 };

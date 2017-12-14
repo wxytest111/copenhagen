@@ -126,14 +126,14 @@ class SKURepo{
                 list[i].dataValues.shop =shopInfo;
             }
 
-            var regInfo = await region.findAll({
-                where:{
-                    SKUid:list[i].id,
-                },
-            });
-            if(regInfo.length>0){
-                list[i].dataValues.region =regInfo;
-            }
+            // var regInfo = await region.findAll({
+            //     where:{
+            //         SKUid:list[i].id,
+            //     },
+            // });
+            // if(regInfo.length>0){
+            //     list[i].dataValues.region =regInfo;
+            // }
         }
         return list;
     }
