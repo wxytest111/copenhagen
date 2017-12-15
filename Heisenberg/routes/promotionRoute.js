@@ -68,7 +68,7 @@ router.post('/ps', async function (ctx, next) {
 router.get('/removeps/:id', async function (ctx, next) {
   ctx.compress = true;
   var id = parseInt(ctx.params.id);
-  var vr = await new PromotionRepo().remove(id);
+  var vr = await new PromotionRepo().removeps(id);
   ctx.body = {
     status: '删除成功',
     code:200,
