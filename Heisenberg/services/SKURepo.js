@@ -156,6 +156,18 @@ class SKURepo{
         });
         return result[0]
     }
+
+
+    async getByIdentity(identity){
+        var sku = SKU(db.sequelize,db.Sequelize.DataTypes);
+        var result = await sku.findOne({
+            where: {
+                identity:identity
+              }
+        });
+        return result
+    }
+
     async add(model){
         model.SKU_brand_code=model.SKU_brand_code.key;
         var sku = SKU(db.sequelize,db.Sequelize.DataTypes);
