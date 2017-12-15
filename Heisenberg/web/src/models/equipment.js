@@ -37,7 +37,11 @@ export default {
         type: 'changeEquipmentSubmitting',
         payload: false,
       });
-      message.success('添加/编辑设备成功！');
+      if(payload.id){
+        message.success('编辑设备成功！');
+      } else {
+        message.success('添加设备成功！');
+      }
     },
     *removeEquipment({ payload }, { call, put }) {
       yield call(removeEquipment, payload);

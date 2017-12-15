@@ -71,7 +71,11 @@ export default {
         type: 'changeSKUSubmitting',
         payload: false,
       });
-      message.success('添加商品成功！');
+      if(payload.id){
+        message.success('编辑商品成功！');
+      } else {
+        message.success('添加商品成功！');
+      }
     },
     *editShop({ payload }, { call, put }) {
       yield put({

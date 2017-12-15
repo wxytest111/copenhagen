@@ -56,7 +56,11 @@ export default {
         type: 'changeSKUSubmitting',
         payload: false,
       });
-      message.success('添加区域成功！');
+      if(payload.id){
+        message.success('编辑区域成功！');
+      } else {
+        message.success('添加区域成功！');
+      }
     },
     *removeRegion({ payload }, { call, put }) {
       yield call(removeRegion, payload);

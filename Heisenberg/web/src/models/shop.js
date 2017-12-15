@@ -37,7 +37,11 @@ export default {
         type: 'changeSKUSubmitting',
         payload: false,
       });
-      message.success('添加/编辑门店成功！');
+      if(payload.id){
+        message.success('编辑门店成功！');
+      } else {
+        message.success('添加门店成功！');
+      }
     },
     *removeShop({ payload }, { call, put }) {
       yield call(removeShop, payload);

@@ -35,7 +35,11 @@ export default {
         type: 'changeSKUBrandSubmitting',
         payload: false,
       });
-      message.success('添加/编辑品牌成功！');
+      if(payload.id){
+        message.success('编辑品牌成功！');
+      } else {
+        message.success('添加品牌成功！');
+      }
     },
     *removeSKUBrand({ payload }, { call, put }) {
       yield call(removeSKUBrand, payload);

@@ -23,7 +23,11 @@ export default {
         type: 'ruleSubmitting',
         payload: false,
       });
-      message.success('编辑规则成功！');
+      if(payload.id){
+        message.success('编辑规则成功！');
+      } else {
+        message.success('添加规则成功！');
+      }
     },
     *fetch({ payload }, { call, put }) {
       yield put({
