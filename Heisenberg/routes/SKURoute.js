@@ -107,6 +107,7 @@ router.post('/pic', upload.single('file'),async function (ctx, next) {
   console.log(file)
   var key = new Date().getTime();
   var pathName = path.join(__dirname,'/../'+file.path);
+  //var pathName = path.join('E://job//copenhagen//git//',file.path);
   var result = await ucloud(pathName, key);
   console.log(result)
   fs.unlink(pathName)

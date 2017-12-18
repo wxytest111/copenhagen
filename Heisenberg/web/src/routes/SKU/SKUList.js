@@ -89,8 +89,11 @@ export default class SKUList extends PureComponent {
   handleOk = (e) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll(async (err, values) => {
-        console.log('values',values)
+        // console.log('values',values)
         if (!err) {
+          if(values.pic){
+            values.pic=values.pic.file.response.url
+          }
           // values.pic = values.pic.file.response.url;
           // values.pic = 'http://fujian.cn-bj.ufileos.com/OMO.jpg';
           await this.props.dispatch({
@@ -366,7 +369,7 @@ handleOkShop = (e) => {
   }
 
   save(sku) {
-    console.log('sku',sku)
+    // console.log('sku',sku)
      this.props.form.setFieldsValue({
        name:sku.name,
        id:sku.id,
