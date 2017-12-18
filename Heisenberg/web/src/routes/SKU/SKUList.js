@@ -21,7 +21,7 @@ const { Header, Content, Footer, Sider } = Layout;
 }))
 export default class SKUList extends PureComponent {
   state = {
-        fileList: [],
+        file: undefined,
         excel: [],
         modalVisible: false,
         modalVisibleRule: false,
@@ -89,9 +89,9 @@ export default class SKUList extends PureComponent {
   handleOk = (e) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll(async (err, values) => {
-        // console.log('values',values)
+        console.log('values',values)
         if (!err) {
-          values.pic = values.pic.file.response.url;
+          // values.pic = values.pic.file.response.url;
           // values.pic = 'http://fujian.cn-bj.ufileos.com/OMO.jpg';
           await this.props.dispatch({
               type: 'skulist/addSKU',
@@ -114,6 +114,7 @@ export default class SKUList extends PureComponent {
           this.setState({
             modalVisible:false,
             typeCode:undefined,
+            file: undefined,
           });
           this.props.skulist.skulist = [];
           this.props.dispatch({
@@ -206,6 +207,7 @@ handleOkShop = (e) => {
     this.setState({
       modalVisible:false,
       typeCode:undefined,
+      file: undefined,
     })
     
   }
@@ -250,28 +252,30 @@ handleOkShop = (e) => {
 
 
   handleChange = (info) => {
-    let fileList = info.fileList;
+    let file = info.fileList;
     // 1. Limit the number of uploaded files
     //    Only to show two recent uploaded files, and old ones will be replaced by the new
-    fileList = fileList.slice(-2);
+    file = file.slice(-2);
 
     // 2. read from response and show file link
-    fileList = fileList.map((file) => {
-      if (file.response) {
+    file = file.map((f) => {
+      if (f.response) {
         // Component will show file.url as link
-        file.url = file.response.url;
+        f.url = f.response.url;
       }
-      return file;
+      return f;
     });
 
     // 3. filter successfully uploaded files according to response from server
-    fileList = fileList.filter((file) => {
-      if (file.response) {
-        return file.response.status === 'success';
+    file = file.filter((f) => {
+      if (f.response) {
+        return f.response.status === 'success';
       }
       return true;
     });
-    this.setState({ fileList });
+    this.setState({ 
+      file:file.length>0?file:undefined
+     });
   }
 
   handleChange2 = (info) => {
@@ -362,7 +366,7 @@ handleOkShop = (e) => {
   }
 
   save(sku) {
-    // console.log('sku',sku)
+    console.log('sku',sku)
      this.props.form.setFieldsValue({
        name:sku.name,
        id:sku.id,
@@ -772,8 +776,8 @@ handleOkShop = (e) => {
               }],
               })(
                   
-                <Upload {...initProps} fileList={this.state.fileList}>
-                  <Button>
+                <Upload {...initProps} fileList={this.state.file}>
+                    <Button disabled={this.state.file}>
                     <Icon type="upload" /> 上传商品图片
                   </Button>
                   <Input type="hidden" />
