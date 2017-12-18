@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import request from '../../utils/request';
 import moment from 'moment';
 import { connect } from 'dva';
-import { DatePicker, Select, Tabs, Tooltip, Popconfirm, Modal, InputNumber, Form, List, Card, Row, Col, Input, Upload, Button, Icon, Dropdown, Menu, Avatar, Tree } from 'antd';
+import { DatePicker, Select, Tabs, Table, Divider, Tooltip, Popconfirm, Modal, InputNumber, Form, List, Card, Row, Col, Input, Upload, Button, Icon, Dropdown, Menu, Avatar, Tree } from 'antd';
 import StandardTable from '../../components/StandardTable';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 // import PromotionWrapper from '../../components/PromotionWrapper'; 
@@ -35,10 +35,11 @@ export default class PromotionList extends PureComponent {
         autoExpandParent: true,
         checkedKeys: [],
         nature: '0',
+        activeKey: '1',
         waresClass: '1',
+        disableTab2: true,
         checkCode: false,
         checkClass: false,
-
       };
   
   componentDidMount() {
@@ -59,7 +60,7 @@ export default class PromotionList extends PureComponent {
   }
 
   showModal = (promotion) => {
-    console.log(promotion)
+    // console.log(promotion)
     
     if (promotion){
       if (promotion.shop) {
@@ -98,15 +99,20 @@ export default class PromotionList extends PureComponent {
             promotionid: promotion.id,
           },
         });
-      this.setState({
-        promotionid: promotion.id,
-        // promotion:promotion,
-        modalVisible: true
-      });
-    }else{
-      this.setState({
-        modalVisible: true
-      });
+      if (promotion.id){
+        this.setState({
+          promotionid: promotion.id,
+          // promotion:promotion,
+          modalVisible: true,
+          disableTab2: false,
+        });
+      }else{
+        // console.log(111)
+        this.setState({
+          modalVisible: true,
+          disableTab2: true,
+        });
+      }
     }
   };
 
@@ -124,16 +130,19 @@ export default class PromotionList extends PureComponent {
       },
     });
   }
-  removepsku = async (id)=>{
+  removepsku = async (promotionSKU)=>{
+    
     await this.props.dispatch({
-      type: 'promotionlist/removePromotion',
-      payload: id,
+      type: 'pslist/removeps',
+      payload: promotionSKU.id,
     });
-    this.props.promotionlist.promotionlist = [];
+    this.props.pspage.pslist = {},
     this.props.dispatch({
-      type: 'promotionlist/fetch',
+      type: 'pslist/queryPskuList',
       payload: {
-        count: 5,
+        pageSize: 3,
+        pageNum: 1,
+        promotionid: promotionSKU.promotionid,
       },
     });
   }
@@ -141,7 +150,7 @@ export default class PromotionList extends PureComponent {
   handleOk = (e) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll(async (err, values) => {
-        console.log(values)
+        // console.log(values)
         if (!err) {
           
           await this.props.dispatch({
@@ -153,9 +162,11 @@ export default class PromotionList extends PureComponent {
           });
           this.setState({
             nature: '0',
-            modalVisible:false,
-            checkedKeys: [],
-            expandedKeys: ['6'],
+            modalVisible:true,
+            // checkedKeys: [],
+            // expandedKeys: ['6'],
+            disableTab2: false,
+            activeKey: '2',
           });
           this.props.promotionlist.promotionlist = [];
           this.props.dispatch({
@@ -166,13 +177,13 @@ export default class PromotionList extends PureComponent {
           });
         }
     });
-    this.props.form.setFieldsValue({
-      desc:null,
-      name:null,
-      end_time: null,
-      start_time: null,
-      id: null
-    })
+    // this.props.form.setFieldsValue({
+    //   desc:null,
+    //   name:null,
+    //   end_time: null,
+    //   start_time: null,
+    //   id: null
+    // })
  }
 
   handleCancel = () => {
@@ -181,7 +192,7 @@ export default class PromotionList extends PureComponent {
       name:null,
       end_time: null,
       start_time: null,
-      id: null
+      id: null,
     })
     this.setState({
       modalVisible: false,
@@ -189,6 +200,8 @@ export default class PromotionList extends PureComponent {
       checkedKeys: [],
       expandedKeys: ['6'],
       current: 1,
+      activeKey: '1',
+      disableTab2: true,
     });
     
   }
@@ -196,24 +209,31 @@ export default class PromotionList extends PureComponent {
 
 
   handlePSOk = (e) => {
+    // console.log(e)
     e.preventDefault();
     this.props.form.validateFieldsAndScroll(async (err, values) => {
+      // console.log(values)
         //if (!err) {
          values.promotionid = this.state.currentId;
-         console.log(values)
+        //  console.log(values)
           await this.props.dispatch({
               type: 'promotionlist/addPS',
               payload: values,
           });
+          this.props.pspage.pslist = {},
+          // console.log('pageSize'),
+          // console.log(promotion),
+          this.props.dispatch({
+            type: 'pslist/queryPskuList',
+            payload: {
+              pageSize: 3,
+              pageNum: 1,
+              promotionid: values.id,
+            },
+          });
         //}
     });
  }
-  handlePSCancel = () => {
-    this.setState({
-      psModalVisible: false,
-    });
-    
-  }
 
   shop(sku) {
     // console.log('sku',sku)
@@ -294,7 +314,7 @@ export default class PromotionList extends PureComponent {
     });
   }
   handleClassChange = (waresClass) => {
-    console.log(waresClass)
+    // console.log(waresClass)
     // this.setState({ waresClass });
   }
 
@@ -339,11 +359,19 @@ export default class PromotionList extends PureComponent {
   callback = (key) => {
     // console.log(key)
     if (key == 2) {
+      this.componentDidMount();
       this.setState({
         checkCode: true,
         checkClass: true
       })
+    }else{
+      this.setState({
+        checkCode: false,
+        checkClass: false
+      })
     }
+    this.setState({ activeKey: key });
+    
   }
 
   render() {
@@ -359,25 +387,40 @@ export default class PromotionList extends PureComponent {
         {bordered && <em />}
       </div>
     );
+
+    const columns = [{
+      title: '缩略图',
+      dataIndex: 'pic',
+      key: 'pic',
+      render: (text, record) => (<Avatar src={record.pic} shape="square" />),
+    }, {
+      title: '商品名称',
+      dataIndex: 'name',
+      key: 'name',
+    }, {
+      title: '商品编码',
+      dataIndex: 'code',
+      key: 'code',
+    }, {
+      title: '级别',
+      key: 'promotionSKU',
+      render: (text, record) => (
+        <span>{record.promotionSKU.priority}级</span>
+      ),
+    },{
+        title: '操作',
+        key: 'action',
+        render: (text, record) => (
+          <Popconfirm title="是否要将次商品从这个方案移除？" onConfirm={() => this.removepsku(record.promotionSKU)}>
+            <a>删除</a>
+          </Popconfirm>
+        ),
+    }];
     
-    const ListContent = ({ data: { price, createAt, code, status } }) => (
-      <div style={{width: '500px',display:'flex' }}>
-        <div style={{flex:1}}>
-          <span>价格</span>
-          <p>￥{price}</p>
-        </div>
-        <div style={{flex:1}}>
-          <span>更新时间</span>
-          <p>{createAt}</p>
-        </div>
-        <div style={{flex:1}}>
-          <span>编码</span>
-          <p>{code}</p>
-        </div>
-        <div style={{flex:1}}>
-          <span>商品状态</span>
-          <p>{status}</p>
-        </div>
+    const ListContent = ({ data: { code, promotionSKU} }) => (
+      <div style={{display:'flex',padding:'0 50px'}}>
+        <div style={{flex:1}}>{code}</div>
+        <div style={{flex:1}}>{promotionSKU.priority}级</div>
       </div>
     );
 
@@ -411,7 +454,7 @@ export default class PromotionList extends PureComponent {
         this.setState({
           current:page,
         });
-        console.log(page)
+        // console.log(page)
       }
     };
 
@@ -428,33 +471,26 @@ export default class PromotionList extends PureComponent {
         },
       };
 
-    function showDeleteConfirm() {
-        confirm({
-          title: 'Are you sure delete this SKU?',
-          content: '',
-          okText: 'Yes',
-          okType: 'danger',
-          cancelText: 'No',
-          onOk() {
-            console.log('OK');
-          },
-          onCancel() {
-            console.log('Cancel');
-          },
-        });
-    }
+    // function showDeleteConfirm() {
+    //     confirm({
+    //       title: '你想将此商品移除这个方案吗？',
+    //       content: '',
+    //       okText: '是',
+    //       okType: 'danger',
+    //       cancelText: '否',
+    //       onOk() {
+    //         console.log('OK');
+    //       },
+    //       onCancel() {
+    //         console.log('Cancel');
+    //       },
+    //     });
+    // }
 
-    const MoreBtn = ({data:id}) => (
-      <Popconfirm title="是否要删除此行？" onConfirm={() => this.removepsku(id)}>
-      <a>删除</a>
-    </Popconfirm>
-    );
-  
-    // console.log(pspage)
     const submitForm = () => (
       
       <Modal title="新建/编辑推荐方案" visible={this.state.modalVisible} width={650} onOk={this.handleOk} onCancel={this.handleCancel} confirmLoading={promotionSubmitting} style={{top: 30}}>
-        <Tabs onChange={this.callback} type="card">
+        <Tabs onChange={this.callback} activeKey={this.state.activeKey} type="card">
           <TabPane tab="基础配置" key="1">
             <Form onSubmit={this.handleSubmit} hideRequiredMark className={styles.tabForm} style={{ marginTop: 8 }}>
               <FormItem {...formItemLayout} label="方案id" style={{ display: 'none' }}>
@@ -525,10 +561,10 @@ export default class PromotionList extends PureComponent {
                   rules: [{
                     required: false, message: '请输入内容描述',
                   }],
+                  initialValue: this.state.nature
                 })(
                   <div>
                     <Select placeholder="请选择门店性质"
-                      value={this.state.nature}
                       onChange={this.handleNatureChange}>
                       <Option value="0">所有</Option>
                       <Option value="直营店">直营店</Option>
@@ -553,10 +589,10 @@ export default class PromotionList extends PureComponent {
               </FormItem>
             </Form>
           </TabPane>
-          <TabPane tab="商品配置" key="2">
-            <Form onSubmit={this.handleSubmit} visible={this.state.psModalVisible} hideRequiredMark className={styles.tabForm}>
+          <TabPane tab="商品配置" disabled={this.state.disableTab2} key="2">
+            <Form  visible={this.state.psModalVisible} hideRequiredMark className={styles.tabForm}>
               <FormItem {...formItemLayout} label="商品编码" >
-                {getFieldDecorator('code', {
+                {getFieldDecorator('identity', {
                   rules: [{
                     required: this.state.checkCode,
                      message: '请填写商品编码',
@@ -566,14 +602,14 @@ export default class PromotionList extends PureComponent {
                   )}
               </FormItem>
               <FormItem {...formItemLayout} label="商品级别" >
-                {getFieldDecorator('class', {
+                {getFieldDecorator('priority', {
                   rules: [{
                     required: this.state.checkClass,
                      message: '请选择商品级别',
                   }],
+                  initialValue: this.state.waresClass
                 })(
                   <Select placeholder="请选择商品级别"
-                    value={this.state.waresClass}
                     onChange={this.handleClassChange}>
                     <Option value="1">一级</Option>
                     <Option value="2">二级</Option>
@@ -598,6 +634,32 @@ export default class PromotionList extends PureComponent {
               </FormItem>
             </Form>
             <div style={{ borderTop: '1px solid #d9d9d9' }}>
+              <Table columns={columns} showHeader={false} dataSource={pspage.rows} />
+              {/* <List
+                //size="small"
+                rowKey="id"
+                loading={loading}
+                pagination={paginationProps2}
+                dataSource={pspage.rows}
+                renderItem={item => (
+
+                  console.log(item),
+                  <List.Item
+                    style={{ height: 60 }}
+                    actions={[
+                      <Button onClick={showDeleteConfirm} type="dashed">
+                        删除
+                      </Button>
+                    ]}
+                  >
+                    <List.Item.Meta
+                      avatar={<Avatar src={item.pic} shape="square" size="small" />}
+                      title={<a href={item.href}>{item.name}</a>}
+                    />
+                    <ListContent data={item} />
+                  </List.Item>
+                )}
+              /> */}
 
             </div>
           </TabPane>

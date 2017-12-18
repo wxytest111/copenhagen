@@ -36,7 +36,11 @@ export default {
         type: 'changePromotionSubmitting',
         payload: false,
       });
-      message.success('添加推荐成功！');
+      if(payload.id){
+        message.success('编辑推荐成功！');
+      } else {
+        message.success('添加推荐成功！');
+      }
     },
     *removePromotion({ payload }, { call, put }) {
       yield call(removePromotion, payload);

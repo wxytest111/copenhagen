@@ -238,7 +238,7 @@ export async function addps(params) {
 }
 
 export async function removeps(params) {
-  return request('http://console.tman.ai/api/promotion/remove/'+params);
+  return request('http://console.tman.ai/api/promotion/removeps/'+params);
 }
 
 export async function querypsList() {
