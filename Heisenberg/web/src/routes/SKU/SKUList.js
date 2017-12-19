@@ -31,6 +31,7 @@ export default class SKUList extends PureComponent {
         autoExpandParent: true,
         checkedKeys: [],
         nature:'0',
+        fixedvalue:true,
       };
   
   componentDidMount() {
@@ -61,6 +62,15 @@ export default class SKUList extends PureComponent {
       payload: {
         ancestor_key: 0,
       },
+    });
+    window.addEventListener('resize', this.fixedshow.bind(this))
+    let ofWidth = document.getElementById("mynewtable").offsetWidth;
+    let flag = false;
+    if (ofWidth >= 1280) {
+      flag = true;
+    }
+    this.setState({
+      fixedvalue: flag,
     });
   }
 
@@ -478,6 +488,22 @@ handleOkShop = (e) => {
     });
   }
 
+  fixedshow() {
+    let ofWidth = document.getElementById("mynewtable").offsetWidth;
+    console.log(ofWidth)
+    let flag = false;
+    if (ofWidth >= 1280) {
+      flag = true;
+    }
+    this.setState({
+      fixedvalue: flag,
+    });
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.fixedshow.bind(this))
+
+  }
+
   render() {
     const initProps = {
       name: 'file',
@@ -539,7 +565,8 @@ handleOkShop = (e) => {
 
 
     const columns = [
-      { title: '缩略图', dataIndex: 'pic', key: 'pic',width:20, className:'column-operations',fixed: 'left',
+      {
+        title: '缩略图', dataIndex: 'pic', key: 'pic', width: 20, className: 'column-operations', fixed: this.state.fixedvalue ? false : 'left',
         render: (text, record) => {
           return (
             
@@ -586,7 +613,8 @@ handleOkShop = (e) => {
         },
       },
 
-      { title: '操作',  key: 'x', width:120, className:'column-operations', fixed: 'right',
+      {
+        title: '操作', key: 'x', width: 120, className: 'column-operations', fixed: this.state.fixedvalue ? false : 'right',
       render: (text, record) => {
         return (
           <div className="editable-row-operations">
@@ -963,7 +991,7 @@ handleOkShop = (e) => {
             {submitForm()}
             {submitRuleForm()}
             {submitShopForm()}
-            
+            <div id="mynewtable">
               <Table style={{padding: '8px 0px 0px' }}
               // style={{border: '1px solid #d9d9d9'}}
                 // onRowClick={this.onRowClick}
@@ -975,6 +1003,7 @@ handleOkShop = (e) => {
                 pagination={paginationProps}
                 scroll={{ x: 1300,}}
                 columns={columns} dataSource={skulist} />
+            </div>
           </Card>
         </div>
       </PageHeaderLayout>

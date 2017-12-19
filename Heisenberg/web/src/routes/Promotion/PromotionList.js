@@ -40,6 +40,7 @@ export default class PromotionList extends PureComponent {
         disableTab2: true,
         checkCode: false,
         checkClass: false,
+        showMFbtn: true,
       };
   
   componentDidMount() {
@@ -202,6 +203,7 @@ export default class PromotionList extends PureComponent {
       current: 1,
       activeKey: '1',
       disableTab2: true,
+      showMFbtn: true,
     });
     
   }
@@ -362,12 +364,14 @@ export default class PromotionList extends PureComponent {
       this.componentDidMount();
       this.setState({
         checkCode: true,
-        checkClass: true
+        checkClass: true,
+        showMFbtn: false,
       })
     }else{
       this.setState({
         checkCode: false,
-        checkClass: false
+        checkClass: false,
+        showMFbtn: true,
       })
     }
     this.setState({ activeKey: key });
@@ -489,7 +493,14 @@ export default class PromotionList extends PureComponent {
 
     const submitForm = () => (
       
-      <Modal title="新建/编辑推荐方案" visible={this.state.modalVisible} width={650} onOk={this.handleOk} onCancel={this.handleCancel} confirmLoading={promotionSubmitting} style={{top: 30}}>
+      <Modal title="新建/编辑推荐方案" visible={this.state.modalVisible} width={650} className={this.state.showMFbtn ? styles.footerShow : styles.footerNone} onOk={this.handleOk} onCancel={this.handleCancel} confirmLoading={promotionSubmitting} style={{ top: 30 }} footer = {
+        [
+        <Button key="back" onClick={this.handleCancel}>取消</Button> ,
+        <Button key="submit" type="primary" onClick={this.handleOk}>
+          确定
+        </Button> ,
+          ]}>
+        
         <Tabs onChange={this.callback} activeKey={this.state.activeKey} type="card">
           <TabPane tab="基础配置" key="1">
             <Form onSubmit={this.handleSubmit} hideRequiredMark className={styles.tabForm} style={{ marginTop: 8 }}>

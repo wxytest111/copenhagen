@@ -208,3 +208,23 @@
 .blueColor{
   color:blue;
 }
+.footerNone{
+  & > div{
+    & > div:last-child {
+      padding: 0;
+      display: none;
+      border-top: 0;
+    }
+  }
+  
+}
+.footerShow{
+   & > div{
+    & > div:last-child {
+      border-top: 1px solid #e8e8e8;
+      padding: 10px 16px;
+      text-align: right;
+      border-radius: 0 0 4px 4px;
+    }
+  }
+}
