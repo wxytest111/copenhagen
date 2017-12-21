@@ -20,15 +20,13 @@ router.post('/add', async function (ctx, next) {
 router.post('/list', async function (ctx, next) {
   ctx.compress = true;
   ctx.body = ctx.request.body;
-  // console.log(ctx.query)
   var vr = await new ShopRepo().getShopList(ctx.body.region_id);
   ctx.body = vr;
 });
 
 router.get('/remove/:id', async function (ctx, next) {
   ctx.compress = true;
-  var id = parseInt(ctx.params.id);
-  var vr = await new ShopRepo().remove(id);
+  var vr = await new ShopRepo().remove(ctx.params.id);
   ctx.body = {
     status: '删除成功',
     code:200,

@@ -183,8 +183,28 @@ class SKURepo{
         
     }
     async remove(id){
+        var r = ruleDao(db.sequelize,db.Sequelize.DataTypes);
+        var region = regionDao(db.sequelize,db.Sequelize.DataTypes);
+        var shopsku = shopskuDao(db.sequelize,db.Sequelize.DataTypes);
         var sku = SKU(db.sequelize,db.Sequelize.DataTypes);
         var result = await sku.findById(id);
+        r.destroy({
+            where:{
+                id:result.rule_id
+            }
+        });
+        region.destroy({
+            where:{
+                SKUid:result.id
+            }
+        })
+        shopsku.destroy({
+            where:{
+                SKUid:result.id
+            }
+        })
+
+
         return await result.destroy()
     }
     async update(){
