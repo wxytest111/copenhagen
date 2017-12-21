@@ -42,6 +42,7 @@ import Region from '../routes/Region/Region';
 import Shop from '../routes/Shop/Shop';
 import Equipment from '../routes/Equipment/Equipment';
 import ShopSKU from '../routes/ShopSKU/ShopSKU';
+import StatistGenera from '../routes/statistics/StatistGenera';
 
 const data = [{
   component: BasicLayout,
@@ -97,6 +98,11 @@ const data = [{
     name: '统计分析',
     icon: 'area-chart',
     path: 'statistics',
+    children: [{
+      name: '统计概括',
+      path: 'statist-genera',
+      component: StatistGenera,
+    }],
     
   },{
     name: '区域管理',
