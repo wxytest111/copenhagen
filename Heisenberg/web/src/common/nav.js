@@ -42,7 +42,7 @@ import Region from '../routes/Region/Region';
 import Shop from '../routes/Shop/Shop';
 import Equipment from '../routes/Equipment/Equipment';
 import ShopSKU from '../routes/ShopSKU/ShopSKU';
-import StatistGenera from '../routes/statistics/StatistGenera';
+import StatistGenera from '../routes/Statistics/StatistGenera';
 
 const data = [{
   component: BasicLayout,

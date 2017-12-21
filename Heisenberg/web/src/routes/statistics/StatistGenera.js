@@ -12,9 +12,90 @@ import 'echarts/map/js/china.js';
 // import 'echarts/lib/component/tooltip';
 // import 'echarts/lib/component/title';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import { getTimeDistance } from '../../utils/utils';
 
 import styles from './StatistGenera.less';
+// import styles from './Analysis.less';
 
+const Scatterdata = [
+  [
+        [123.0, 3.04],
+        [23.0, 6.95],
+        [45.0, 17.58],
+        [31.0, 8.33],
+        [35.0, 19.96],
+        [78.0, 7.24],
+        [90.0, 4.26],
+        [13.0, 10.84],
+        [24.0, 4.82],
+        [50.0, 5.68]
+    ],
+    [
+        [37.0, 19.14],
+        [56.0, 8.14],
+        [89.0, 8.74],
+        [38.0, 18.77],
+        [45.0, 9.26],
+        [85.0, 3.10],
+        [49.0, 6.13],
+        [30.0, 2.10],
+        [38.0, 7.13],
+        [34.0, 7.26],
+        [50.0, 4.74]
+    ],
+    [
+        [19.0, 7.46],
+        [84.0, 6.77],
+        [54.0, 12.74],
+        [30.0, 7.11],
+        [110.0, 7.81],
+        [18.0, 10.84],
+        [94.0, 8.08],
+        [65.0, 5.39],
+        [30.0, 5.15],
+        [79.0, 6.42],
+        [54.0, 5.73]
+    ],
+    [
+        [23.0, 6.58],
+        [32.0, 5.76],
+        [34.0, 7.71],
+        [23.0, 8.84],
+        [123.0, 8.47],
+        [39.0, 7.04],
+        [33.0, 5.25],
+        [22.0, 12.50],
+        [53.0, 5.56],
+        [95.0, 9.91],
+        [66.0, 6.89]
+    ],
+    [
+        [55.0, 6.58],
+        [68.0, 5.76],
+        [34.0, 17.71],
+        [33.0, 8.84],
+        [82.0, 18.47],
+        [83.0, 7.04],
+        [35.0, 5.25],
+        [19.0, 12.50],
+        [47.0, 5.56],
+        [38.0, 7.91],
+        [39.0, 6.89]
+    ],
+    [
+        [82.0, 6.58],
+        [18.0, 15.76],
+        [37.0, 17.71],
+        [45.0, 8.84],
+        [44.0, 18.47],
+        [73.0, 7.04],
+        [35.0, 15.25],
+        [19.0, 12.50],
+        [84.0, 15.56],
+        [67.0, 17.91],
+        [29.0, 6.89]
+    ]
+];
 // const RadioButton = Radio.Button;
 // const RadioGroup = Radio.Group;
 // @Form.create()
@@ -23,7 +104,7 @@ import styles from './StatistGenera.less';
 }))
 export default class StatistGenera extends PureComponent {
   state = {
-    
+    rangePickerValue: 'age' ,
   }
   // onTabChange = (key, type) => {
   //   console.log(key, type);
@@ -259,6 +340,204 @@ export default class StatistGenera extends PureComponent {
       }]
     }
     return option;
+  };
+  getOtionRingPie () {
+    const option = {
+      color: ['#6ea5e2', '#91cb63', '#e9cb70', '#d99666', '#d36e5d', '#dea8fb', '#e9b6ae'],
+      tooltip: {
+        trigger: 'item',
+        formatter: "{a} <br/>{b}: {c} ({d}%)"
+      },
+      legend: {
+        orient: 'vertical',
+        x: 'right',
+        y: 'bottom',
+        itemWidth:15,
+        padding: [15, 10],
+        align:'right',
+        data: [
+          {
+            icon: 'circle',
+            name:'18岁以下'
+            
+          },
+          {
+            name: '18-24岁',
+            icon: 'circle'
+          },
+          {
+            name: '36-46岁',
+            icon: 'circle'
+          },
+          {
+            name: '47岁以上',
+            icon: 'circle'
+          }
+        ]
+      },
+      series: [
+        {
+          name: '访问来源',
+          type: 'pie',
+          radius: ['50%', '70%'],
+          avoidLabelOverlap: false,
+          label: {
+            normal: {
+              show: false,
+              position: 'center',
+              formatter: '{c}\n{b}'
+            },
+            emphasis: {
+              show: true,
+              textStyle: {
+                fontSize: '28',
+                fontWeight: 'bold',
+              }
+            }
+          },
+          labelLine: {
+            normal: {
+              show: false
+            }
+          },
+          data: [
+            { value: 335, name: '18岁以下' },
+            { value: 310, name: '18-24岁' },
+            { value: 124, name: '25-35岁' },
+            { value: 135, name: '36-46岁' },
+            { value: 12, name: '47岁以上' }
+          ]
+        }
+      ]
+
+    }
+    return option;
+  }
+  getOtionScatter () {
+    const option = {
+      color: ['#e9b6ae', '#f59992', '#bed6f2', '#ad35e5', '#f9ce9c', '#dda5fb'],
+      grid: {
+        left: '5%',
+        right: '22%',
+        bottom: '8%',
+        // top: '5%',
+        containLabel: true
+      },
+      legend: {
+        orient: 'vertical',
+        x: 'right',
+        y: 'bottom',
+        itemWidth:10,
+        padding: [10, 5, 20, 5],
+        align:'right',
+        data: [
+          {
+            icon: 'circle',
+            name:'18岁以下'
+            
+          },
+          {
+            name: '18-30',
+            icon: 'circle'
+          },
+          {
+            name: '31-41',
+            icon: 'circle'
+          },
+          {
+            name: '41-50',
+            icon: 'circle'
+          },
+          {
+            name: '51-60',
+            icon: 'circle'
+          },
+          {
+            name: '60岁以上',
+            icon: 'circle'
+          }
+        ]
+      },
+      xAxis: {
+        name : '                                                              X轴（分钟）',
+        nameLocation:'middle',
+        nameGap:'25',
+        axisLabel:{
+          formatter: '{value}'
+        },
+        splitLine: {
+          show:false,
+          lineStyle: {
+            type: 'dashed'
+          }
+        }
+      },
+      yAxis: {
+        name : '                                          Y轴（元）',
+        nameLocation:'middle',
+        nameGap:'25',
+        nameRotate:'90',
+        axisTick:{
+          show:false
+        },
+        splitLine: {
+          lineStyle: {
+            type: 'dashed'
+          }
+        },
+        scale: true
+      },
+      series: [{
+        name: '18岁以下',
+        data: Scatterdata[0],
+        type: 'scatter'
+      }, 
+      {
+        name: '18-30',
+          data: Scatterdata[1],
+        type: 'scatter'
+      },
+      {
+        name: '31-40',
+          data: Scatterdata[2],
+        type: 'scatter'
+      },
+      {
+        name: '41-50',
+          data: Scatterdata[3],
+        type: 'scatter'
+      },
+      {
+        name: '51-60',
+          data: Scatterdata[4],
+        type: 'scatter'
+      },
+      {
+        name: '60岁以上',
+          data: Scatterdata[5],
+        type: 'scatter'
+      },
+    ]
+    }
+    return option;
+  }
+
+  selectDate = (type) => {
+    console.log(type)
+    this.setState({
+      rangePickerValue: type,
+    });
+  }
+
+  isActive(type) {
+    // return styles.currentDate;
+    const { rangePickerValue } = this.state;
+    if (rangePickerValue == '' || rangePickerValue == undefined) {
+      return;
+    }
+    if (rangePickerValue == type ) {
+      return styles.currentDate;
+    }
   }
 
 
@@ -380,11 +659,27 @@ export default class StatistGenera extends PureComponent {
                   <Icon type="right-circle" style={{ fontSize: 16, color: '#d1d1d1' }} />
                 </Col>
               </Row>
+              <div style={{position: 'relative'}}>
+                <div className={styles.salesExtra}>
+                  <a className={this.isActive('age')} onClick={() => this.selectDate('age')}>
+                    年龄
+                  </a>
+                  <a className={this.isActive('sex')} onClick={() => this.selectDate('sex')}>
+                    性别
+                  </a>
+                  <a className={this.isActive('hat')} onClick={() => this.selectDate('hat')}>
+                    戴帽子
+                  </a>
+                  <a className={this.isActive('glasses')} onClick={() => this.selectDate('glasses')}>
+                    戴眼镜
+                  </a>
+                </div>
+              </div>
               <ReactEcharts
                 ref={(e) => {
                   this.echarts_react = e;
                 }}
-                option={this.getOtionMap()}
+                option={this.getOtionRingPie()}
                 style={{ height: '300px', width: '100%' }}
                 className='react_for_echarts' />
             </Card>
@@ -401,11 +696,22 @@ export default class StatistGenera extends PureComponent {
                   <Icon type="right-circle" style={{ fontSize: 16, color: '#d1d1d1' }} />
                 </Col>
               </Row>
+              <div style={{position: 'relative'}}>
+                <div className={styles.salesExtra}>
+                  <a className={this.isActive('age')} onClick={() => this.selectDate('age')}>
+                    年龄
+                  </a>
+                  <a className={this.isActive('sex')} onClick={() => this.selectDate('sex')}>
+                    性别
+                  </a>
+                </div>
+              </div>
+               
               <ReactEcharts
                 ref={(e) => {
                   this.echarts_react = e;
                 }}
-                option={this.getOtionMap()}
+                option={this.getOtionScatter()}
                 style={{ height: '300px', width: '100%' }}
                 className='react_for_echarts' />
             </Card>
