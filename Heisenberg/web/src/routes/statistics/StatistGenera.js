@@ -105,6 +105,8 @@ const Scatterdata = [
 export default class StatistGenera extends PureComponent {
   state = {
     rangePickerValue: 'age' ,
+    scatterPickerValue: 'age' ,
+    dataPickerValue: '7' ,
   }
   // onTabChange = (key, type) => {
   //   console.log(key, type);
@@ -342,6 +344,50 @@ export default class StatistGenera extends PureComponent {
     return option;
   };
   getOtionRingPie () {
+    const { rangePickerValue } = this.state;
+    const pieAllData = [
+      [
+        { value: 335, name: '18岁以下' },
+        { value: 310, name: '18-24岁' },
+        { value: 124, name: '25-35岁' },
+        { value: 135, name: '36-46岁' },
+        { value: 12, name: '47岁以上' }
+      ],
+      [
+        { value: 405, name: '男' },
+        { value: 460, name: '女' }
+      ],
+      [
+        { value: 135, name: '有帽子' },
+        { value: 710, name: '没帽子' },
+      ],
+      [
+        { value: 335, name: '有眼镜' },
+        { value: 510, name: '没眼镜' }
+      ]
+      
+
+    ];
+    let pieData = [], xValue = [], yValue = [] ;
+    if(rangePickerValue == 'age'){
+      pieData = pieAllData[0];
+    }else if(rangePickerValue == 'sex'){
+      pieData = pieAllData[1];
+    }else if(rangePickerValue == 'hat'){
+      pieData = pieAllData[2];
+    }else{
+      pieData = pieAllData[3];
+    };
+    if(pieData.length){
+      for(var i = 0; i < pieData.length; i++){ 
+        var abj = {};
+        abj.icon ='circle';
+        abj.name = pieData[i].name;
+        xValue.push(abj)  
+      }
+    };
+    yValue = pieData;
+
     const option = {
       color: ['#6ea5e2', '#91cb63', '#e9cb70', '#d99666', '#d36e5d', '#dea8fb', '#e9b6ae'],
       tooltip: {
@@ -355,25 +401,7 @@ export default class StatistGenera extends PureComponent {
         itemWidth:15,
         padding: [15, 10],
         align:'right',
-        data: [
-          {
-            icon: 'circle',
-            name:'18岁以下'
-            
-          },
-          {
-            name: '18-24岁',
-            icon: 'circle'
-          },
-          {
-            name: '36-46岁',
-            icon: 'circle'
-          },
-          {
-            name: '47岁以上',
-            icon: 'circle'
-          }
-        ]
+        data: xValue
       },
       series: [
         {
@@ -400,13 +428,7 @@ export default class StatistGenera extends PureComponent {
               show: false
             }
           },
-          data: [
-            { value: 335, name: '18岁以下' },
-            { value: 310, name: '18-24岁' },
-            { value: 124, name: '25-35岁' },
-            { value: 135, name: '36-46岁' },
-            { value: 12, name: '47岁以上' }
-          ]
+          data: yValue
         }
       ]
 
@@ -522,20 +544,32 @@ export default class StatistGenera extends PureComponent {
     return option;
   }
 
-  selectDate = (type) => {
-    console.log(type)
-    this.setState({
-      rangePickerValue: type,
-    });
+  selectDate = (type, value) => {
+    if(value == 'pie'){
+       this.setState({
+        rangePickerValue: type,
+      });
+    }else{
+      this.setState({
+        scatterPickerValue: type,
+      });
+    }
+   
   }
 
-  isActive(type) {
-    // return styles.currentDate;
-    const { rangePickerValue } = this.state;
-    if (rangePickerValue == '' || rangePickerValue == undefined) {
+  isActive(type, value) {
+    let realvalue ;
+    if(value == 'pie'){
+      const { rangePickerValue } = this.state;
+      realvalue = rangePickerValue;
+    }else{
+      const { scatterPickerValue } = this.state;
+      realvalue = scatterPickerValue;
+    }
+    if (realvalue == '' || realvalue == undefined) {
       return;
     }
-    if (rangePickerValue == type ) {
+    if (realvalue == type ) {
       return styles.currentDate;
     }
   }
@@ -661,16 +695,16 @@ export default class StatistGenera extends PureComponent {
               </Row>
               <div style={{position: 'relative'}}>
                 <div className={styles.salesExtra}>
-                  <a className={this.isActive('age')} onClick={() => this.selectDate('age')}>
+                  <a className={this.isActive('age', 'pie')} onClick={() => this.selectDate('age', 'pie')}>
                     年龄
                   </a>
-                  <a className={this.isActive('sex')} onClick={() => this.selectDate('sex')}>
+                  <a className={this.isActive('sex', 'pie')} onClick={() => this.selectDate('sex', 'pie')}>
                     性别
                   </a>
-                  <a className={this.isActive('hat')} onClick={() => this.selectDate('hat')}>
+                  <a className={this.isActive('hat', 'pie')} onClick={() => this.selectDate( 'hat', 'pie')}>
                     戴帽子
                   </a>
-                  <a className={this.isActive('glasses')} onClick={() => this.selectDate('glasses')}>
+                  <a className={this.isActive('glasses', 'pie')} onClick={() => this.selectDate('glasses', 'pie')}>
                     戴眼镜
                   </a>
                 </div>
