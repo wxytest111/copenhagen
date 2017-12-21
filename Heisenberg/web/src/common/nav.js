@@ -43,6 +43,7 @@ import Shop from '../routes/Shop/Shop';
 import Equipment from '../routes/Equipment/Equipment';
 import ShopSKU from '../routes/ShopSKU/ShopSKU';
 import StatistGenera from '../routes/Statistics/StatistGenera';
+import StatistPromotion from '../routes/Statistics/StatistPromotion';
 
 const data = [{
   component: BasicLayout,
@@ -99,9 +100,13 @@ const data = [{
     icon: 'area-chart',
     path: 'statistics',
     children: [{
-      name: '统计概括',
+      name: '统计概况',
       path: 'statist-genera',
       component: StatistGenera,
+    },{
+      name: '推荐转化分析',
+      path: 'statist-promotion',
+      component: StatistPromotion,
     }],
     
   },{

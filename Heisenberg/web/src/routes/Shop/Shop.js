@@ -149,7 +149,12 @@ export default class Shop extends PureComponent {
       type: 'shop/removeShop',
       payload: id,
     });
-    
+
+    this.setState({
+      selectedKeys:[],
+      expandedKeys:undefined,
+    });
+
     this.props.shop.shop = [];
     await this.props.dispatch({
       type: 'shop/fetch',
@@ -361,6 +366,7 @@ export default class Shop extends PureComponent {
                     onChange={this.handleNatureChange}>
                     <Option value="直营店">直营店</Option>
                     <Option value="加盟店">加盟店</Option>
+                    <Option value="托管店">托管店</Option>
                   </Select>
                 </InputGroup>
                 {/* )} */}

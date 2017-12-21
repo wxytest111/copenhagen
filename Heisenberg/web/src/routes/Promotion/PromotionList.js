@@ -580,6 +580,7 @@ export default class PromotionList extends PureComponent {
                       <Option value="0">所有</Option>
                       <Option value="直营店">直营店</Option>
                       <Option value="加盟店">加盟店</Option>
+                      <Option value="托管店">托管店</Option>
                     </Select>
                     <div style={{ borderRadius: '4px', border: '1px solid #d9d9d9' }}>
                       <Tree
