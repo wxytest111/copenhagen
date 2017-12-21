@@ -25,7 +25,7 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: ''
     },
     tel: {
-      type: DataTypes.INTEGER(11),
+      type: DataTypes.STRING(11),
       allowNull: true
     },
     nature: {

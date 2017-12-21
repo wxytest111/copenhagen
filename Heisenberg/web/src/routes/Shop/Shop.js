@@ -60,25 +60,29 @@ export default class Shop extends PureComponent {
   handleOk = (e) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll(async (err, values) => {
-      // console.log(values)
-      if(values.tel){
-        values.tel=Number(values.tel)
-      }
-      if(this.state.nature){
-        values.nature=this.state.nature
-      }
+      // console.log('values',values)
       if (!err) {
+        var list = new Array();
+        this.getRegionIdList(list, values.region_id)
+        values.region_id= values.region_id.id?values.region_id.id:values.region_id,
         await this.props.dispatch({
           type: 'shop/addShop',
           payload: values,
         });
+        if(this.state.nature){
+          values.nature=this.state.nature
+        }
        
-
+        this.setState({ 
+          selectedKeys:[values.region_id+''],
+          expandedKeys:[values.region_id+''],
+          autoExpandParent: true,
+         });
         this.props.shop.shop = [];
         this.props.dispatch({
           type: 'shop/fetch',
           payload: {
-            
+            region_id:list
           },
         });
         // this.props.reg.reg = {};
@@ -120,7 +124,7 @@ export default class Shop extends PureComponent {
 
 
   save(shop) {
-    console.log(shop)
+    // console.log(shop)
     this.props.form.setFieldsValue({
       id:shop.id,
       name:shop.name,
@@ -140,7 +144,7 @@ export default class Shop extends PureComponent {
   }
   
   remove = async (id)=>{
-    console.log(id)
+    // console.log(id)
     await this.props.dispatch({
       type: 'shop/removeShop',
       payload: id,
@@ -209,8 +213,9 @@ export default class Shop extends PureComponent {
 
 
   onRowClick = (record, index, event) => {
+    console.log(record)
     this.props.form.setFieldsValue({
-      region_id:record.id,
+      region_id:record,
       region_name:record.name
     })
     // this.setState({
@@ -384,7 +389,7 @@ export default class Shop extends PureComponent {
     }];
     
     const columns3 = [
-      { title: '姓名', dataIndex: 'name', key: 'name',width:'20%', },
+      { title: '店名', dataIndex: 'name', key: 'name',width:'20%', },
       { title: '代码', dataIndex: 'code', key: 'code',width:'20%', },
       { title: '性质', dataIndex: 'nature', key: 'nature',width:'20%', },
       { title: '备注', dataIndex: 'desc', key: 'desc',width:'20%', },
