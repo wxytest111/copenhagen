@@ -107,10 +107,10 @@ const data = [{
       name: '统计概况',
       path: 'statist-genera',
       component: StatistGenera,
-    // },{
-    //   name: '推荐转化分析',
-    //   path: 'statist-promotion',
-    //   component: StatistPromotion,
+    },{
+      name: '推荐转化分析',
+      path: 'statist-promotion',
+      component: StatistPromotion,
     }],
     
   },{
