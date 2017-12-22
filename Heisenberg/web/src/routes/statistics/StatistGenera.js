@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
+import moment from 'moment';
 import { Tabs, Card, Row, Col, Button, Icon, Radio, Menu} from 'antd';
 import ReactEcharts from 'echarts-for-react';
 //引入地图文件
@@ -19,81 +20,129 @@ import styles from './StatistGenera.less';
 
 const Scatterdata = [
   [
-        [123.0, 3.04],
-        [23.0, 6.95],
-        [45.0, 17.58],
-        [31.0, 8.33],
-        [35.0, 19.96],
-        [78.0, 7.24],
-        [90.0, 4.26],
-        [13.0, 10.84],
-        [24.0, 4.82],
-        [50.0, 5.68]
+        [4.0, 123.0],
+        [6.95, 23.0],
+        [17.5, 45.0],
+        [8.33, 31.0],
+        [19.9, 35.0],
+        [7.24, 78.0],
+        [4.26, 90.0],
+        [10.8, 13.0],
+        [4.82, 24.0],
+        [5.68, 50.0]
     ],
     [
-        [37.0, 19.14],
-        [56.0, 8.14],
-        [89.0, 8.74],
-        [38.0, 18.77],
-        [45.0, 9.26],
-        [85.0, 3.10],
-        [49.0, 6.13],
-        [30.0, 2.10],
-        [38.0, 7.13],
-        [34.0, 7.26],
-        [50.0, 4.74]
+        [19.1, 37.04],
+        [8.14, 56.0],
+        [8.74, 89.0],
+        [18.7, 38.07],
+        [9.26, 45.0],
+        [3.10, 85.0],
+        [6.13, 49.0],
+        [2.10, 30.0],
+        [7.13, 38.0],
+        [7.26, 34.0],
+        [4.74, 50.0]
     ],
     [
-        [19.0, 7.46],
-        [84.0, 6.77],
-        [54.0, 12.74],
-        [30.0, 7.11],
-        [110.0, 7.81],
-        [18.0, 10.84],
-        [94.0, 8.08],
-        [65.0, 5.39],
-        [30.0, 5.15],
-        [79.0, 6.42],
-        [54.0, 5.73]
+        [7.46, 19.0],
+        [6.77, 84.0],
+        [12.7, 54.04],
+        [7.11, 30.0],
+        [ 7.8, 110.1],
+        [10.8, 18.04],
+        [8.08, 94.0],
+        [5.39, 65.0],
+        [5.15, 30.0],
+        [6.42, 79.0],
+        [5.73, 54.0]
     ],
     [
-        [23.0, 6.58],
-        [32.0, 5.76],
-        [34.0, 7.71],
-        [23.0, 8.84],
-        [123.0, 8.47],
-        [39.0, 7.04],
-        [33.0, 5.25],
-        [22.0, 12.50],
-        [53.0, 5.56],
-        [95.0, 9.91],
-        [66.0, 6.89]
+        [6.58, 23.0],
+        [5.76, 32.0],
+        [7.71, 34.0],
+        [8.84, 23.0],
+        [ 8.4, 123.7],
+        [7.04, 39.0],
+        [5.25, 33.0],
+        [12.5, 22.00],
+        [5.56, 53.0],
+        [9.91, 95.0],
+        [6.89, 66.0]
     ],
     [
-        [55.0, 6.58],
-        [68.0, 5.76],
-        [34.0, 17.71],
-        [33.0, 8.84],
-        [82.0, 18.47],
-        [83.0, 7.04],
-        [35.0, 5.25],
-        [19.0, 12.50],
-        [47.0, 5.56],
-        [38.0, 7.91],
-        [39.0, 6.89]
+        [6.58, 55.0],
+        [5.76, 68.0],
+        [17.7, 34.01],
+        [8.84, 33.0],
+        [18.4, 82.07],
+        [7.04, 83.0],
+        [5.25, 35.0],
+        [12.5, 19.00],
+        [5.56, 47.0],
+        [7.91, 38.0],
+        [6.89, 39.0]
     ],
     [
-        [82.0, 6.58],
-        [18.0, 15.76],
-        [37.0, 17.71],
-        [45.0, 8.84],
-        [44.0, 18.47],
-        [73.0, 7.04],
-        [35.0, 15.25],
-        [19.0, 12.50],
-        [84.0, 15.56],
-        [67.0, 17.91],
-        [29.0, 6.89]
+        [6.58, 82.0],
+        [15.7, 18.06],
+        [17.7, 37.01],
+        [8.84, 45.0],
+        [18.4, 44.07],
+        [7.04, 73.0],
+        [15.2, 35.05],
+        [12.5, 19.00],
+        [15.5, 84.06],
+        [17.9, 67.01],
+        [6.89, 29.0]
+    ],
+    [
+        [19.1, 37.04],
+        [8.14, 56.0],
+        [8.74, 89.0],
+        [18.7, 38.07],
+        [9.26, 45.0],
+        [3.10, 85.0],
+        [6.13, 49.0],
+        [2.10, 30.0],
+        [7.13, 38.0],
+        [7.26, 34.0],
+        [4.74, 50.0],
+        [6.58, 82.0],
+        [15.7, 18.06],
+        [17.7, 37.01],
+        [8.84, 45.0],
+        [18.4, 44.07],
+        [7.04, 73.0],
+        [15.2, 35.05],
+        [12.5, 19.00],
+        [15.5, 84.06],
+        [17.9, 67.01],
+        [6.89, 29.0]
+    ],
+    [
+        [6.58, 82.0],
+        [15.7, 18.06],
+        [17.7, 37.01],
+        [8.84, 45.0],
+        [18.4, 44.07],
+        [7.04, 73.0],
+        [15.2, 35.05],
+        [12.5, 19.00],
+        [15.5, 84.06],
+        [17.9, 67.01],
+        [6.89, 29.0],
+        [6.58, 23.0],
+        [5.76, 32.0],
+        [7.71, 34.0],
+        [8.84, 23.0],
+        [8.4, 123.7],
+        [7.04, 39.0],
+        [5.25, 33.0],
+        [12.5, 22.00],
+        [5.56, 53.0],
+        [9.91, 95.0],
+        [6.89, 66.0]
     ]
 ];
 // const RadioButton = Radio.Button;
@@ -107,6 +156,8 @@ export default class StatistGenera extends PureComponent {
     rangePickerValue: 'age' ,
     scatterPickerValue: 'age' ,
     dataPickerValue: '7' ,
+    current:'week',
+    getdataNmb: getTimeDistance('week')
   }
   // onTabChange = (key, type) => {
   //   console.log(key, type);
@@ -120,6 +171,26 @@ export default class StatistGenera extends PureComponent {
   }
   
   getOtionLine() {
+    const { current } = this.state;
+    const { getdataNmb } = this.state;
+    
+    for (let index = 0; index < getdataNmb.length; index++) {
+      getdataNmb[index] = moment(getdataNmb[index]).format('MM/DD');
+    }
+    const allAata = [
+      [3, 5, 13, 10, 22, 15, 7],
+      [3, 5, 13, 10, 22, 15, 7,23,2,33,44,22,7,4],
+      [3, 5, 13, 10, 22, 15, 7, 23, 2, 33, 44, 22, 7, 4, 55,66,33,55,5,7,8,24,35,45,67,35,44,23,34,13]
+    ]
+    let getData = [], xValue = [], yValue = [];
+    xValue = getdataNmb
+    if (current == 'week') {
+      yValue = allAata[0];
+    } else if (current == 'towWeek') {
+      yValue = allAata[1];
+    }else{
+      yValue = allAata[2];
+    };
     const option = {
       color: ['#6ea5e2', '#91cb63', '#e9cb70', '#d99666', '#d36e5d', '#dea8fb', '#e9b6ae'],
       tooltip: {
@@ -139,7 +210,7 @@ export default class StatistGenera extends PureComponent {
         axisTick: {
           alignWithLabel:true
         },
-        data: ['08/08', '08/09', '08/10', '08/11', '08/12', '08/13', '08/14']
+        data: xValue
       },
       yAxis: {
         type: 'value',
@@ -157,13 +228,8 @@ export default class StatistGenera extends PureComponent {
         {
           name: '购买频次',
           type: 'line',
-          data: [3, 5, 13, 10, 22, 15, 7],
+          data: yValue,
         }
-        // {
-        //   name: '会员购买频次',
-        //   type: 'line',
-        //   data: [3, 6, 9, 5, 7, 4, 3],
-        // }
       ]
   }
     return option;
@@ -189,11 +255,11 @@ export default class StatistGenera extends PureComponent {
           radius: '80%',
           center: ['50%', '50%'],
           data: [
-            { value: 250, name: '人脸支付' },
-            { value: 210, name: '微信支付' },
-            { value: 184, name: '支付宝支付' },
-            { value: 125, name: '银联支付' },
-            { value: 100, name: '其他' }
+            { value: 120, name: '人脸支付' },
+            { value: 310, name: '微信支付' },
+            { value: 224, name: '支付宝支付' },
+            { value: 155, name: '银联支付' },
+            { value: 30, name: '其他' }
           ],
           roseType: 'radius'
         }
@@ -202,6 +268,35 @@ export default class StatistGenera extends PureComponent {
     return option;
   }
   getOtionBar () {
+    const { current } = this.state;
+    const { getdataNmb } = this.state;
+
+    for (let index = 0; index < getdataNmb.length; index++) {
+      getdataNmb[index] = moment(getdataNmb[index]).format('MM/DD');
+    }
+    const allAata = [
+      [
+        [220, 202, 201, 234, 290, 230, 220],
+        [120, 132, 101, 134, 90, 230, 210]
+      ],
+      [
+        [220, 202, 201, 234, 290, 230, 220, 223, 240, 330, 224, 220, 300, 280],
+        [120, 132, 101, 134, 90, 230, 210, 203, 200, 230, 204, 120, 200, 180]
+      ],
+      [
+        [220, 202, 201, 234, 290, 230, 220, 223, 240, 330, 224, 220, 300, 280, 215, 106, 193, 155, 115, 117, 180, 240, 235, 145, 167, 135, 144, 123, 234, 113],
+        [120, 132, 101, 134, 90, 230, 210, 203, 200, 230, 204, 120, 200, 180, 155, 166, 133, 155, 135, 127, 128, 124, 135, 145, 167, 135, 144, 123, 134, 213],
+      ]
+    ]
+    let getData = [], xValue = [], yValue = [];
+    xValue = getdataNmb;
+    if (current == 'week') {
+      yValue = allAata[0];
+    } else if (current == 'towWeek') {
+      yValue = allAata[1];
+    } else {
+      yValue = allAata[2];
+    };
     const option = {
       color: ['#6ea5e2', '#91cb63', '#e9cb70', '#d99666', '#d36e5d', '#dea8fb', '#e9b6ae'],
       tooltip: {
@@ -226,7 +321,7 @@ export default class StatistGenera extends PureComponent {
         axisTick: {
           alignWithLabel: true
         },
-        data: ['08/08', '08/09', '08/10', '08/11', '08/12', '08/13', '08/14']
+        data: xValue
         
       },
       yAxis: {
@@ -244,26 +339,26 @@ export default class StatistGenera extends PureComponent {
           type: 'bar',
           stack: '总量',
           barWidth: '40%',
-          label: {
-            normal: {
-              show: true,
-              position: 'inside'
-            }
-          },
-          data: [320, 302, 301, 334, 390, 330, 320]
+          // label: {
+          //   normal: {
+          //     show: true,
+          //     position: 'inside'
+          //   }
+          // },
+          data: yValue[0]
         },
         {
           name: '老会员',
           type: 'bar',
           stack: '总量',
           barWidth: '40%',
-          label: {
-            normal: {
-              show: true,
-              position: 'inside'
-            }
-          },
-          data: [120, 132, 101, 134, 90, 230, 210]
+          // label: {
+          //   normal: {
+          //     show: true,
+          //     position: 'inside'
+          //   }
+          // },
+          data: yValue[1]
         }
       ]
 
@@ -271,12 +366,9 @@ export default class StatistGenera extends PureComponent {
     return option;
   }
 
-// 地图数据
- randomValue() {
-  return Math.round(Math.random() * 1000);
-}
-  //地图数据结束
   getOtionMap () {
+    // 地图数据
+    var randomValue = () => Math.round(Math.random() * 1000);
     const option = {
       color: ['#6ea5e2', '#91cb63', '#e9cb70', '#d99666', '#d36e5d', '#dea8fb', '#e9b6ae'],
       tooltip: {},
@@ -304,40 +396,40 @@ export default class StatistGenera extends PureComponent {
           type: 'map',
           mapType: 'china',
           data: [
-            { name: '北京', value: this.randomValue() },
-            { name: '天津', value: this.randomValue() },
-            { name: '上海', value: this.randomValue() },
-            { name: '重庆', value: this.randomValue() },
-            { name: '河北', value: this.randomValue() },
-            { name: '河南', value: this.randomValue() },
-            { name: '云南', value: this.randomValue() },
-            { name: '辽宁', value: this.randomValue() },
-            { name: '黑龙江', value: this.randomValue() },
-            { name: '湖南', value: this.randomValue() },
-            { name: '安徽', value: this.randomValue() },
-            { name: '山东', value: this.randomValue() },
-            { name: '新疆', value: this.randomValue() },
-            { name: '江苏', value: this.randomValue() },
-            { name: '浙江', value: this.randomValue() },
-            { name: '江西', value: this.randomValue() },
-            { name: '湖北', value: this.randomValue() },
-            { name: '广西', value: this.randomValue() },
-            { name: '甘肃', value: this.randomValue() },
-            { name: '山西', value: this.randomValue() },
-            { name: '内蒙古', value: this.randomValue() },
-            { name: '陕西', value: this.randomValue() },
-            { name: '吉林', value: this.randomValue() },
-            { name: '福建', value: this.randomValue() },
-            { name: '贵州', value: this.randomValue() },
-            { name: '广东', value: this.randomValue() },
-            { name: '青海', value: this.randomValue() },
-            { name: '西藏', value: this.randomValue() },
-            { name: '四川', value: this.randomValue() },
-            { name: '宁夏', value: this.randomValue() },
-            { name: '海南', value: this.randomValue() },
-            { name: '台湾', value: this.randomValue() },
-            { name: '香港', value: this.randomValue() },
-            { name: '澳门', value: this.randomValue() }
+            { name: '北京', value: randomValue() },
+            { name: '天津', value: randomValue() },
+            { name: '上海', value: randomValue() },
+            { name: '重庆', value: randomValue() },
+            { name: '河北', value: randomValue() },
+            { name: '河南', value: randomValue() },
+            { name: '云南', value: randomValue() },
+            { name: '辽宁', value: randomValue() },
+            { name: '黑龙江', value: randomValue() },
+            { name: '湖南', value: randomValue() },
+            { name: '安徽', value: randomValue() },
+            { name: '山东', value: randomValue() },
+            { name: '新疆', value: randomValue() },
+            { name: '江苏', value: randomValue() },
+            { name: '浙江', value: randomValue() },
+            { name: '江西', value: randomValue() },
+            { name: '湖北', value: randomValue() },
+            { name: '广西', value: randomValue() },
+            { name: '甘肃', value: randomValue() },
+            { name: '山西', value: randomValue() },
+            { name: '内蒙古', value: randomValue() },
+            { name: '陕西', value: randomValue() },
+            { name: '吉林', value: randomValue() },
+            { name: '福建', value: randomValue() },
+            { name: '贵州', value: randomValue() },
+            { name: '广东', value: randomValue() },
+            { name: '青海', value: randomValue() },
+            { name: '西藏', value: randomValue() },
+            { name: '四川', value: randomValue() },
+            { name: '宁夏', value: randomValue() },
+            { name: '海南', value: randomValue() },
+            { name: '台湾', value: randomValue() },
+            { name: '香港', value: randomValue() },
+            { name: '澳门', value: randomValue() }
           ]
       }]
     }
@@ -436,6 +528,63 @@ export default class StatistGenera extends PureComponent {
     return option;
   }
   getOtionScatter () {
+    const { scatterPickerValue } = this.state;
+    const allAata = [
+      [
+            {
+                name: '18岁以下',
+                data: Scatterdata[0]
+            },
+            {
+                name: '18-30',
+                data: Scatterdata[1]
+            },
+            {
+                name: '31-40',
+                data: Scatterdata[2]
+            },
+            {
+                name: '41-50',
+                data: Scatterdata[3]
+            },
+            {
+                name: '51-60',
+                data: Scatterdata[4]
+            },
+            {
+                name: '60岁以上',
+                data: Scatterdata[5]
+            },
+      ],
+      [
+          {
+              name: '男',
+              data: Scatterdata[6]
+          },
+          {
+              name: '女',
+              data: Scatterdata[7]
+          }
+      ]
+    ];
+    let getData = [], xValue = [], yValue = [];
+    if (scatterPickerValue == 'age') {
+        getData = allAata[0];
+    } else if (scatterPickerValue == 'sex') {
+        getData = allAata[1];
+    };
+    if (getData.length) {
+        for (var i = 0; i < getData.length; i++) {
+            var xAbj = {}, yAbj= {};
+            xAbj.icon = 'circle';
+            xAbj.name = getData[i].name;
+            yAbj.name = getData[i].name;
+            yAbj.data = getData[i].data;
+            yAbj.type = 'scatter';
+            xValue.push(xAbj)
+            yValue.push(yAbj)
+        }
+    };
     const option = {
       color: ['#e9b6ae', '#f59992', '#bed6f2', '#ad35e5', '#f9ce9c', '#dda5fb'],
       grid: {
@@ -450,35 +599,32 @@ export default class StatistGenera extends PureComponent {
         x: 'right',
         y: 'bottom',
         itemWidth:10,
-        padding: [10, 5, 20, 5],
+        padding: [10, 10, 40, 5],
         align:'right',
-        data: [
-          {
-            icon: 'circle',
-            name:'18岁以下'
-            
+        data: xValue
+      },
+      tooltip: {
+        axisPointer: {
+          show: true,
+          type: 'cross',
+          crossStyle: {
+            type: 'solid',
+            width: 1,
+            color: {
+              type: 'linear',
+              x: 0,
+              y: 0,
+              x2: 0,
+              y2: 1,
+              colorStops: [{
+                offset: 0, color: '#e9b6ae' // 0% 处的颜色
+              }, {
+                offset: 1, color: '#ad35e5' // 100% 处的颜色
+              }],
+              globalCoord: false // 缺省为 false
+            }
           },
-          {
-            name: '18-30',
-            icon: 'circle'
-          },
-          {
-            name: '31-41',
-            icon: 'circle'
-          },
-          {
-            name: '41-50',
-            icon: 'circle'
-          },
-          {
-            name: '51-60',
-            icon: 'circle'
-          },
-          {
-            name: '60岁以上',
-            icon: 'circle'
-          }
-        ]
+        }
       },
       xAxis: {
         name : '                                                              X轴（分钟）',
@@ -497,7 +643,7 @@ export default class StatistGenera extends PureComponent {
       yAxis: {
         name : '                                          Y轴（元）',
         nameLocation:'middle',
-        nameGap:'25',
+        nameGap:'30',
         nameRotate:'90',
         axisTick:{
           show:false
@@ -509,37 +655,7 @@ export default class StatistGenera extends PureComponent {
         },
         scale: true
       },
-      series: [{
-        name: '18岁以下',
-        data: Scatterdata[0],
-        type: 'scatter'
-      }, 
-      {
-        name: '18-30',
-          data: Scatterdata[1],
-        type: 'scatter'
-      },
-      {
-        name: '31-40',
-          data: Scatterdata[2],
-        type: 'scatter'
-      },
-      {
-        name: '41-50',
-          data: Scatterdata[3],
-        type: 'scatter'
-      },
-      {
-        name: '51-60',
-          data: Scatterdata[4],
-        type: 'scatter'
-      },
-      {
-        name: '60岁以上',
-          data: Scatterdata[5],
-        type: 'scatter'
-      },
-    ]
+        series: yValue
     }
     return option;
   }
@@ -555,6 +671,12 @@ export default class StatistGenera extends PureComponent {
       });
     }
    
+  }
+  selectDateNmb = (e) =>{
+    this.setState({
+      current: e.key,
+      getdataNmb : getTimeDistance(e.key)
+    });
   }
 
   isActive(type, value) {
@@ -586,12 +708,14 @@ export default class StatistGenera extends PureComponent {
         <Menu
           theme="light"
           mode="horizontal"
-          defaultSelectedKeys={['1']}
+          defaultSelectedKeys={['week']}
+          onClick={this.selectDateNmb}
+          selectedKeys={[this.state.current]}
           style={{ backgroundColor: '#fff', marginBottom: 16, lineHeight: '35px'}}
         >
-          <Menu.Item key="1">最近7天</Menu.Item>
-          <Menu.Item key="2">最近14天</Menu.Item>
-          <Menu.Item key="3">最近30天</Menu.Item>
+          <Menu.Item key="week">最近7天</Menu.Item>
+          <Menu.Item key="towWeek">最近14天</Menu.Item>
+          <Menu.Item key="month">最近30天</Menu.Item>
         </Menu>
         {/* <div style={{ backgroundColor: '#fff', marginBottom: 16 }}>
           <RadioGroup defaultValue="a">
@@ -605,7 +729,7 @@ export default class StatistGenera extends PureComponent {
             <Card style={{ width: '100%' }} bordered={false} bodyStyle= {{padding:10}} >
               <Row type="flex" justify="space-between" align="bottom">
                 <Col className={styles.cardHead}>
-                  <h4>推荐商品购买频次收盘
+                  <h4>推荐商品购买频次
                    <span>全会员购买推荐商品频次</span>
                   </h4>
                 </Col>
@@ -618,6 +742,8 @@ export default class StatistGenera extends PureComponent {
                   this.echarts_react = e;
                 }}
                 option={this.getOtionLine()}
+                notMerge={true}
+                lazyUpdate={true}
                 style={{ height: '300px', width: '100%' }}
                 className='react_for_echarts' />
             </Card>
@@ -637,6 +763,8 @@ export default class StatistGenera extends PureComponent {
                   this.echarts_react = e;
                 }}
                 option={this.getOtionCustPie()}
+                notMerge={true}
+                lazyUpdate={true}
                 style={{ height: '300px', width: '100%' }}
                 className='react_for_echarts' />
             </Card>
@@ -658,6 +786,8 @@ export default class StatistGenera extends PureComponent {
                   this.echarts_react = e;
                 }}
                 option={this.getOtionBar()}
+                notMerge={true}
+                lazyUpdate={true}
                 style={{ height: '300px', width: '100%' }}
                 className='react_for_echarts' />
             </Card>
@@ -677,6 +807,8 @@ export default class StatistGenera extends PureComponent {
                   this.echarts_react = e;
                 }}
                 option={this.getOtionMap()}
+                notMerge={true}
+                lazyUpdate={true}
                 style={{ height: '300px', width: '100%' }}
                 className='react_for_echarts' />
             </Card>
@@ -714,6 +846,8 @@ export default class StatistGenera extends PureComponent {
                   this.echarts_react = e;
                 }}
                 option={this.getOtionRingPie()}
+                notMerge={true}
+                lazyUpdate={true}
                 style={{ height: '300px', width: '100%' }}
                 className='react_for_echarts' />
             </Card>
@@ -746,6 +880,8 @@ export default class StatistGenera extends PureComponent {
                   this.echarts_react = e;
                 }}
                 option={this.getOtionScatter()}
+                notMerge={true}
+                lazyUpdate={true}
                 style={{ height: '300px', width: '100%' }}
                 className='react_for_echarts' />
             </Card>

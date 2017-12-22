@@ -19,30 +19,47 @@ export function getTimeDistance(type) {
   }
 
   if (type === 'week') {
-    let day = now.getDay();
+    let day = 5, dataArry = [];
     now.setHours(0);
     now.setMinutes(0);
     now.setSeconds(0);
 
-    if (day === 0) {
-      day = 6;
-    } else {
-      day -= 1;
+
+    const beginTime = now.getTime() - (day * oneDay);
+    for (let index = 0; index < 7; index ++) {
+      dataArry.push(beginTime + ((index * oneDay) - 1000))
     }
+
+    return dataArry;
+  }
+  if (type === 'towWeek') {
+    let day = 12, dataArry = [];
+    now.setHours(0);
+    now.setMinutes(0);
+    now.setSeconds(0);
 
     const beginTime = now.getTime() - (day * oneDay);
 
-    return [moment(beginTime), moment(beginTime + ((7 * oneDay) - 1000))];
+    for (let index = 0; index < 14; index++) {
+      dataArry.push(beginTime + ((index * oneDay) - 1000))
+    }
+
+    return dataArry;
   }
 
   if (type === 'month') {
-    const year = now.getFullYear();
-    const month = now.getMonth();
-    const nextDate = moment(now).add(1, 'months');
-    const nextYear = nextDate.year();
-    const nextMonth = nextDate.month();
+    let day = 28, dataArry= [];
+    now.setHours(0);
+    now.setMinutes(0);
+    now.setSeconds(0);
 
-    return [moment(`${year}-${fixedZero(month + 1)}-01 00:00:00`), moment(moment(`${nextYear}-${fixedZero(nextMonth + 1)}-01 00:00:00`).valueOf() - 1000)];
+    const beginTime = now.getTime() - (day * oneDay);
+
+    for (let index = 0; index < 30; index++) {
+      dataArry.push(beginTime + ((index * oneDay) - 1000))
+    }
+
+    return dataArry;
   }
 
   if (type === 'year') {

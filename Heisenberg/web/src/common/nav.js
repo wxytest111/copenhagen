@@ -50,16 +50,18 @@ const data = [{
   layout: 'BasicLayout',
   name: '首页', // for breadcrumb
   path: '',
-  children: [ {
-    name: '应用管理',
-    path: 'vlist',
-    icon: 'appstore',
-    children: [{
-      name: '应用列表',
-      path: 'version-list',
-      component: VersionList,
-    }],
-  }, {
+  children: [ 
+  //   {
+  //   name: '应用管理',
+  //   path: 'vlist',
+  //   icon: 'appstore',
+  //   children: [{
+  //     name: '应用列表',
+  //     path: 'version-list',
+  //     component: VersionList,
+  //   }],
+  // }, 
+  {
     name: '促销品管理',
     path: 'sku',
     icon: 'barcode',
@@ -89,13 +91,15 @@ const data = [{
       path: 'promotion-list',
       component: PromotionList,
     }],
-  },{
-    name: '会员管理',
-    icon: 'team',
-    path: 'member',
-    // component: Member,
+  },
+  // {
+  //   name: '会员管理',
+  //   icon: 'team',
+  //   path: 'member',
+  //   // component: Member,
     
-  },{
+  // },
+  {
     name: '统计分析',
     icon: 'area-chart',
     path: 'statistics',
@@ -103,10 +107,10 @@ const data = [{
       name: '统计概况',
       path: 'statist-genera',
       component: StatistGenera,
-    },{
-      name: '推荐转化分析',
-      path: 'statist-promotion',
-      component: StatistPromotion,
+    // },{
+    //   name: '推荐转化分析',
+    //   path: 'statist-promotion',
+    //   component: StatistPromotion,
     }],
     
   },{
