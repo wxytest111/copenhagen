@@ -44,7 +44,7 @@ import Equipment from '../routes/Equipment/Equipment';
 import ShopSKU from '../routes/ShopSKU/ShopSKU';
 import StatistGenera from '../routes/Statistics/StatistGenera';
 import StatistPromotion from '../routes/Statistics/StatistPromotion';
-
+import StatistRegion from '../routes/Statistics/StatistRegion';
 const data = [{
   component: BasicLayout,
   layout: 'BasicLayout',
@@ -111,6 +111,10 @@ const data = [{
       name: '推荐转化分析',
       path: 'statist-promotion',
       component: StatistPromotion,
+    },{
+        name: '区域分布',
+        path: 'statist-region',
+        component: StatistRegion,
     }],
     
   },{

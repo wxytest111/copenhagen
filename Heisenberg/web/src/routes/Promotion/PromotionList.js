@@ -15,6 +15,7 @@ const TabPane = Tabs.TabPane;
 const { RangePicker } = DatePicker;
 const TreeNode = Tree.TreeNode;
 const Option = Select.Option;
+
 @Form.create()
 @connect(state => ({
   skulist: state.skulist,
@@ -41,6 +42,7 @@ export default class PromotionList extends PureComponent {
         checkCode: false,
         checkClass: false,
         showMFbtn: true,
+        psokbtn: 1,
       };
   
   componentDidMount() {
@@ -58,7 +60,15 @@ export default class PromotionList extends PureComponent {
         ancestor_key: 0,
       },
     });
+    this.props.form.validateFields();
   }
+
+  hasErrors = (fieldsError) => {
+  var f = Object.keys(fieldsError).some(field => fieldsError[field]);
+  // var num = this.state.psokbtn;
+  
+    return f;
+}
 
   showModal = (promotion) => {
     // console.log(promotion)
@@ -168,6 +178,7 @@ export default class PromotionList extends PureComponent {
             // expandedKeys: ['6'],
             disableTab2: false,
             activeKey: '2',
+            showMFbtn:false
           });
           this.props.promotionlist.promotionlist = [];
           this.props.dispatch({
@@ -178,22 +189,20 @@ export default class PromotionList extends PureComponent {
           });
         }
     });
-    // this.props.form.setFieldsValue({
-    //   desc:null,
-    //   name:null,
-    //   end_time: null,
-    //   start_time: null,
-    //   id: null
-    // })
+    this.props.form.setFieldsValue({
+      identity: undefined
+    })
  }
 
   handleCancel = () => {
     this.props.form.setFieldsValue({
-      desc:null,
-      name:null,
-      end_time: null,
-      start_time: null,
-      id: null,
+      desc:undefined,
+      name:undefined,
+      end_time: undefined,
+      start_time: undefined,
+      id: undefined,
+      identity: undefined,
+      priority:'1'
     })
     this.setState({
       modalVisible: false,
@@ -233,6 +242,11 @@ export default class PromotionList extends PureComponent {
               promotionid: values.id,
             },
           });
+        this.props.form.setFieldsValue({
+          identity: undefined,
+          priority: '1'
+        })
+       
         //}
     });
  }
@@ -361,11 +375,14 @@ export default class PromotionList extends PureComponent {
   callback = (key) => {
     // console.log(key)
     if (key == 2) {
-      this.componentDidMount();
       this.setState({
         checkCode: true,
         checkClass: true,
         showMFbtn: false,
+      });
+      this.props.form.setFields({
+        identity: { value: undefined, errors: [new Error('请填写商品编码')]}
+        // priority: '1'
       })
     }else{
       this.setState({
@@ -383,7 +400,9 @@ export default class PromotionList extends PureComponent {
     const { promotionlist: { promotionlist, loading, promotionSubmitting,psSubmitting } } = this.props;
     const { pspage: { pspage } } = this.props;
     const { shop: { shop, shopSubmitting } } = this.props;
-    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const { getFieldDecorator, getFieldsError, getFieldError, getFieldValue, isFieldTouched } = this.props.form;
+
+    // const userCodeError = isFieldTouched('identity') && getFieldError('identity');
     const Info = ({ title, value, bordered }) => (
       <div className={styles.headerInfo}>
         <span>{title}</span>
@@ -576,13 +595,14 @@ export default class PromotionList extends PureComponent {
                 })(
                   <div>
                     <Select placeholder="请选择门店性质"
+                      defaultValue = '0'
                       onChange={this.handleNatureChange}>
                       <Option value="0">所有</Option>
                       <Option value="直营店">直营店</Option>
                       <Option value="加盟店">加盟店</Option>
                       <Option value="托管店">托管店</Option>
                     </Select>
-                    <div style={{ borderRadius: '4px', border: '1px solid #d9d9d9' }}>
+                    <div style={{ borderRadius: '4px', border: '1px solid #d9d9d9', overflow: 'auto', height: '300px', maxHeight: '300px'}}>
                       <Tree
                         defaultExpandedKeys={['6']}
                         checkable
@@ -603,14 +623,16 @@ export default class PromotionList extends PureComponent {
           </TabPane>
           <TabPane tab="商品配置" disabled={this.state.disableTab2} key="2">
             <Form  visible={this.state.psModalVisible} hideRequiredMark className={styles.tabForm}>
-              <FormItem {...formItemLayout} label="商品编码" >
+              <FormItem {...formItemLayout}
+                // validateStatus={userCodeError ? 'error' : ''}
+               label="商品编码" >
                 {getFieldDecorator('identity', {
                   rules: [{
                     required: this.state.checkCode,
                      message: '请填写商品编码',
                   }],
                 })(
-                  <Input placeholder="请填写商品编码" />
+                  <Input placeholder="请填写商品编码"/>
                   )}
               </FormItem>
               <FormItem {...formItemLayout} label="商品级别" >
@@ -642,36 +664,12 @@ export default class PromotionList extends PureComponent {
                   sm: { span: 12, offset: 5 },
                 }}
               >
-                <Button type="primary" onClick={this.handlePSOk} >添加促销商品</Button>
+                <Button type="primary" 
+                 disabled={this.hasErrors(getFieldsError())} onClick={this.handlePSOk} >添加促销商品</Button>
               </FormItem>
             </Form>
             <div style={{ borderTop: '1px solid #d9d9d9' }}>
               <Table columns={columns} showHeader={false} dataSource={pspage.rows} />
-              {/* <List
-                //size="small"
-                rowKey="id"
-                loading={loading}
-                pagination={paginationProps2}
-                dataSource={pspage.rows}
-                renderItem={item => (
-
-                  console.log(item),
-                  <List.Item
-                    style={{ height: 60 }}
-                    actions={[
-                      <Button onClick={showDeleteConfirm} type="dashed">
-                        删除
-                      </Button>
-                    ]}
-                  >
-                    <List.Item.Meta
-                      avatar={<Avatar src={item.pic} shape="square" size="small" />}
-                      title={<a href={item.href}>{item.name}</a>}
-                    />
-                    <ListContent data={item} />
-                  </List.Item>
-                )}
-              /> */}
 
             </div>
           </TabPane>
