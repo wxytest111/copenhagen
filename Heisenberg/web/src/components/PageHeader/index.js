@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Breadcrumb, Tabs } from 'antd';
 import classNames from 'classnames';
 import styles from './index.less';
+import { connect } from 'dva';
 
 const { TabPane } = Tabs;
 
@@ -17,7 +18,9 @@ function getBreadcrumbNameWithParams(breadcrumbNameMap, url) {
   });
   return name;
 }
-
+@connect(state => ({
+  collapsed: state.global.collapsed,
+}))
 export default class PageHeader extends PureComponent {
   static contextTypes = {
     routes: PropTypes.array,
@@ -52,9 +55,10 @@ export default class PageHeader extends PureComponent {
     const { routes, params, location, breadcrumbNameMap } = this.getBreadcrumbProps();
     const {
       title, logo, action, content, extraContent,
-      breadcrumbList, tabList, className, linkElement = 'a',
+      breadcrumbList, tabList, className, linkElement = 'a', collapsed,
     } = this.props;
-    const clsString = classNames(styles.pageHeader, className);
+    const pageHeaderpos = collapsed ? styles.pageHeaderpos : styles.pageHeaderpos1;
+    const clsString = classNames(styles.pageHeader, pageHeaderpos , className);
     let breadcrumb;
     if (routes && params) {
       breadcrumb = (

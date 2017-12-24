@@ -326,10 +326,10 @@ export default class SKUType extends PureComponent {
         console.log(selected, selectedRows, changeRows);
       },
     };
-
+    const bodyHeight = document.body.clientHeight - 150 + 'px';
     return (
       <PageHeaderLayout>
-        <div className={styles.standardList}>
+        <div className={styles.standardList} style={{ minHeight: bodyHeight, backgroundColor: '#fff' }}>
           <Card
             className={styles.listCard}
             bordered={false}

@@ -409,10 +409,11 @@ export default class Equipment extends PureComponent {
       },
       },
     ];
-    
+     const bodyHeight = document.body.clientHeight-150+'px'; 
+     const tableHeight = document.body.clientHeight - 300 + 'px'; 
     return (
       <PageHeaderLayout>
-        <div className={styles.standardList}>
+        <div className={styles.standardList} style={{ minHeight: bodyHeight, backgroundColor: '#fff'}} >
           <Card
             className={styles.listCard}
             bordered={false}
@@ -438,7 +439,7 @@ export default class Equipment extends PureComponent {
                 />
                 <Layout>
                   <div style={{ background: '#fff' }}>
-                    <Content style={{ overflow:'auto', border:'1px solid #d9d9d9',width: '95%', height:300, maxHeight:300}}>
+                    <Content style={{ overflow: 'auto', border: '1px solid #d9d9d9', width: '95%', height: tableHeight, maxHeight: tableHeight}}>
                       <Tree
                         onExpand={this.onExpand}
                         expandedKeys={this.state.expandedKeys?this.state.expandedKeys:['6']}

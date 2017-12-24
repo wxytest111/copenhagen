@@ -290,19 +290,19 @@ class BasicLayout extends React.PureComponent {
               <Redirect to="/dashboard/analysis" />
             </Switch>
             <GlobalFooter
-              links={[{
-                title: '瞳门首页',
-                href: 'http://www.tman.ai',
-                blankTarget: true,
-              }, {
-                title: '管理控制台',
-                href: 'http://console.tman.ai',
-                blankTarget: true,
-              }, {
-                title: 'Deepglint',
-                href: 'http://deepglint.com/',
-                blankTarget: true,
-              }]}
+              // links={[{
+              //   title: '瞳门首页',
+              //   href: 'http://www.tman.ai',
+              //   blankTarget: true,
+              // }, {
+              //   title: '管理控制台',
+              //   href: 'http://console.tman.ai',
+              //   blankTarget: true,
+              // }, {
+              //   title: 'Deepglint',
+              //   href: 'http://deepglint.com/',
+              //   blankTarget: true,
+              // }]}
               copyright={
                 <div>
                   Copyright <Icon type="copyright" /> 2017 瞳门科技

@@ -685,9 +685,11 @@ export default class PromotionList extends PureComponent {
           </div>
         </div>
       );
+    const bodyHeight = document.body.clientHeight-150+'px'; 
     return (
       <PageHeaderLayout>
-        <div className={styles.standardList}>
+        <div className={styles.standardList} style={{ minHeight: bodyHeight}}>
+          {console.log(bodyHeight)}
           <Card
             className={styles.listCard}
             bordered={false}
