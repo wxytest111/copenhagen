@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
+import { Link } from 'dva/router';
 import { Tabs, Card, Row, Col, Button, Icon, Radio, Menu} from 'antd';
 import ReactEcharts from 'echarts-for-react';
 //引入地图文件
@@ -451,7 +452,6 @@ export default class StatistGenera extends PureComponent {
         value: Math.floor(Math.random() * 1000)
       });
     }
-    console.log(data)
     this.setState({
       dataMap: data,
     })
@@ -750,15 +750,18 @@ export default class StatistGenera extends PureComponent {
         <Row gutter={16} style={{ marginBottom: 16 }}>
           <Col span={12}>
             <Card style={{ width: '100%' }} bordered={false} bodyStyle= {{padding:10}} >
-              <Row type="flex" justify="space-between" align="bottom">
+              <Row type="flex" justify="space-between" align="bottom" >
+               
                 <Col className={styles.cardHead}>
-                  <h4>推荐商品购买频次
+                    <h4>推荐商品购买频次
                    <span>全会员购买推荐商品频次</span>
-                  </h4>
-                </Col>
-                <Col>
-                  <Icon type="right-circle" style={{ fontSize: 16, color: '#d1d1d1' }} />
-                </Col>
+                    </h4>
+                  </Col>
+                  <Col>
+                    <Link to="/statistics/statist-promotion">
+                      <Icon type="right-circle" style={{ fontSize: 16, color: '#d1d1d1' }} />
+                    </Link>
+                  </Col>
               </Row>
               <ReactEcharts
                 ref= {(e) => {
@@ -777,9 +780,9 @@ export default class StatistGenera extends PureComponent {
                 <Col className={styles.cardHead}>
                   <h4>支付方式</h4>
                 </Col>
-                <Col>
+                {/* <Col>
                   <Icon type="right-circle" style={{ fontSize: 16, color: '#d1d1d1' }} />
-                </Col>
+                </Col> */}
               </Row>
               <ReactEcharts
                 ref={(e) => {
@@ -800,9 +803,9 @@ export default class StatistGenera extends PureComponent {
                 <Col className={styles.cardHead}>
                   <h4>新老会员</h4>
                 </Col>
-                <Col>
+                {/* <Col>
                   <Icon type="right-circle" style={{ fontSize: 16, color: '#d1d1d1' }} />
-                </Col>
+                </Col> */}
               </Row>
               <ReactEcharts
                 ref={(e) => {
@@ -822,7 +825,9 @@ export default class StatistGenera extends PureComponent {
                   <h4>区域分布</h4>
                 </Col>
                 <Col>
-                  <Icon type="right-circle" style={{ fontSize: 16, color: '#d1d1d1' }} />
+                  <Link to="/statistics/statist-region">
+                    <Icon type="right-circle" style={{ fontSize: 16, color: '#d1d1d1' }} />
+                  </Link>
                 </Col>
               </Row>
               <ReactEcharts
@@ -844,9 +849,9 @@ export default class StatistGenera extends PureComponent {
                 <Col className={styles.cardHead}>
                   <h4>自然属性</h4>
                 </Col>
-                <Col>
+                {/* <Col>
                   <Icon type="right-circle" style={{ fontSize: 16, color: '#d1d1d1' }} />
-                </Col>
+                </Col> */}
               </Row>
               <div style={{position: 'relative'}}>
                 <div className={styles.salesExtra}>
@@ -883,9 +888,9 @@ export default class StatistGenera extends PureComponent {
                     <span>消费金额与驻留时间</span>
                   </h4>
                 </Col>
-                <Col>
+                {/* <Col>
                   <Icon type="right-circle" style={{ fontSize: 16, color: '#d1d1d1' }} />
-                </Col>
+                </Col> */}
               </Row>
               <div style={{position: 'relative'}}>
                 <div className={styles.salesExtra}>

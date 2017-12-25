@@ -321,8 +321,88 @@ export default class StatistPromotion extends PureComponent {
         }],
       });
     }
-    
-    
+    const tabchart = this.state.rangePickerValue == 'age' ? 
+      <Row type="flex" justify="space-between" align="bottom">
+        <Col span={12}>
+
+          <div className={styles.salesExtra}>
+            <a className={this.isActive('age')} onClick={() => this.selectDate('age')}>
+              频次
+            </a>
+            <a className={this.isActive('sex')} onClick={() => this.selectDate('sex')}>
+              金额
+            </a>
+          </div>
+
+
+        </Col>
+        <Col span={3} className={styles.cardHead}>
+          <h4>总人数<br />
+            <span>{this.state.current == 'week' ? '456,789' : this.state.current == 'towWeek' ? '836,729' : '1,856,516'}</span>
+          </h4>
+        </Col>
+        <span style={{ width: 1, height: 45, backgroundColor: '#989898' }} />
+        <Col span={3} className={styles.cardHead}>
+          <h4>平均来店频次/天<br />
+            <span>{this.state.current == 'week' ? '1.5' : this.state.current == 'towWeek' ? '1.3' : '1.4'}</span>
+          </h4>
+        </Col>
+        <span style={{ width: 1, height: 45, backgroundColor: '#989898' }} />
+        <Col span={4} className={styles.cardHead}>
+          <h4>平均购买推荐频次/周<br />
+            <span>{this.state.current == 'week' ? '18' : this.state.current == 'towWeek' ? '23' : '19'}</span>
+          </h4>
+        </Col>
+        <Col span={1} />
+        <Col span={24}>
+          <ReactEcharts
+            ref={(e) => {
+              this.echarts_react = e;
+            }}
+
+            option={this.getOtionLine()}
+
+            className='react_for_echarts' />
+        </Col>
+      </Row> :
+      <Row type="flex" justify="space-between" align="bottom">
+        <Col span={15}>
+
+          <div className={styles.salesExtra}>
+            <a className={this.isActive('age')} onClick={() => this.selectDate('age')}>
+              频次
+                      </a>
+            <a className={this.isActive('sex')} onClick={() => this.selectDate('sex')}>
+              金额
+                      </a>
+          </div>
+
+
+        </Col>
+        <Col span={3} className={styles.cardHead}>
+          <h4>总人数<br />
+            <span>{this.state.current == 'week' ? '456,789' : this.state.current == 'towWeek' ? '836,729' : '1,856,516'}</span>
+          </h4>
+        </Col>
+        <span style={{ width: 1, height: 45, backgroundColor: '#989898' }} />
+        <Col span={4} className={styles.cardHead}>
+          <h4>平均来店增长金额/天<br />
+            <span>{this.state.current == 'week' ? '¥64' : this.state.current == 'towWeek' ? '¥58' : '¥60'}</span>
+          </h4>
+        </Col>
+
+        <Col span={1} />
+        <Col span={24}>
+          <ReactEcharts
+            ref={(e) => {
+              this.echarts_react = e;
+            }}
+
+            option={this.getOtionLine2()}
+
+            className='react_for_echarts' />
+        </Col>
+      </Row>
 
 
     return (
@@ -343,101 +423,17 @@ export default class StatistPromotion extends PureComponent {
         <Row gutter={16} style={{ marginBottom: 16 }}>
           <Col span={24}>
             <Card style={{ width: '100%'}} bordered={false} bodyStyle= {{padding:10}} >
-            {/* <Card style={{ width: '100%', display:'none'}} bordered={false} bodyStyle= {{padding:10}} > */}
-              <Row type="flex" justify="space-between" align="bottom" style={{display:this.state.dis?undefined:'none'}}>
-                <Col span={12}>
-                  
-                    <div className={styles.salesExtra}>
-                      <a className={this.isActive('age')} onClick={() => this.selectDate('age')}>
-                        频次
-                      </a>
-                      <a className={this.isActive('sex')} onClick={() => this.selectDate('sex')}>
-                        金额
-                      </a>
-                    </div>
-                  
-                
-                </Col>
-                <Col span={3} className={styles.cardHead}>
-                  <h4>总人数<br/>
-                    <span>{this.state.current=='week'?'456,789':this.state.current=='towWeek'?'836,729':'1,856,516'}</span>
-                  </h4>
-                </Col>
-                  <span style={{ width:1, height: 45,backgroundColor:'#989898'}}/>
-                <Col span={3} className={styles.cardHead}>
-                  <h4>平均来店频次/天<br/>
-                    <span>{this.state.current=='week'?'1.5':this.state.current=='towWeek'?'1.3':'1.4'}</span>
-                  </h4>
-                </Col>
-                  <span style={{ width:1, height: 45,backgroundColor:'#989898'}}/>
-                <Col span={4} className={styles.cardHead}>
-                  <h4>平均购买推荐频次/周<br/>
-                    <span>{this.state.current=='week'?'18':this.state.current=='towWeek'?'23':'19'}</span>
-                  </h4>
-                </Col>
-                <Col span={1}/>
-              </Row>
-              <Row style={{display:this.state.dis?undefined:'none'}}>
-                <ReactEcharts
-                  ref= {(e) => {
-                    this.echarts_react = e;
-                  }}
-                  
-                  option={this.getOtionLine()}
-                  
-                  className='react_for_echarts' />
-              </Row>
-
-
-              <Row type="flex" justify="space-between" align="bottom" style={{display:this.state.dis}}>
-                <Col span={15}>
-                  
-                    <div className={styles.salesExtra}>
-                      <a className={this.isActive('age')} onClick={() => this.selectDate('age')}>
-                        频次
-                      </a>
-                      <a className={this.isActive('sex')} onClick={() => this.selectDate('sex')}>
-                        金额
-                      </a>
-                    </div>
-                  
-                
-                </Col>
-                <Col span={3} className={styles.cardHead}>
-                  <h4>总人数<br/>
-                    <span>{this.state.current=='week'?'456,789':this.state.current=='towWeek'?'836,729':'1,856,516'}</span>
-                  </h4>
-                </Col>
-                  <span style={{ width:1, height: 45,backgroundColor:'#989898'}}/>
-                <Col span={4} className={styles.cardHead}>
-                  <h4>平均来店增长金额/天<br/>
-                    <span>{this.state.current=='week'?'¥64':this.state.current=='towWeek'?'¥58':'¥60'}</span>
-                  </h4>
-                </Col>
-                
-                <Col span={1}/>
-              </Row>
-              <Row style={{display:this.state.dis}}>
-              <ReactEcharts
-               
-                ref= {(e) => {
-                  this.echarts_react = e;
-                }}
-                option={this.getOtionLine2()}
-                className='react_for_echarts' />
-              </Row>
-
-
+              {tabchart}
               <div className={styles.tableStyle}>
-              <Table 
-                bordered 
-                columns={columns} 
-                dataSource={this.state.data} 
-                size='middle' 
-                scroll={{ x: 1000 }}
-                pagination={paginationProps}
-              />
-              </div>
+                <Table 
+                  bordered 
+                  columns={columns} 
+                  dataSource={this.state.data} 
+                  size='middle' 
+                  scroll={{ x: 1000 }}
+                  pagination={paginationProps}
+                />
+                </div>
             </Card>
           </Col>
         </Row>

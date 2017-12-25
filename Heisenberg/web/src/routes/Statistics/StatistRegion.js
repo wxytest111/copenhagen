@@ -35,6 +35,13 @@ export default class StatistRegion extends PureComponent {
   }
 
   getOtionMap() {
+    const { rangePickerValue } = this.state;
+    let mapValuecolor = [];
+    if (rangePickerValue == 'plane'){
+      mapValuecolor = ['#e0ffff', '#006edd'];
+    }else{
+      mapValuecolor = ['#fbdf89', 'red'];
+    }
     // 地图数据
     var randomValue = () => Math.round(Math.random() * 1000);
     const option = {
@@ -55,7 +62,7 @@ export default class StatistRegion extends PureComponent {
         // calculable: true,
         inRange: {
           symbolSize: [10, 70],
-          color: ['#e0ffff', '#006edd']
+          color: mapValuecolor
         },
         outOfRange: {
           symbolSize: [10, 70]
