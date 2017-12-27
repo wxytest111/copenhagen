@@ -2,12 +2,16 @@ import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Tabs, Card, Row, Col, Button, Icon, Radio, Menu, Table } from 'antd';
 import ReactEcharts from 'echarts-for-react';
+import echarts from 'echarts';
+import bmap from 'echarts/extension/bmap/bmap';
 import moment from 'moment';
 //引入地图文件
 import 'echarts/map/js/china.js';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import { getTimeDistance } from '../../utils/utils';
 import styles from './StatistRegion.less';
+import citydata from "../../assets/data/city.json";
+const TabPane = Tabs.TabPane;
 
 // @Form.create()
 @connect(state => ({
@@ -25,13 +29,64 @@ export default class StatistRegion extends PureComponent {
   //   console.log(key, type);
   //   this.setState({ [type]: key });
   // }
-  
+  constructor(props) {
+    super(props);
+  }
   componentDidMount() {
+    
     let data = [];
     this.getData(data);
-    // 初始化echarts实例
-    // let myChartLine = echarts.init(document.getElementById('main'));
-    // 绘制图表
+    this.initalEChartshot(citydata)
+  }
+  initalEChartshot(data) {
+    const myChart = echarts.init(document.getElementById('map'));
+    let points = [];
+    function recursionFn(data) {
+      data.map(function (city) {
+        if (city.center) {
+          let Postion = [];
+          let num = parseInt(Math.random() * 20);
+          Postion = city.center.split(",");
+          points.push(Postion.concat([num]))
+          if (city.districts.length > 0) {
+           recursionFn(city.districts)
+          }
+        }
+      });
+    }
+    recursionFn(data);
+
+    myChart.setOption({
+      animation: false,
+      bmap: {
+        center: [116.407394, 39.904211],
+        zoom: 4,
+        roam: true
+      },
+      visualMap: {
+        show: false,
+        top: 'top',
+        min: 0,
+        max: 500,
+        seriesIndex: 0,
+        calculable: true,
+        inRange: {
+          color: ['blue', 'green', 'yellow', 'red']
+        }
+      },
+      series: [{
+        type: 'heatmap',
+        coordinateSystem: 'bmap',
+        data: points,
+        pointSize: 5,
+        blurSize: 6
+      }]
+    });
+    // 添加百度地图插件
+    var bmap = myChart.getModel().getComponent('bmap').getBMap();
+    var opts = { type: BMAP_NAVIGATION_CONTROL_ZOOM, anchor: BMAP_ANCHOR_TOP_RIGHT }
+    bmap.addControl(new BMap.NavigationControl(opts));
+    bmap.centerAndZoom(new BMap.Point(116.404, 39.915), 4);  
   }
 
   getOtionMap() {
@@ -209,7 +264,6 @@ export default class StatistRegion extends PureComponent {
   selectDate = (type) => {
     this.setState({
       rangePickerValue: type,
-      dis:type=='sex'?undefined:'none',
     });
   }
 
@@ -319,30 +373,12 @@ export default class StatistRegion extends PureComponent {
         key: 'companyName' + i + 1,
       });
     }
-    const mapHtml = this.state.rangePickerValue == 'plane' ?
-      <ReactEcharts
-        ref={(e) => {
-          this.echarts_react = e;
-        }}
-        option={this.getOtionMap()}
-        notMerge={true}
-        lazyUpdate={true}
-        // style={{ height: '300px', width: '100%' }}
-        className='react_for_echarts' /> : 
-      <ReactEcharts
-        ref={(e) => {
-          this.echarts_react = e;
-        }}
-        option={this.getOtionMap()}
-        notMerge={true}
-        lazyUpdate={true}
-        // style={{ height: '300px', width: '100%' }}
-        className='react_for_echarts' />;
     
     
 
 
     return (
+      
       <PageHeaderLayout>
         <Menu
           theme="light"
@@ -360,9 +396,27 @@ export default class StatistRegion extends PureComponent {
         <Row gutter={16} style={{ marginBottom: 16 }}>
           <Col span={24}>
             <Card style={{ width: '100%'}} bordered={false} bodyStyle= {{padding:10}} >
-              <Row type="flex" justify="space-between" align="bottom" style={{display:this.state.dis?undefined:'none'}}>
-                <Col span={12}>
-                  <Row>
+              <Row type="flex" justify="space-between" align="bottom" >
+                <Col span={12} className={styles.cardContainer}>
+                  <Tabs type="card" defaultActiveKey="1" >
+                    <TabPane tab="热力图" key="1">
+                      <Row id="map" style={{ paddingLeft: 30, paddingRight: 15, width: '100%', height: 300 }}>
+                      </Row> 
+                    </TabPane>
+                    <TabPane tab="平面图" key="2">
+                      <Row style={{ paddingLeft: 30, paddingRight: 15}}>
+                        <ReactEcharts
+                          ref={(e) => {
+                            this.echarts_react = e;
+                          }}
+                          option={this.getOtionMap()}
+                          notMerge={true}
+                          lazyUpdate={true}
+                          className='react_for_echarts' />
+                      </Row> 
+                    </TabPane>
+                  </Tabs>
+                  {/* <Row>
                     <div className={styles.salesExtra}>
                       <a className={this.isActive('plane')} onClick={() => this.selectDate('plane')}>
                         平面图
@@ -371,11 +425,20 @@ export default class StatistRegion extends PureComponent {
                         热力图
                       </a>
                     </div>
+                  </Row> */}
+                  {/* <Row style={{ paddingLeft: 30, paddingRight: 15, display: this.state.rangePickerValue == 'plane' ? undefined : 'none' }}>
+                    <ReactEcharts
+                      ref={(e) => {
+                        this.echarts_react = e;
+                      }}
+                      option={this.getOtionMap()}
+                      notMerge={true}
+                      lazyUpdate={true}
+                      className='react_for_echarts' />
                   </Row>
-                  <div style={{ paddingLeft: 30, paddingRight: 15 }}>
-                    {mapHtml}
-                  </div> 
-                
+                  <Row id="map" style={{ paddingLeft: 30, paddingRight: 15, width: '100%', height: 300, zIndex: this.state.rangePickerValue == 'plane' ? '-1' : '1' }}> 
+
+                  </Row>  */}
                 </Col>
                 <Col span={12}>
                   <Row type="flex" justify="space-between" align="bottom">
