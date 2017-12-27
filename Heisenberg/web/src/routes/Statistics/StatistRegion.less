@@ -71,12 +71,24 @@ table{
     }
   }
 }
-.mapshow{
-    background: #fff;
+.cardContainer {
+    &> .ant-tabs-card {
+        &>.ant-tabs-bar{
+           border-color: #fff;
+           border-bottom:0;  
+        }
+        &>.ant-tabs-content > .ant-tabs-tabpane{
+           border-color: transparent;
+           background: transparent; 
+        }
+        &> .ant-tabs-content {
+            height: 120px;
+            margin-top: -16px;
+            &> .ant-tabs-tabpane{
+               background: #fff;
+               padding: 10px; 
+            }
+        }
+    }
 }
-.mapHotshow{
-    background: #fff;
-}
-.maphide{
-    display: none;
-}
+
