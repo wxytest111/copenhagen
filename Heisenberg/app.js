@@ -15,6 +15,7 @@ const RegionRoute = require('./routes/RegionRoute')
 const ShopRoute = require('./routes/ShopRoute')
 const EquipmentRoute = require('./routes/EquipmentRoute')
 const RuleRoute = require('./routes/RuleRoute')
+const UserRoute = require('./routes/UserRoute')
 const TestRoute = require('./routes/testRoute');
 const Index = require('./routes/indexRoute');
 // var cors = require('koa-cors');
@@ -23,6 +24,7 @@ const Index = require('./routes/indexRoute');
 // app.use(cors());
 // test only, will move to other module later
 const PromotionMsg = require("./services/promotionMsg")
+
 
 // error handler
 onerror(app)
@@ -65,6 +67,7 @@ app.use(ShopRoute.routes(), ShopRoute.allowedMethods());
 app.use(EquipmentRoute.routes(), EquipmentRoute.allowedMethods());
 app.use(RuleRoute.routes(), RuleRoute.allowedMethods());
 app.use(TestRoute.routes(), TestRoute.allowedMethods());
+app.use(UserRoute.routes(), UserRoute.allowedMethods());
 app.use(Index.routes(), Index.allowedMethods());
 
 
@@ -73,6 +76,12 @@ app.use(Index.routes(), Index.allowedMethods());
 app.on('error', (err, ctx) => {
   console.error('server error', err, ctx)
 });
+
+
+// const Consumer = require("./routes/consumer")
+// Consumer();
+
+// process.env.PORT=8080;
 
 // monitor uCloud MQ subscription
 
