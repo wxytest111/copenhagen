@@ -17,8 +17,8 @@ HmacSha1 = function (secretKey, content) {
 
 router.post('/login', async function (ctx, next) {
   ctx.compress = true;
-  ctx.body = ctx.query;
-  // ctx.body = ctx.request.body;
+  // ctx.body = ctx.query;
+  ctx.body = ctx.request.body;
   var vr = await new UserRepo().login(ctx.body.username);
   if(vr){
     if(Base64(HmacSha1('tman', ctx.body.password))==vr.password){

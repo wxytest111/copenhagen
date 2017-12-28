@@ -16,6 +16,7 @@ const ShopRoute = require('./routes/ShopRoute')
 const EquipmentRoute = require('./routes/EquipmentRoute')
 const RuleRoute = require('./routes/RuleRoute')
 const UserRoute = require('./routes/UserRoute')
+const FeedbackRoute = require('./routes/FeedbackRoute')
 const TestRoute = require('./routes/testRoute');
 const Index = require('./routes/indexRoute');
 // var cors = require('koa-cors');
@@ -68,6 +69,7 @@ app.use(EquipmentRoute.routes(), EquipmentRoute.allowedMethods());
 app.use(RuleRoute.routes(), RuleRoute.allowedMethods());
 app.use(TestRoute.routes(), TestRoute.allowedMethods());
 app.use(UserRoute.routes(), UserRoute.allowedMethods());
+app.use(FeedbackRoute.routes(), FeedbackRoute.allowedMethods());
 app.use(Index.routes(), Index.allowedMethods());
 
 
