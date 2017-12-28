@@ -45,7 +45,7 @@ export default class StatistRegion extends PureComponent {
       data.map(function (city) {
         if (city.center) {
           let Postion = [];
-          let num = parseInt(Math.random() * 20);
+          let num = parseInt(Math.random() * 100);
           Postion = city.center.split(",");
           points.push(Postion.concat([num]))
           if (city.districts.length > 0) {
@@ -56,18 +56,19 @@ export default class StatistRegion extends PureComponent {
     }
     recursionFn(data);
 
+
     myChart.setOption({
       animation: false,
       bmap: {
         center: [116.407394, 39.904211],
-        zoom: 4,
+        zoom: 9,
         roam: true
       },
       visualMap: {
         show: false,
         top: 'top',
         min: 0,
-        max: 500,
+        max: 100,
         seriesIndex: 0,
         calculable: true,
         inRange: {
@@ -86,7 +87,7 @@ export default class StatistRegion extends PureComponent {
     var bmap = myChart.getModel().getComponent('bmap').getBMap();
     var opts = { type: BMAP_NAVIGATION_CONTROL_ZOOM, anchor: BMAP_ANCHOR_TOP_RIGHT }
     bmap.addControl(new BMap.NavigationControl(opts));
-    bmap.centerAndZoom(new BMap.Point(116.404, 39.915), 4);  
+    bmap.centerAndZoom(new BMap.Point(116.404, 39.915), 9);  
   }
 
   getOtionMap() {
@@ -336,6 +337,9 @@ export default class StatistRegion extends PureComponent {
     data:data,
   })
   }
+  maptabFn (){
+
+  }
 
   render() {
     
@@ -398,7 +402,7 @@ export default class StatistRegion extends PureComponent {
             <Card style={{ width: '100%'}} bordered={false} bodyStyle= {{padding:10}} >
               <Row type="flex" justify="space-between" align="bottom" >
                 <Col span={12} className={styles.cardContainer}>
-                  <Tabs type="card" defaultActiveKey="1" >
+                  <Tabs type="card" defaultActiveKey="1" onChange={this.maptabFn} >
                     <TabPane tab="热力图" key="1">
                       <Row id="map" style={{ paddingLeft: 30, paddingRight: 15, width: '100%', height: 300 }}>
                       </Row> 
