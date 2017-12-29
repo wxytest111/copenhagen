@@ -1,4 +1,4 @@
-import { query as queryUsers, queryCurrent } from '../services/user';
+import { query as queryUsers, queryCurrent, feedbackAdd } from '../services/user';
 
 export default {
   namespace: 'user',
@@ -7,6 +7,7 @@ export default {
     list: [],
     loading: false,
     currentUser: {},
+    status:undefined,
   },
 
   effects: {
@@ -32,6 +33,21 @@ export default {
         payload: response,
       });
     },
+    *advise({ payload }, { call, put }) {
+      yield put({
+        type: 'changeLoading',
+        payload: true,
+      });
+      const response = yield call(feedbackAdd, payload);
+      yield put({
+        type: 'changeStatus',
+        payload: response,
+      });
+      yield put({
+        type: 'changeLoading',
+        payload: false,
+      });
+    },
   },
 
   reducers: {
@@ -45,6 +61,13 @@ export default {
       return {
         ...state,
         loading: action.payload,
+      };
+    },
+    changeStatus(state, { payload }) {
+      return {
+        ...state,
+        status: payload.status,
+        type: payload.type,
       };
     },
     saveCurrentUser(state, action) {
@@ -62,5 +85,6 @@ export default {
         },
       };
     },
+
   },
 };

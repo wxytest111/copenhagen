@@ -9,6 +9,7 @@ const { TabPane } = Tabs;
 
 @connect(state => ({
   login: state.login,
+  user: state.user
 }))
 @Form.create()
 export default class Login extends Component {
@@ -17,9 +18,15 @@ export default class Login extends Component {
     type: 'account',
   }
 
+  componentDidMount() {
+
+    
+
+  }
+
   componentWillReceiveProps(nextProps) {
-    if (nextProps.login.status === 'ok') {
-      this.props.dispatch(routerRedux.push('/'));
+    if (nextProps.login.code && nextProps.login.code === 200 ) {
+      this.props.dispatch(routerRedux.push('/sku/sku-list'));
     }
   }
 
@@ -52,7 +59,7 @@ export default class Login extends Component {
       (err, values) => {
         if (!err) {
           this.props.dispatch({
-            type: `login/${type}Submit`,
+            type: 'login/submit',
             payload: values,
           });
         }
@@ -76,18 +83,17 @@ export default class Login extends Component {
     const { getFieldDecorator } = form;
     const { count, type } = this.state;
     return (
+
       <div className={styles.main}>
         <Form onSubmit={this.handleSubmit}>
           <Tabs animated={false} className={styles.tabs} activeKey={type} onChange={this.onSwitch}>
             <TabPane tab="账户密码登录" key="account">
               {
-                login.status === 'error' &&
-                login.type === 'account' &&
-                login.submitting === false &&
-                this.renderMessage('账户或密码错误')
+                (login.code === 400001 || login.code === 400002 || login.code === 400003) && 
+                this.renderMessage(login.status)
               }
               <FormItem>
-                {getFieldDecorator('userName', {
+                {getFieldDecorator('username', {
                   rules: [{
                     required: type === 'account', message: '请输入账户名！',
                   }],
@@ -95,7 +101,7 @@ export default class Login extends Component {
                   <Input
                     size="large"
                     prefix={<Icon type="user" className={styles.prefixIcon} />}
-                    placeholder="admin"
+                  placeholder="请输入账户名"
                   />
                 )}
               </FormItem>
@@ -109,12 +115,12 @@ export default class Login extends Component {
                     size="large"
                     prefix={<Icon type="lock" className={styles.prefixIcon} />}
                     type="password"
-                    placeholder="888888"
+                    placeholder="请输入密码"
                   />
                 )}
               </FormItem>
             </TabPane>
-            <TabPane tab="手机号登录" key="mobile">
+            {/* <TabPane tab="手机号登录" key="mobile">
               {
                 login.status === 'error' &&
                 login.type === 'mobile' &&
@@ -163,7 +169,7 @@ export default class Login extends Component {
                   </Col>
                 </Row>
               </FormItem>
-            </TabPane>
+            </TabPane> */}
           </Tabs>
           <FormItem className={styles.additional}>
             {getFieldDecorator('remember', {
@@ -178,14 +184,13 @@ export default class Login extends Component {
             </Button>
           </FormItem>
         </Form>
-        <div className={styles.other}>
+        {/* <div className={styles.other}>
           其他登录方式
-          {/* 需要加到 Icon 中 */}
           <span className={styles.iconAlipay} />
           <span className={styles.iconTaobao} />
           <span className={styles.iconWeibo} />
           <Link className={styles.register} to="/user/register">注册账户</Link>
-        </div>
+        </div> */}
       </div>
     );
   }

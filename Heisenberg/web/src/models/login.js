@@ -1,14 +1,32 @@
 import { routerRedux } from 'dva/router';
 import { fakeAccountLogin, fakeMobileLogin } from '../services/api';
+import { login } from '../services/user';
 
 export default {
   namespace: 'login',
 
   state: {
     status: undefined,
+    code: undefined,
+    user: {},
   },
 
   effects: {
+    *submit({ payload }, { call, put }) {
+      yield put({
+        type: 'changeSubmitting',
+        payload: true,
+      });
+      const response = yield call(login, payload);
+      yield put({
+        type: 'getUserInfo',
+        payload: response,
+      });
+      yield put({
+        type: 'changeSubmitting',
+        payload: false,
+      });
+    },
     *accountSubmit({ payload }, { call, put }) {
       yield put({
         type: 'changeSubmitting',
@@ -56,6 +74,14 @@ export default {
         ...state,
         status: payload.status,
         type: payload.type,
+      };
+    },
+    getUserInfo(state, { payload }) {
+      return {
+        ...state,
+        status: payload.status,
+        code: payload.code,
+        user: payload.result ? payload.result: {}
       };
     },
     changeSubmitting(state, { payload }) {

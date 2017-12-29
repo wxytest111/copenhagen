@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Layout, Menu, Icon, Avatar, Dropdown, Tag, message, Spin } from 'antd';
+import { Layout, Menu, Icon, Avatar, Dropdown, Tag, message, Spin, Form, Input, Button, Checkbox } from 'antd';
 import DocumentTitle from 'react-document-title';
 import { connect } from 'dva';
 import { Link, Route, Redirect, Switch } from 'dva/router';
@@ -14,9 +14,13 @@ import NoticeIcon from '../components/NoticeIcon';
 import GlobalFooter from '../components/GlobalFooter';
 import { getNavData } from '../common/nav';
 import { getRouteData } from '../utils/utils';
+import userIcon from "../assets/yay.jpg";
 
 const { Header, Sider, Content } = Layout;
 const { SubMenu } = Menu;
+const FormItem = Form.Item;
+const { TextArea } = Input;
+
 
 const query = {
   'screen-xs': {
@@ -38,8 +42,11 @@ const query = {
     minWidth: 1200,
   },
 };
-
+@Form.create()
 class BasicLayout extends React.PureComponent {
+  state = {
+    visible: false
+  }
   static childContextTypes = {
     location: PropTypes.object,
     breadcrumbNameMap: PropTypes.object,
@@ -152,7 +159,7 @@ class BasicLayout extends React.PureComponent {
     const { location } = this.props;
     const { pathname } = location;
     let title = '瞳门科技';
-    getRouteData('UserLayout').forEach((item) => {
+    getRouteData('BasicLayout').forEach((item) => {
       if (item.path === pathname) {
         title = `${item.name} - 瞳门科技`;
       }
@@ -218,8 +225,34 @@ class BasicLayout extends React.PureComponent {
       });
     }
   }
+  handleVisibleChange = (flag) => {
+    this.setState({ visible: flag });
+  }
+  handleVisiblelick = (e) => {
+    this.setState({ visible: true });
+  }
+  handleSubmit = (e) => {
+    e.preventDefault();
+    // const { type } = this.state;
+    this.props.form.validateFields({ force: true },
+      (err, values) => {
+        if (!err) {
+          console.log(this.state.currentUser)
+          values.user_id = 1;
+          this.props.dispatch({
+            type: 'user/advise',
+            payload: values,
+          });
+          this.setState({ visible: false });
+        }
+      }
+    );
+  }
   render() {
+    const { getFieldDecorator, getFieldValue } = this.props.form;
     const { currentUser, collapsed, fetchingNotices } = this.props;
+    // const { validateFields} = this.props.form;
+   
 
     const menu = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={this.onMenuClick}>
@@ -228,6 +261,22 @@ class BasicLayout extends React.PureComponent {
         <Menu.Divider />
         <Menu.Item key="logout"><Icon type="logout" />退出登录</Menu.Item>
       </Menu>
+    );
+    const opinion = (
+      <Form onSubmit={this.handleSubmit} className={styles.opinionForm} onClick={this.handleVisiblelick}>
+        <FormItem style={{marginBottom:10}}>
+          {getFieldDecorator('content', {
+            rules: [{
+              required: true, message: '请输入意见与建议',
+            }],
+          })(
+            <TextArea rows={5} placeholder="请输入您的宝贵意见与建议" />
+            )}
+        </FormItem>
+        <Button type="primary" htmlType="submit" className={styles.opinionFormbtn}>
+          提交
+        </Button>
+      </Form>
     );
     const noticeData = this.getNoticeData();
 
@@ -272,6 +321,25 @@ class BasicLayout extends React.PureComponent {
               onClick={this.toggle}
             />
             
+            <div className={styles.right}>
+              {/* <Icon type="form" /> */}
+              <Dropdown overlay={opinion} trigger={['click']}
+                onVisibleChange={this.handleVisibleChange}
+                visible={this.state.visible}>
+                <span className={`${styles.action} ${styles.account}`}>
+                  <Icon type="form" />
+                </span>
+              </Dropdown>
+              {console.log(currentUser)}
+              {currentUser.username ? (
+                <Dropdown overlay={menu}>
+                  <span className={`${styles.action} ${styles.account}`}>
+                    <Avatar size="small" className={styles.avatar} src={userIcon} />
+                    {currentUser.username}
+                  </span>
+                </Dropdown>
+              ) : <Spin size="small" style={{ marginLeft: 8 }} />}
+              </div>
           </Header>
           <Content style={{ margin: '24px 24px 0', height: '100%' }}>
             <Switch>
@@ -287,7 +355,7 @@ class BasicLayout extends React.PureComponent {
                   )
                 )
               }
-              <Redirect to="/dashboard/analysis" />
+              <Redirect to="user/login"/>
             </Switch>
             <GlobalFooter
               // links={[{
@@ -325,7 +393,7 @@ class BasicLayout extends React.PureComponent {
 }
 
 export default connect(state => ({
-  currentUser: state.user.currentUser,
+  currentUser: state.login.user,
   collapsed: state.global.collapsed,
   fetchingNotices: state.global.fetchingNotices,
   notices: state.global.notices,
