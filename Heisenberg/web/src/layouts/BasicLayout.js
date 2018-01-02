@@ -227,6 +227,10 @@ class BasicLayout extends React.PureComponent {
   }
   handleVisibleChange = (flag) => {
     this.setState({ visible: flag });
+    this.props.form.setFieldsValue({
+      user_id: undefined,
+      content: undefined
+    });
   }
   handleVisiblelick = (e) => {
     this.setState({ visible: true });
@@ -237,7 +241,6 @@ class BasicLayout extends React.PureComponent {
     this.props.form.validateFields({ force: true },
       (err, values) => {
         if (!err) {
-          console.log(this.state.currentUser)
           values.user_id = 1;
           this.props.dispatch({
             type: 'user/advise',
@@ -270,7 +273,7 @@ class BasicLayout extends React.PureComponent {
               required: true, message: '请输入意见与建议',
             }],
           })(
-            <TextArea rows={5} placeholder="请输入您的宝贵意见与建议" />
+            <TextArea rows={5} placeholder="请输入您的宝贵意见与建议." />
             )}
         </FormItem>
         <Button type="primary" htmlType="submit" className={styles.opinionFormbtn}>
@@ -330,9 +333,8 @@ class BasicLayout extends React.PureComponent {
                   <Icon type="form" />
                 </span>
               </Dropdown>
-              {console.log(currentUser)}
               {currentUser.username ? (
-                <Dropdown overlay={menu}>
+                <Dropdown overlay={menu} trigger={['click']}>
                   <span className={`${styles.action} ${styles.account}`}>
                     <Avatar size="small" className={styles.avatar} src={userIcon} />
                     {currentUser.username}
