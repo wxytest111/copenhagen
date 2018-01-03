@@ -20,8 +20,8 @@ router.get('/getAll', async function (ctx, next) {
 router.post('/add', async function (ctx, next) {
   // ctx.body = ctx.query;
   ctx.body = ctx.request.body;
-  ctx.body.createdAt = new Date().toDateString();
-  //ctx.body.updatedAt = new Date().toDateString();
+  ctx.body.createdAt = new Date();
+  ctx.body.updatedAt = new Date();
   var result = await new FeedbackRepo().add(ctx.body);
   ctx.body = {
     status: '添加成功',
