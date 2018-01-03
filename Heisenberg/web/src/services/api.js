@@ -41,49 +41,49 @@ export async function fakeSubmitForm(params) {
 }
 
 export async function addVersion(params) {
-  return request('http://127.0.0.1:3000/api/version/add', {
+  return request('http://console.tman.ai/api/version/add', {
     method: 'POST',
     body: params,
   });
 }
 
 export async function addSKU(params) {
-  return request('http://127.0.0.1:3000/api/sku/add', {
+  return request('http://console.tman.ai/api/sku/add', {
     method: 'POST',
     body: params,
   });
 }
 
 export async function editShop(params) {
-  return request('http://127.0.0.1:3000/api/sku/addShop', {
+  return request('http://console.tman.ai/api/sku/addShop', {
     method: 'POST',
     body: params,
   });
 }
 
 export async function addType(params) {
-  return request('http://127.0.0.1:3000/api/skutype/add', {
+  return request('http://console.tman.ai/api/skutype/add', {
     method: 'POST',
     body: params,
   });
 }
 
 export async function addRegion(params) {
-  return request('http://127.0.0.1:3000/api/region/add', {
+  return request('http://console.tman.ai/api/region/add', {
     method: 'POST',
     body: params,
   });
 }
 
 export async function addShop(params) {
-  return request('http://127.0.0.1:3000/api/shop/add', {
+  return request('http://console.tman.ai/api/shop/add', {
     method: 'POST',
     body: params,
   });
 }
 
 export async function addEquipment(params) {
-  return request('http://127.0.0.1:3000/api/equipment/add', {
+  return request('http://console.tman.ai/api/equipment/add', {
     method: 'POST',
     body: params,
   });
@@ -93,61 +93,61 @@ export async function addSKUBrand(params) {
   if(params.pic){
     params.pic=params.pic.file.response.url
   }
-  return request('http://127.0.0.1:3000/api/skubrand/add', {
+  return request('http://console.tman.ai/api/skubrand/add', {
     method: 'POST',
     body: params,
   });
 }
 
 export async function editRule(params) {
-  return request('http://127.0.0.1:3000/api/rule/add', {
+  return request('http://console.tman.ai/api/rule/add', {
     method: 'POST',
     body: params,
   });
 }
 
 export async function removeSKU(params) {
-  return request('http://127.0.0.1:3000/api/sku/remove/'+params);
+  return request('http://console.tman.ai/api/sku/remove/'+params);
 }
 
 export async function removeType(params) {
-  return request('http://127.0.0.1:3000/api/skutype/remove/'+params);
+  return request('http://console.tman.ai/api/skutype/remove/'+params);
 }
 
 export async function removeShop(params) {
-  return request('http://127.0.0.1:3000/api/shop/remove/'+params);
+  return request('http://console.tman.ai/api/shop/remove/'+params);
 }
 
 export async function removeEquipment(params) {
-  return request('http://127.0.0.1:3000/api/equipment/remove/'+params);
+  return request('http://console.tman.ai/api/equipment/remove/'+params);
 }
 
 export async function removeSKUBrand(params) {
-  return request('http://127.0.0.1:3000/api/skubrand/remove/'+params);
+  return request('http://console.tman.ai/api/skubrand/remove/'+params);
 }
 
 export async function removeRegion(params) {
-  return request('http://127.0.0.1:3000/api/region/remove/'+params);
+  return request('http://console.tman.ai/api/region/remove/'+params);
 }
 
 export async function querySKUTypeTree(params) {
-  return request(`http://127.0.0.1:3000/api/skutype/tree?${stringify(params)}`);
+  return request(`http://console.tman.ai/api/skutype/tree?${stringify(params)}`);
 }
 
 export async function querySKUTypeList(params) {
-  return request(`http://127.0.0.1:3000/api/skutype/type?${stringify(params)}`);
+  return request(`http://console.tman.ai/api/skutype/type?${stringify(params)}`);
 }
 
 export async function queryRegionList(params) {
-  return request(`http://127.0.0.1:3000/api/region/list?${stringify(params)}`);
+  return request(`http://console.tman.ai/api/region/list?${stringify(params)}`);
 }
 
 export async function queryRSList(params) {
-  return request(`http://127.0.0.1:3000/api/region/RSlist?${stringify(params)}`);
+  return request(`http://console.tman.ai/api/region/RSlist?${stringify(params)}`);
 }
 
 export async function queryShopList(params) {
-  return request(`http://127.0.0.1:3000/api/shop/list`,
+  return request(`http://console.tman.ai/api/shop/list`,
     {
       method: 'POST',
       body: params,
@@ -155,7 +155,7 @@ export async function queryShopList(params) {
 }
 
 export async function queryEquipmentList(params) {
-  return request(`http://127.0.0.1:3000/api/equipment/list`,
+  return request(`http://console.tman.ai/api/equipment/list`,
     {
       method: 'POST',
       body: params,
@@ -163,7 +163,7 @@ export async function queryEquipmentList(params) {
 }
 
 export async function querySKUBrandList(params) {
-  return request(`http://127.0.0.1:3000/api/skubrand/list`,
+  return request(`http://console.tman.ai/api/skubrand/list`,
     {
       method: 'POST',
       body: params,
@@ -171,11 +171,11 @@ export async function querySKUBrandList(params) {
 }
 
 export async function getParent(params) {
-  return request(`http://127.0.0.1:3000/api/region/parent?${stringify(params)}`);
+  return request(`http://console.tman.ai/api/region/parent?${stringify(params)}`);
 }
 
 export async function getTypeParent(params) {
-  return request(`http://127.0.0.1:3000/api/skutype/parent?${stringify(params)}`);
+  return request(`http://console.tman.ai/api/skutype/parent?${stringify(params)}`);
 }
 
 export async function fakeChartData() {
@@ -199,31 +199,31 @@ export async function queryFakeList(params) {
 }
 
 export async function querySKUList(params) {
-  return request(`http://127.0.0.1:3000/api/sku/all?${stringify(params)}`);
+  return request(`http://console.tman.ai/api/sku/all?${stringify(params)}`);
 }
 
 export async function queryPskuList(params) {
-  return request(`http://127.0.0.1:3000/api/promotion/psku?${stringify(params)}`);
+  return request(`http://console.tman.ai/api/promotion/psku?${stringify(params)}`);
 }
 
 export async function addPromotion(params) {
-  return request('http://127.0.0.1:3000/api/promotion/add', {
+  return request('http://console.tman.ai/api/promotion/add', {
     method: 'POST',
     body: params,
   });
 }
 
 export async function removePromotion(params) {
-  return request('http://127.0.0.1:3000/api/promotion/remove/'+params);
+  return request('http://console.tman.ai/api/promotion/remove/'+params);
 }
 
 export async function queryPromotionList(params) {
-  return request('http://127.0.0.1:3000/api/promotion/all',{
+  return request('http://console.tman.ai/api/promotion/all',{
   });
 }
 
 export async function addPS(params) {
-  return request('http://127.0.0.1:3000/api/promotion/ps', {
+  return request('http://console.tman.ai/api/promotion/ps', {
     method: 'POST',
     body: params,
   });
@@ -231,23 +231,23 @@ export async function addPS(params) {
 
 
 export async function addps(params) {
-  return request('http://127.0.0.1:3000/api/promotion/add', {
+  return request('http://console.tman.ai/api/promotion/add', {
     method: 'POST',
     body: params,
   });
 }
 
 export async function removeps(params) {
-  return request('http://127.0.0.1:3000/api/promotion/removeps/'+params);
+  return request('http://console.tman.ai/api/promotion/removeps/'+params);
 }
 
 export async function querypsList() {
-  return request('http://127.0.0.1:3000/api/promotion/all');
+  return request('http://console.tman.ai/api/promotion/all');
 }
 
 
 export async function queryVersionList() {
-  return request('http://127.0.0.1:3000/api/version/all');
+  return request('http://console.tman.ai/api/version/all');
 }
 
 export async function fakeAccountLogin(params) {

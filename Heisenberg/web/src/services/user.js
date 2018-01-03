@@ -1,5 +1,5 @@
 import request from '../utils/request';
-const status = 'location';
+const status = 'develop';
 const address = {
   location : "127.0.0.1:3000",
   develop: "console.tman.ai",
