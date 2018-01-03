@@ -489,7 +489,7 @@ handleOkShop = (e) => {
   }
 
   fixedshow() {
-    let ofWidth = document.getElementById("mynewtable").offsetWidth;
+    let ofWidth = document.getElementById("mynewtable") ? document.getElementById("mynewtable").offsetWidth : null;
     // console.log(ofWidth)
     let flag = false;
     if (ofWidth >= 1280) {

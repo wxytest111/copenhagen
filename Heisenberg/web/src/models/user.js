@@ -1,4 +1,5 @@
-import { query as queryUsers, queryCurrent } from '../services/user';
+import { query as queryUsers, queryCurrent, feedbackAdd } from '../services/user';
+import { message } from 'antd';
 
 export default {
   namespace: 'user',
@@ -7,6 +8,7 @@ export default {
     list: [],
     loading: false,
     currentUser: {},
+    status:undefined,
   },
 
   effects: {
@@ -32,6 +34,21 @@ export default {
         payload: response,
       });
     },
+    *advise({ payload }, { call, put }) {
+      yield put({
+        type: 'changeLoading',
+        payload: true,
+      });
+      const response = yield call(feedbackAdd, payload);
+      yield put({
+        type: 'changeStatus',
+        payload: response,
+      });
+      yield put({
+        type: 'changeLoading',
+        payload: false,
+      });
+    },
   },
 
   reducers: {
@@ -47,7 +64,20 @@ export default {
         loading: action.payload,
       };
     },
-    saveCurrentUser(state, action) {
+    changeStatus(state, { payload }) {
+      if (payload.code == 200){
+        message.success('意见与反馈提交成功，我们会及时查看并处理！');
+      }else{
+        message.error('意见与反馈提交失败，请重试！');
+      }
+      
+      return {
+        ...state,
+        status: payload.status,
+        type: payload.type,
+      };
+    },
+    saveCurrentUser(state, action) {code
       return {
         ...state,
         currentUser: action.payload,
@@ -62,5 +92,6 @@ export default {
         },
       };
     },
+
   },
 };

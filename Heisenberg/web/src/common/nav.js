@@ -139,7 +139,18 @@ const data = [{
 }, {
   component: UserLayout,
   layout: 'UserLayout',
-  children: [],
+    children: [
+      {
+        name: '帐户',
+        icon: 'user',
+        path: 'user',
+        children: [{
+          name: '登录',
+          path: 'login',
+          component: Login,
+        }]
+      }
+    ],
 }, {
   component: BlankLayout,
   layout: 'BlankLayout',
