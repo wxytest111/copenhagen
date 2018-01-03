@@ -25,7 +25,6 @@ export default class Login extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps.login.code)
     if (nextProps.login.code && nextProps.login.code === 200 ) {
       this.props.dispatch(routerRedux.push('/sku/sku-list'));
     }
@@ -55,7 +54,6 @@ export default class Login extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log(e)
     const { type } = this.state;
     this.props.form.validateFields({ force: true },
       (err, values) => {
