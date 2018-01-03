@@ -69,18 +69,18 @@ app.use(views(__dirname + '/views', {
 app.use(async (ctx, next) => {
 
 
-  // console.log('path',ctx.path)
-  // console.log('session',ctx.session.user)
+  console.log('path',ctx.path)
+  console.log('session',ctx.session.user)
 
 
-  if(!ctx.session.user && ctx.path != '/api/user/login'){
-    console.log('--------------------未登录---------------------')
-    ctx.body = {
-      status: '未登录',
-      code:400000,
-    };
-    return;
-  }
+  // if(!ctx.session.user && ctx.path != '/api/user/login'){
+  //   console.log('--------------------not logged in---------------------')
+  //   ctx.body = {
+  //     status: 'not logged in',
+  //     code:400000,
+  //   };
+  //   return;
+  // }
 
   const start = new Date()
   await next()
