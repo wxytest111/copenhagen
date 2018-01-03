@@ -45,6 +45,8 @@ import ShopSKU from '../routes/ShopSKU/ShopSKU';
 import StatistGenera from '../routes/Statistics/StatistGenera';
 import StatistPromotion from '../routes/Statistics/StatistPromotion';
 import StatistRegion from '../routes/Statistics/StatistRegion';
+import StatistBehavior from '../routes/Statistics/StatistBehavior';
+
 const data = [{
   component: BasicLayout,
   layout: 'BasicLayout',
@@ -115,6 +117,10 @@ const data = [{
         name: '区域分布',
         path: 'statist-region',
         component: StatistRegion,
+    }, {
+        name: '消费行为分析',
+        path: 'statist-behavior',
+        component: StatistBehavior,
     }],
     
   },{
@@ -136,21 +142,6 @@ const data = [{
     component: Equipment,
     
   }],
-}, {
-  component: UserLayout,
-  layout: 'UserLayout',
-    children: [
-      {
-        name: '帐户',
-        icon: 'user',
-        path: 'user',
-        children: [{
-          name: '登录',
-          path: 'login',
-          component: Login,
-        }]
-      }
-    ],
 }, {
   component: BlankLayout,
   layout: 'BlankLayout',

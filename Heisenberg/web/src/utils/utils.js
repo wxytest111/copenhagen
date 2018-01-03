@@ -1,7 +1,7 @@
 import moment from 'moment';
 import cloneDeep from 'lodash/cloneDeep';
 import navData from '../common/nav';
-
+import loginData from '../common/login';
 
 export function fixedZero(val) {
   return val * 1 < 10 ? `0${val}` : val;
@@ -88,11 +88,17 @@ function getPlainNode(nodeList, parentPath = '') {
 }
 
 export function getRouteData(path) {
-  if (!navData.some(item => item.layout === path) ||
-      !(navData.filter(item => item.layout === path)[0].children)) {
+  let routerData = [];
+  if (path == 'UserLayout'){
+    routerData = loginData;
+  }else{
+    routerData = navData
+  }
+  if (!routerData.some(item => item.layout === path) ||
+      !(routerData.filter(item => item.layout === path)[0].children)) {
     return null;
   }
-  const dataList = cloneDeep(navData.filter(item => item.layout === path)[0]);
+  const dataList = cloneDeep(routerData.filter(item => item.layout === path)[0]);
   const nodeList = getPlainNode(dataList.children);
   return nodeList;
 }

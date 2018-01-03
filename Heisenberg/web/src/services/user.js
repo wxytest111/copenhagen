@@ -1,9 +1,9 @@
 import request from '../utils/request';
-const status = 'develop';
+const status = 'location';
 const address = {
   location : "127.0.0.1:3000",
   develop: "console.tman.ai",
-  production: "192.168.1.237:3000",
+  production: "47.92.107.250",
 };
 let useAddress = '';
 if (status == 'location'){

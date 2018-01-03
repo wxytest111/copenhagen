@@ -228,7 +228,7 @@ class BasicLayout extends React.PureComponent {
   handleVisibleChange = (flag) => {
     this.setState({ visible: flag });
     this.props.form.setFieldsValue({
-      user_id: undefined,
+      // user_id: undefined,
       content: undefined
     });
   }
@@ -237,7 +237,6 @@ class BasicLayout extends React.PureComponent {
   }
   handleSubmit = (e) => {
     e.preventDefault();
-    // const { type } = this.state;
     this.props.form.validateFields({ force: true },
       (err, values) => {
         if (!err) {
@@ -252,7 +251,7 @@ class BasicLayout extends React.PureComponent {
     );
   }
   render() {
-    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const { getFieldDecorator } = this.props.form;
     const { currentUser, collapsed, fetchingNotices } = this.props;
     // const { validateFields} = this.props.form;
    

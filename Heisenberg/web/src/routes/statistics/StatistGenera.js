@@ -507,6 +507,13 @@ export default class StatistGenera extends PureComponent {
         trigger: 'item',
         formatter: "{a} <br/>{b}: {c} ({d}%)"
       },
+      // grid: {
+      //   left: '5%',
+      //   right: '5%',
+      //   bottom: '5%',
+      //   top: '5%',
+      //   containLabel: true
+      // },
       legend: {
         orient: 'vertical',
         x: 'right',
@@ -516,11 +523,23 @@ export default class StatistGenera extends PureComponent {
         align:'right',
         data: xValue
       },
+      // graphic: {
+      //   show:false,
+      //   type: 'text',
+      //   left: 'center',
+      //   top: 'center',
+      //   style: {
+      //     text: '总人数\n 11000',
+      //     textAlign: 'center',
+      //     fill: '#3b91f7',
+      //     fontSize: '26'
+      //   }
+      // },
       series: [
         {
-          name: '访问来源',
+          name: '年龄',
           type: 'pie',
-          radius: ['50%', '70%'],
+          radius: ['40%', '60%'],
           avoidLabelOverlap: false,
           label: {
             normal: {

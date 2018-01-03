@@ -325,7 +325,7 @@ export default class StatistRegion extends PureComponent {
             '香港',
             '澳门'
           ]
-  for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < province.length; i++) {
     data.push({
       key: i,
       name: province[i],

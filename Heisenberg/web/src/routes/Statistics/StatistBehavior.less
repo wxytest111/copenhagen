@@ -1,0 +1,49 @@
+@import "~antd/lib/style/themes/default.less";
+@import "../../utils/utils.less";
+
+
+.cardContainer > .ant-tabs-card > .ant-tabs-content {
+  height: 120px;
+  margin-top: -16px;
+}
+
+.cardContainer > .ant-tabs-card > .ant-tabs-content > .ant-tabs-tabpane {
+  background: #fff;
+  padding: 16px;
+}
+
+.cardContainer > .ant-tabs-card > .ant-tabs-bar {
+  border-color: #fff;
+  background: RED;
+  margin: 0;
+}
+
+.cardContainer > .ant-tabs-card > .ant-tabs-bar .ant-tabs-tab {
+  border-color: transparent;
+  background: transparent;
+}
+
+.cardContainer > .ant-tabs-card > .ant-tabs-bar .ant-tabs-tab-active {
+  border-color: #fff;
+  background: #fff;
+}
+// .ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-tab
+.cardContainer {
+    :global {
+        .ant-tabs {
+        //    background: RED;
+           .ant-tabs-bar{
+                margin: 0;
+                border: 0;
+                .ant-tabs-tab{
+                    border: 0;
+                }
+           } 
+        }
+        .ant-tabs-content{
+            background-color: #fff; 
+        }
+    }
+    
+}
+

@@ -1,29 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, Route, Switch, Redirect } from 'dva/router';
-// import UserLayout from '../layouts/UserLayout';
 import DocumentTitle from 'react-document-title';
 import { Icon } from 'antd';
 import GlobalFooter from '../components/GlobalFooter';
 import styles from './UserLayout.less';
 import { getRouteData } from '../utils/utils';
-import Login from '../routes/User/Login';
 
-const data = [
-  {
-    component: UserLayout,
-    layout: 'UserLayout',
-    children: [{
-      name: '帐户',
-      icon: 'user',
-      path: 'user',
-      children: [{
-        name: '登录',
-        path: 'login',
-        component: Login,
-      }]
-    }]
-  }]
 
 // const links = [{
 //   title: '帮助',
