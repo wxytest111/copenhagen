@@ -73,14 +73,14 @@ app.use(async (ctx, next) => {
   console.log('session',ctx.session.user)
 
 
-  if(!ctx.session.user && ctx.path != '/api/user/login'){
-    console.log('--------------------not logged in---------------------')
-    ctx.body = {
-      status: 'not logged in',
-      code:400000,
-    };
-    return;
-  }
+  // if(!ctx.session.user && ctx.path != '/api/user/login'){
+  //   console.log('--------------------not logged in---------------------')
+  //   ctx.body = {
+  //     status: 'not logged in',
+  //     code:400000,
+  //   };
+  //   return;
+  // }
 
   const start = new Date()
   await next()
