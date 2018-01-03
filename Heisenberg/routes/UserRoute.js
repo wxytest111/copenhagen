@@ -15,6 +15,17 @@ HmacSha1 = function (secretKey, content) {
   return hmac.digest();
 }
 
+router.get('/logout', async function (ctx, next) {
+ 
+  
+   ctx.session.user = undefined;
+    ctx.body = {
+      status: '退出成功',
+      code:200
+    };
+  
+})
+
 router.post('/login', async function (ctx, next) {
   ctx.compress = true;
   // ctx.body = ctx.query;
@@ -24,7 +35,7 @@ router.post('/login', async function (ctx, next) {
     if(Base64(HmacSha1('tman', ctx.body.password))==vr.password){
       vr.password = undefined;
       if(vr.status=='1'){
-        
+        ctx.session.user = vr;
         ctx.body = {
           status: '登录成功',
           code:200,
