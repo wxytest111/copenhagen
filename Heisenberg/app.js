@@ -118,10 +118,10 @@ app.on('error', (err, ctx) => {
 });
 
 
-const Consumer = require("./routes/consumer")
-Consumer();
-const Consumer1 = require("./routes/consumer1")
-Consumer1();
+// const Consumer = require("./routes/consumer")
+// Consumer();
+// const Consumer1 = require("./routes/consumer1")
+// Consumer1();
 
 // process.env.PORT=8080;
 
