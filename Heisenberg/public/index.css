@@ -10835,6 +10835,7 @@ form .ant-input-group-addon .ant-cascader-picker:only-child {
   z-index: 10;
 }
 .opinionForm___sssva {
+  width: 260px;
   padding: 10px;
 }
 .opinionFormbtn___pXs9B {
@@ -13748,6 +13749,11 @@ textarea.ant-pagination-options-quick-jumper input {
 .main___apn1V {
   width: 368px;
   margin: 0 auto;
+  padding: 10px 30px;
+  background: #fff;
+  -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+          box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
 }
 .main___apn1V .tabs___1BMQr {
   padding: 0 2px;
@@ -17526,15 +17532,12 @@ th.alignRight___3Y_eb {
 .pageHeaderpos___1lDLP {
   position: absolute;
   top: 0;
-  left: 9%;
+  left: 149px;
 }
 .pageHeaderpos1___3dqcT {
   position: absolute;
   top: 0;
-  left: 24%;
-}
-.pageHeader___qgeO0 {
-  padding: 20px 32px 0 32px;
+  left: 325px;
 }
 .pageHeader___qgeO0 .detail___3j7je {
   display: -webkit-box;
@@ -17547,7 +17550,8 @@ th.alignRight___3Y_eb {
   display: flex;
 }
 .pageHeader___qgeO0 .breadcrumb___2WwSj {
-  margin-bottom: 16px;
+  height: 64px;
+  line-height: 64px;
 }
 .pageHeader___qgeO0 .tabs___2xumN {
   margin: 0 0 -17px -8px;
@@ -23158,4 +23162,38 @@ li.ant-tree-treenode-disabled > .ant-tree-node-content-wrapper:hover {
 .cardContainer___28aJC > .ant-tabs-card___1gV1Q > .ant-tabs-content___2iE7o > .ant-tabs-tabpane___2EakW {
   background: #fff;
   padding: 10px;
+}
+/* stylelint-disable at-rule-empty-line-before,at-rule-name-space-after,at-rule-no-unknown */
+/* stylelint-disable declaration-bang-space-before */
+/* stylelint-disable declaration-bang-space-before */
+.cardContainer___1FHIa > .ant-tabs-card___Gdmsg > .ant-tabs-content___3E2_0 {
+  height: 120px;
+  margin-top: -16px;
+}
+.cardContainer___1FHIa > .ant-tabs-card___Gdmsg > .ant-tabs-content___3E2_0 > .ant-tabs-tabpane___1TRIK {
+  background: #fff;
+  padding: 16px;
+}
+.cardContainer___1FHIa > .ant-tabs-card___Gdmsg > .ant-tabs-bar___2sSpP {
+  border-color: #fff;
+  background: RED;
+  margin: 0;
+}
+.cardContainer___1FHIa > .ant-tabs-card___Gdmsg > .ant-tabs-bar___2sSpP .ant-tabs-tab___2vv-q {
+  border-color: transparent;
+  background: transparent;
+}
+.cardContainer___1FHIa > .ant-tabs-card___Gdmsg > .ant-tabs-bar___2sSpP .ant-tabs-tab-active___2dMk- {
+  border-color: #fff;
+  background: #fff;
+}
+.cardContainer___1FHIa .ant-tabs .ant-tabs-bar {
+  margin: 0;
+  border: 0;
+}
+.cardContainer___1FHIa .ant-tabs .ant-tabs-bar .ant-tabs-tab {
+  border: 0;
+}
+.cardContainer___1FHIa .ant-tabs-content {
+  background-color: #fff;
 }
