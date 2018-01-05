@@ -12,20 +12,20 @@ class RTDataRepo{
         
     }
     
-    // async max(str){
-    //     var dao = statistics(db.sequelize,db.Sequelize.DataTypes);
-    //     return await dao.max('offset');
-    // }
+    async max(str){
+        var dao = RTData(db.sequelize,db.Sequelize.DataTypes);
+        var m = await dao.max('offset');
+        return m;
+    }
 
     async add(message){
         var dao = RTData(db.sequelize,db.Sequelize.DataTypes);
-        // var max = await dao.max('offset');
-        // if(!max) max = -1;
-        // if(message.offset > max){
-        if(message.value){
+        var max = await dao.max('offset');
+        if(!max) max = -1;
+        if(message.offset > max){
             var msg = JSON.parse(message.value);
-            if(message.value.type === 'add'){
-                console.log('msg---dao---',msg)
+            if(msg.type === 'add'){
+                // console.log('msg---dao---',msg)
                 var info = new RTDataInfo();
                 info.Pid = msg.pid;
                 info.Gid = msg.gid;
@@ -37,9 +37,17 @@ class RTDataRepo{
                 info.Gender = msg.attribute.gender;
                 info.Hat = msg.attribute.hat;
                 info.Age = msg.attribute.age;
-                info.Glass = msg.v.glass;
+                info.Glass = msg.attribute.glass;
+                info.Offset = message.offset;
     
-                dao.create(info);
+                await dao.create(info);
+            } else if(msg.type === 'delete'){
+                var info = new RTDataInfo();
+                info.DeletedAt = msg.time;
+                info.Duration = msg.duration;
+                await dao.update(info,{  
+                    'where':{'gid':msg.gid}
+                });
             }
         }           
     }

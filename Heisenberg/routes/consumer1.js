@@ -16,13 +16,23 @@ var toKafka = function () {
     }];
   
     var options = {
-        groupId: 'tongmeng-reid',//consumer group id, default `kafka-node-group`
-// Auto commit config
+       // groupId: 'tongmeng-reid',//consumer group id, default `kafka-node-group`
+       sessionTimeoutMs: 30000,
+       //消息发送的最长等待时间.需大于session.timeout.ms这个时间 
+       requestTimeoutMs:40000,
+       //一次从kafka中poll出来的数据条数  
+        //max.poll.records条数据需要在在session.timeout.ms这个时间内处理完  
+        maxPollRecords:100,  
+        // Auto commit config
         autoCommit: true,
         autoCommitMsgCount: 100,
         autoCommitIntervalMs: 1000,
-// Fetch message config
-        fetchMaxWaitMs: 100,
+        // Fetch message config
+       
+        //若是不满足fetch.min.bytes时，等待消费端请求的最长等待时间  
+        fetchWaitMaxMs:1000,  
+        fetchMaxWaitMs: 1000,
+        //server发送到消费端的最小数据，若是不满足这个数值则会等待直到满足指定大小。默认为1表示立即接收。  
         fetchMinBytes: 1,
         fetchMaxBytes: 1024 * 10,
         fromOffset: true,
