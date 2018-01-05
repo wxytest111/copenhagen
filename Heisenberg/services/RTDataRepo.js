@@ -22,7 +22,7 @@ class RTDataRepo{
         // var max = await dao.max('offset');
         // if(!max) max = -1;
         // if(message.offset > max){
-        if(message && message.type === 'add'){
+        if(message.value && message.value.type === 'add'){
             var msg = JSON.parse(message.value);
             console.log('msg---dao---',msg)
             var info = new RTDataInfo();
