@@ -1,4 +1,4 @@
-var statisticsDao = require('../services/StatisticsRepo');
+var RTDataDao = require('../services/RTDataRepo');
 var kafka = require('kafka-node');
 var Consumer = kafka.Consumer;
 // var ServiceRouter = require('../service-router/serviceRouter.js');
@@ -7,11 +7,12 @@ var toKafka = function () {
     
     var Offset = kafka.Offset;
     var offset = new Offset(client);
-    console.log('连接kafka1中......');
-    var dao = new statisticsDao();
-    var m = dao.max('offset');
+    console.log('connection kafka......');
+    var dao = new RTDataDao();
+    //var m = dao.max('offset');
     var topics = [{
-        topic: 'tongmeng-reid', partition: 0, offset:isNaN(m)?offset:m
+        topic: 'tongmeng-reid', partition: 0, offset:offset
+        // topic: 'tongmeng-reid', partition: 0, offset:isNaN(m)?offset:m
     }];
   
     var options = {
@@ -33,26 +34,26 @@ var toKafka = function () {
         options
     );
     consumer.on('message', function (message) {
-        console.log("------------- message1 ------------");
+        console.log("------------- message ------------");
         // var key = message.toString();
         // console.log('key',key);
         if (message.value) {
             // console.log('message',message);
             try {
-                // dao.add(message);
+                dao.add(message);
                 // var msg = JSON.parse(message.value);
                 // ServiceRouter.dispatch(key, msg);
-                console.log('msg1',(message))
+                console.log('msg',(message))
 
                 consumer.commit(function(err, data) {
-                    console.log("commit1------------------------")
+                    console.log("commit------------------------")
                 });
 
             } catch (e) {
                 console.log(e)
             }
         } else {
-            console.log('message1',message)
+            console.log('message',message)
         }
     });
     consumer.on('offsetOutOfRange', function (topic) {
@@ -60,15 +61,15 @@ var toKafka = function () {
         topic.maxNum = 2;
         offset.fetch([topic], 
         function (err, offsets) {
-           console.log('offsets1',offsets);
+           console.log('offsets',offsets);
            var min = Math.min.apply(null, offsets[topic.topic][topic.partition]);
            consumer.setOffset(topic.topic, topic.partition, min);
        });
     });
     consumer.on('error', function (message) {
         // console.log("------------- error ------------");
-        console.log('error1',message);
-        console.log('kafka1错误');
+        console.log('error',message);
+        console.log('kafka error');
     });
 };
 module.exports = toKafka;
