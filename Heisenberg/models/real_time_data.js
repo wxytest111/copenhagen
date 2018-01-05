@@ -9,11 +9,11 @@ module.exports = function(sequelize, DataTypes) {
       autoIncrement: true
     },
     gid: {
-      type: DataTypes.STRING(32),
+      type: DataTypes.STRING(36),
       allowNull: false
     },
     pid: {
-      type: DataTypes.STRING(32),
+      type: DataTypes.STRING(36),
       allowNull: false
     },
     news: {
@@ -21,11 +21,11 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     shop_id: {
-      type: DataTypes.STRING(32),
+      type: DataTypes.STRING(36),
       allowNull: false
     },
     sensor: {
-      type: DataTypes.STRING(32),
+      type: DataTypes.STRING(36),
       allowNull: false
     },
     image: {
@@ -59,6 +59,10 @@ module.exports = function(sequelize, DataTypes) {
     duration: {
       type: DataTypes.INTEGER(13),
       allowNull: true
+    },
+    offset: {
+      type: DataTypes.INTEGER(20),
+      allowNull: false
     }
   }, {
     tableName: 'real_time_data',timestamps: false,

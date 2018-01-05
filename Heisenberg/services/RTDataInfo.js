@@ -86,6 +86,12 @@ class RTDataInfo{
     set Duration(duration){
         this.duration = duration;
     }
+    get Offset(){
+        return this.offset;
+    }
+    set Offset(offset){
+        this.offset = offset;
+    }
     
 }
 module.exports = RTDataInfo;

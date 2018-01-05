@@ -9,10 +9,10 @@ var toKafka = function () {
     var offset = new Offset(client);
     console.log('connection kafka......');
     var dao = new RTDataDao();
-    //var m = dao.max('offset');
+    var m = dao.max('offset');
     var topics = [{
-        topic: 'tongmeng-reid', partition: 0, offset:offset
-        // topic: 'tongmeng-reid', partition: 0, offset:isNaN(m)?offset:m
+        // topic: 'tongmeng-reid', partition: 0, offset:offset
+        topic: 'tongmeng-reid', partition: 0, offset:isNaN(m)?offset:m
     }];
   
     var options = {
@@ -43,7 +43,7 @@ var toKafka = function () {
                 dao.add(message);
                 // var msg = JSON.parse(message.value);
                 // ServiceRouter.dispatch(key, msg);
-                console.log('msg',(message))
+                // console.log('msg',(message))
 
                 consumer.commit(function(err, data) {
                     console.log("commit------------------------")

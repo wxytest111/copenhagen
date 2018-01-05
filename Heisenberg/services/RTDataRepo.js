@@ -22,19 +22,25 @@ class RTDataRepo{
         // var max = await dao.max('offset');
         // if(!max) max = -1;
         // if(message.offset > max){
-        if(message.value && message.value.type === 'add'){
+        if(message.value){
             var msg = JSON.parse(message.value);
-            console.log('msg---dao---',msg)
-            var info = new RTDataInfo();
-            info.Pid = msg.pid;
-            info.Gid = msg.gid;
-            info.News = msg.new;
-            info.ShopId = msg.shop;
-            info.Sensor = msg.cover.sensor;
-            info.Image = msg.cover.uri;
-            info.CreatedAt = msg.time;
-
-            dao.create(info);
+            if(message.value.type === 'add'){
+                console.log('msg---dao---',msg)
+                var info = new RTDataInfo();
+                info.Pid = msg.pid;
+                info.Gid = msg.gid;
+                info.News = msg.new;
+                info.ShopId = msg.shop;
+                info.Sensor = msg.cover.sensor;
+                info.Image = msg.cover.uri;
+                info.CreatedAt = msg.time;
+                info.Gender = msg.attribute.gender;
+                info.Hat = msg.attribute.hat;
+                info.Age = msg.attribute.age;
+                info.Glass = msg.v.glass;
+    
+                dao.create(info);
+            }
         }           
     }
     
