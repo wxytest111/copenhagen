@@ -16,7 +16,7 @@ class RTDataRepo{
     async ages(model){
         var dao = RTData(db.sequelize,db.Sequelize.DataTypes);
         //var r = new AgesInfo();
-        var r = await db.sequelize.query("select ages,count(*) as count,gender from("+      
+        var r = await db.sequelize.query("select UUID() as id,ages,count(*) as count,gender from("+      
         "select "+  
             "case "+  
             "when age<=18 then '18岁以下'  "+
