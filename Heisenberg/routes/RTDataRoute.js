@@ -9,7 +9,7 @@ router.post('/ages', async function (ctx, next) {
   ctx.body = ctx.request.body;
   // ctx.body.createAt = new Date().toDateString();
   ctx.compress = true;
-  var vr = await new RTData().ages();
+  var vr = await new RTData().ages(ctx.body);
   ctx.body = vr;
   
 })
