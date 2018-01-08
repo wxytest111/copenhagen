@@ -1,6 +1,6 @@
 const db = require('../models/db');
-const RTDataInfo = require('../models/RTDataInfo');
 const RTData = require('../models/real_time_data');
+const RTDataInfo = require('./RTDataInfo');
 const AgesInfo = require('./AgesInfo');
 const Sequelize = require('sequelize');
 var compress = require('koa-compress');
