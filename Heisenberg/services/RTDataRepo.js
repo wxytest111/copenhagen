@@ -1,4 +1,5 @@
 const db = require('../models/db');
+const RTDataInfo = require('../models/RTDataInfo');
 const RTData = require('../models/real_time_data');
 const AgesInfo = require('./AgesInfo');
 const Sequelize = require('sequelize');
