@@ -59,7 +59,7 @@ module.exports = function(sequelize, DataTypes) {
     startTime: {
       type: DataTypes.DATE,
       
-      allowNull: false,
+      allowNull: true,
       get() {
         return moment(this.getDataValue('startTime')).format('YYYY-MM-DD HH:mm:ss');
       }
