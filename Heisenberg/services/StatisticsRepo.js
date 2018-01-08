@@ -17,6 +17,11 @@ class StatisticsRepo{
         return await dao.max('offset');
     }
 
+    async create(info){
+        var dao = statistics(db.sequelize,db.Sequelize.DataTypes);
+        await dao.create(info);         
+    }
+
     async add(message){
         var dao = statistics(db.sequelize,db.Sequelize.DataTypes);
         var max = await dao.max('offset');
@@ -33,7 +38,7 @@ class StatisticsRepo{
             info.Age = msg.feature.age;
             info.Emotion = msg.feature.emotion;
             info.Offset = message.offset;
-            dao.create(info);
+            await dao.create(info);
         }           
     }
     

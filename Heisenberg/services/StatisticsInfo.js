@@ -68,6 +68,18 @@ class StatisticsInfo{
     set Offset(offset){
         this.offset = offset;
     }
+    get Ts(){
+        return this.ts;
+    }
+    set Ts(ts){
+        this.ts = ts;
+    }
+    get Ts(){
+        return this.startTime;
+    }
+    set StartTime(startTime){
+        this.startTime = startTime;
+    }
     
 }
 module.exports = StatisticsInfo;

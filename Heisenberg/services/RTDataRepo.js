@@ -1,6 +1,6 @@
 const db = require('../models/db');
 const RTData = require('../models/real_time_data');
-const RTDataInfo = require('./RTDataInfo');
+const AgesInfo = require('./AgesInfo');
 const Sequelize = require('sequelize');
 var compress = require('koa-compress');
 /**
@@ -11,6 +11,27 @@ class RTDataRepo{
     constructor(props){
         
     }
+
+    async ages(model){
+        var dao = RTData(db.sequelize,db.Sequelize.DataTypes);
+        var r = new AgesInfo();
+        r = await db.sequelize.query("select ages,count(*) as count,gender from("+      
+        "select "+  
+            "case "+  
+            "when age<=18 then '18岁以下'  "+
+            "when age>=19 and age<=25 then '19-25岁'  "+
+            "when age>=26 and age<=35 then '26-35岁' "+
+            "when age>=36 and age<=45 then '36-45岁' "+
+            "when age>=46 and age<=55 then '46-55岁' "+
+            "when age>=56 and age<=65 then '56-65岁' "+
+            "when age>=66 then '66岁以上' "+
+         "end "+ 
+         "as ages,id,gender from real_time_data  "+
+        ")a group by ages,gender");
+
+         return r;
+    }
+
     
     async max(str){
         var dao = RTData(db.sequelize,db.Sequelize.DataTypes);

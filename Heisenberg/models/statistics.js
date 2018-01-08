@@ -46,7 +46,23 @@ module.exports = function(sequelize, DataTypes) {
     },
     offset: {
       type: DataTypes.INTEGER(20),
-      allowNull: false
+      allowNull: true
+    },
+    ts: {
+      type: DataTypes.DATE,
+      
+      allowNull: false,
+      get() {
+        return moment(this.getDataValue('ts')).format('YYYY-MM-DD HH:mm:ss');
+      }
+    },
+    startTime: {
+      type: DataTypes.DATE,
+      
+      allowNull: false,
+      get() {
+        return moment(this.getDataValue('startTime')).format('YYYY-MM-DD HH:mm:ss');
+      }
     }
   }, {
     tableName: 'statistics',    timestamps: false,

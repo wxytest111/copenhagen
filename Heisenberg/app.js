@@ -19,6 +19,8 @@ const UserRoute = require('./routes/UserRoute')
 const FeedbackRoute = require('./routes/FeedbackRoute')
 const PromotionMsg = require("./services/promotionMsg")
 const TestRoute = require('./routes/testRoute');
+const IdentifyRoute = require('./routes/IdentifyRoute');
+const RTDataRoute = require('./routes/RTDataRoute');
 const Index = require('./routes/indexRoute');
 
 // const cors = require('koa-cors');
@@ -69,8 +71,8 @@ app.use(views(__dirname + '/views', {
 app.use(async (ctx, next) => {
 
 
-  console.log('path',ctx.path)
-  console.log('session',ctx.session.user)
+  // console.log('path',ctx.path)
+  // console.log('session',ctx.session.user)
 
 
   // if(!ctx.session.user && ctx.path != '/api/user/login'){
@@ -108,6 +110,8 @@ app.use(RuleRoute.routes(), RuleRoute.allowedMethods());
 app.use(TestRoute.routes(), TestRoute.allowedMethods());
 app.use(UserRoute.routes(), UserRoute.allowedMethods());
 app.use(FeedbackRoute.routes(), FeedbackRoute.allowedMethods());
+app.use(IdentifyRoute.routes(), IdentifyRoute.allowedMethods());
+app.use(RTDataRoute.routes(), RTDataRoute.allowedMethods());
 app.use(Index.routes(), Index.allowedMethods());
 
 
@@ -120,8 +124,8 @@ app.on('error', (err, ctx) => {
 
 // const Consumer = require("./routes/consumer")
 // Consumer();
-// const Consumer1 = require("./routes/consumer1")
-// Consumer1();
+const Consumer1 = require("./routes/consumer1")
+Consumer1();
 
 // process.env.PORT=8080;
 
