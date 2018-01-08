@@ -23,8 +23,10 @@ const IdentifyRoute = require('./routes/IdentifyRoute');
 const RTDataRoute = require('./routes/RTDataRoute');
 const Index = require('./routes/indexRoute');
 
-// const cors = require('koa-cors');
-// app.use(cors());
+if(process.env.ND_CORS){
+  const cors = require('koa-cors');
+  app.use(cors());
+}
 
 
 const session = require('koa-session');
