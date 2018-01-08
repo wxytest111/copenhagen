@@ -125,7 +125,7 @@ app.on('error', (err, ctx) => {
 //const Consumer = require("./routes/consumer")
 //Consumer();
 const kafka = require("./routes/kafka")
-kafka.on();
+// kafka.on();
 //const Consumer1 = require("./routes/consumer1")
 //Consumer1();
 
