@@ -40,12 +40,13 @@ class RTDataRepo{
         return m;
     }
 
-    async add(message){
+    async add(m){
         var dao = RTData(db.sequelize,db.Sequelize.DataTypes);
-        var max = await dao.max('offset');
-        if(!max) max = -1;
-        if(message.offset > max){
-            var msg = JSON.parse(message.value);
+        // var max = await dao.max('offset');
+        // if(!max) max = -1;
+        // if(message.offset > max){
+            
+            let msg = JSON.parse(m.message.value.toString('utf8'));
             if(msg.type === 'add'){
                 // console.log('msg---dao---',msg)
                 var info = new RTDataInfo();
@@ -60,7 +61,7 @@ class RTDataRepo{
                 info.Hat = msg.attribute.hat;
                 info.Age = msg.attribute.age;
                 info.Glass = msg.attribute.glass;
-                info.Offset = message.offset;
+                info.Offset = m.offset;
     
                 await dao.create(info);
             } else if(msg.type === 'delete'){
@@ -71,7 +72,7 @@ class RTDataRepo{
                     'where':{'gid':msg.gid}
                 });
             }
-        }           
+        // }           
     }
     
 }
