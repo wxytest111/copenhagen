@@ -50,7 +50,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     createdAt: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: true
     },
     deletedAt: {
       type: DataTypes.DATE,
