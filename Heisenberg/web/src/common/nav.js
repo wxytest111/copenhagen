@@ -46,6 +46,7 @@ import StatistGenera from '../routes/Statistics/StatistGenera';
 import StatistPromotion from '../routes/Statistics/StatistPromotion';
 import StatistRegion from '../routes/Statistics/StatistRegion';
 import StatistBehavior from '../routes/Statistics/StatistBehavior';
+import Member from '../routes/Member/MemberIndex';
 
 const data = [{
   component: BasicLayout,
@@ -63,6 +64,12 @@ const data = [{
   //     component: VersionList,
   //   }],
   // }, 
+  {
+    name: '进店即会员（实时）',
+    path: 'member',
+    icon: 'user',
+    component: Member
+  }, 
   {
     name: '促销品管理',
     path: 'sku',
@@ -118,7 +125,7 @@ const data = [{
         path: 'statist-region',
         component: StatistRegion,
     }, {
-        name: '消费行为分析',
+        name: '购物行为分析',
         path: 'statist-behavior',
         component: StatistBehavior,
     }],

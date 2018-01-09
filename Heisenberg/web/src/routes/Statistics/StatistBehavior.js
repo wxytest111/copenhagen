@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Tabs, Card, Form, Row, Col, Button, Icon, Radio, Menu, Table } from 'antd';
+import { Tabs, Card, Form, Row, Col, Button, Icon, Radio, Menu, Table, DatePicker, Select } from 'antd';
 import ReactEcharts from 'echarts-for-react';
 import echarts from 'echarts';
 import moment from 'moment';
@@ -9,27 +9,70 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import { getTimeDistance } from '../../utils/utils';
 import styles from './StatistBehavior.less';
 import StandardFormRow from '../../components/StandardFormRow';
+import cloneDeep from 'lodash/cloneDeep';
 const TabPane = Tabs.TabPane;
 const FormItem = Form.Item;
+const RadioGroup = Radio.Group;
+const { MonthPicker, RangePicker } = DatePicker;
+const dateFormat = 'YYYY/MM/DD';
+
+
 
 @Form.create()
 @connect(state => ({
-
+    statist: state.statist,
 }))
 export default class StatistRegion extends PureComponent {
   state = {
     dis:'none',
     rangePickerValue: 'plane',
     current:'week',
+    sex: undefined,
     getdataNmb: getTimeDistance('week'),
-    data:[],
+    expandedKeys:[],
   }
   componentDidMount() {
+    this.props.dispatch({
+      type: 'statist/queryBeList',
+      payload: {
+      },
+    });
     
     let data = [];
     this.getData(data);
   }
   
+  clisck =(data, type) =>{
+    const { expandedKeys } = this.state;
+    let status = false;
+    for (let index = 0; index < expandedKeys.length; index++) {
+      if (expandedKeys[index] == data.id){
+        status = true;
+        // expandedKeys.splice(index, 1);
+      }
+    };
+    if (!status){
+      expandedKeys.push(data.id)
+    };
+    let newArr = cloneDeep(expandedKeys);
+    this.setState({
+      expandedKeys: newArr,
+    });
+    
+  }
+  hideTableEx = (data) => {
+    const { expandedKeys } = this.state;
+    for (let index = 0; index < expandedKeys.length; index++) {
+      if (expandedKeys[index] == data.id) {
+        expandedKeys.splice(index, 1);
+      }
+    };
+    let newArr = cloneDeep(expandedKeys);
+    this.setState({
+      expandedKeys: newArr,
+    });
+
+  }
   
   getOtionLine() {
     const { current } = this.state;
@@ -199,13 +242,20 @@ export default class StatistRegion extends PureComponent {
   maptabFn (){
 
   }
+  handleDateChange = (e) => {
+    this.setState({ current: e.target.value });
+  }
+  sexChange = (e) =>{
+    this.setState({ sex: e.target.value });
+  }
 
   render() {
     
-    // const { promotionlist: { promotionlist, loading, promotionSubmitting,psSubmitting } } = this.props;
+    const { statist: { statist, statistloading } } = this.props;
     // const { pspage: { pspage } } = this.props;
     // const { shop: { shop, shopSubmitting } } = this.props;
     const { getFieldDecorator } = this.props.form;
+    const current = this.state.current;
 
     const paginationProps = {
       // size:'small',
@@ -236,7 +286,31 @@ export default class StatistRegion extends PureComponent {
         dataIndex: 'companyName',
         key: 'companyName' + i + 1,
       });
-    }
+    };
+    const formItemLayout = {
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 16 },
+      },
+    };
+    const beTablecolumns= [
+      { title: '年龄段', dataIndex: 'ages', key: 'ages', width:250 },
+      { title: '人数', dataIndex: 'count', key: 'count', width: 200},
+      {
+        title: '性别', dataIndex: 'gender', key: 'gender', width: 100, render: (text, record) => (
+          <span>{record.gender == 1 ? "男" : "女"}</span>
+        ),
+      },
+      {
+        title: '图表选项', key: 'action', width: 400, render: (text, record) => (
+          <span>
+            <a onClick={this.clisck.bind(this, record ,'1')}><Icon type="shopping-cart" />推荐商品购买信息</a>
+            <a onClick={this.clisck.bind(this, record , '2')} ><Icon type="environment" />店铺到访信息</a>
+          </span>
+        ),
+      }
+      
+    ];
     const bodyHeight = document.body.clientHeight - 210 + 'px';
     
     return (
@@ -248,23 +322,63 @@ export default class StatistRegion extends PureComponent {
               <div style={{ minHeight: bodyHeight}}>
                 <Card bordered={false}>
                   <Form layout="inline">
-                    <StandardFormRow title="时间" block style={{ paddingBottom: 0, paddingTop: 0, border:0, marginBottom: 0}}>
-                     
+                    <StandardFormRow title="时间" block style={{ paddingBottom: 10, paddingTop: 0, border:0, marginBottom: 0}}>
+                      <Radio.Group value={current} onChange={this.handleDateChange} className={styles.btnGroup}>
+                        <Radio.Button value="week">最近7天</Radio.Button>
+                        <Radio.Button value="toweek">最近14天</Radio.Button>
+                        <Radio.Button value="month">最近30天</Radio.Button>
+                      </Radio.Group>
+                      <RangePicker
+                        // defaultValue={[moment('', dateFormat), moment('', dateFormat)]}
+                        format={dateFormat}
+                        style={{marginLeft: '10px'}}
+                      />
                     </StandardFormRow>
+                    
                     <StandardFormRow
                       title="会员"
                       grid
                       last
-                      block style={{ paddingBottom: 0, paddingTop: 0, border: 0 }}
+                      block style={{ paddingBottom: 20, paddingTop: 0, border: 0 }}
                     >
                       <Row gutter={16}>
-                        <Col lg={8} md={10} sm={10} xs={24}>
+                        <Col lg={4} md={6} sm={10} xs={24}>
+                          <RadioGroup onChange={this.sexChange} value={this.state.sex} style={{ lineHeight: '32px' }}>
+                            <Radio value={1}>男</Radio>
+                            <Radio value={2}>女</Radio>
+                          </RadioGroup>
                         </Col>
                         <Col lg={8} md={10} sm={10} xs={24}>
+                          <FormItem
+                            {...formItemLayout}
+                            label="来源"
+                          >
+                            {getFieldDecorator('author', {})(
+                              <Select
+                                onChange={this.handleFormSubmit}
+                                placeholder="请选择区域"
+                                style={{ maxWidth: 200, width: '100%' }}
+                              >
+                                <Option value="lisa">王昭君</Option>
+                              </Select>
+                            )}
+                          </FormItem>
                         </Col>
                       </Row>
                     </StandardFormRow>
                   </Form>
+                  <Table
+                    bordered={false}
+                    columns={beTablecolumns}
+                    expandedRowRender={record => <div className="expandbox"><Button onClick={() => { this.hideTableEx(record) }}  >关闭</Button></div>}
+                    // expandRowByClick={true}
+                    rowKey={record => record.id}
+                    dataSource={statist}
+                    loading={statistloading}
+                    scroll={{ x: true, y: 300 }}
+                    expandedRowKeys={this.state.expandedKeys}
+                    className={styles.tableBehavior}
+                  />
                 </Card>
                </div>
             </TabPane>

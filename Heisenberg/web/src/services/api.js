@@ -276,3 +276,11 @@ export async function fakeRegister(params) {
 export async function queryNotices() {
   return request('/api/notices');
 }
+
+export async function queryBehaviorList(params) {
+  return request(`http://${Address}/api/RTData/ages`,
+    {
+      method: 'POST',
+      body: params,
+    });
+}
