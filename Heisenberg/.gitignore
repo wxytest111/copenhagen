@@ -19,6 +19,8 @@ build/
 # Coverage directory used by tools like istanbul
 coverage
 
+#lock
+package-lock.json
 # nyc test coverage
 .nyc_output
 
