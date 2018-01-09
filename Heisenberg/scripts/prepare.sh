@@ -4,4 +4,5 @@ source ~/.bash_profile
 
 set -e
 
-nvm list
+node -v
+#nvm list

@@ -20,7 +20,8 @@ build/
 coverage
 
 #lock
-package-lock.json
+#package-lock.json
+
 # nyc test coverage
 .nyc_output
 
