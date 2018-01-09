@@ -6,7 +6,7 @@
 /src/utils/request-temp.js
 
 # production
-/dist
+#/dist
 
 # misc
 .DS_Store
