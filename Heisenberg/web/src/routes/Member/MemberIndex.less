@@ -3,16 +3,16 @@
 
 .leftCard{
    :global {
+    //    position: fixed;
         .ant-card-body{
             padding: 10px 0;
         }
     }
 }
 .openLeft{
+    // position: fixed;
     width: 25px;
     height: 100%;
-    margin: 0 auto;
-    padding-right: 12px;
     display:table;
     font-size: 20px;
     &>i:hover {
@@ -31,13 +31,13 @@
         overflow: hidden;
         .ant-card-body{
             padding: 0;
-            border: 1px solid #ad35e5;
+            border: 1px solid #1890ff;
         }
         .memberCardtitle{
             padding: 0 10px;
             height: 45px;
             line-height: 44px;
-            background: #ad35e5;
+            background: #1890ff;
             overflow: hidden;
             .titleleft{
                 &>label {
@@ -152,12 +152,33 @@
 }
 
 .shopBtn {
-    &>button{
+    padding-top: 10px;
+    &>label{
         padding: 0 10px;
         font-size: 14px;
+        border: 0;
+        border: 1px solid #d9d9d9;
         border-radius: 20px;
     }
-    &>button:first-child{
+    &>label:first-child{
         margin-right: 15px;
+        border-radius: 20px;
     }
+    &>label:last-child{
+        &::before{
+            width: 0;
+            height: 0;
+        }
+        border-radius: 20px;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+}
+.cardlistnull{
+    height: 100%;
+    margin: 0 auto;
+    font-size: 18px;
+    text-align: center;
+    margin-top: 20px;
+    color: blue;
 }

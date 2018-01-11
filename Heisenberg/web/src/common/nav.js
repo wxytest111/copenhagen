@@ -47,6 +47,8 @@ import StatistPromotion from '../routes/Statistics/StatistPromotion';
 import StatistRegion from '../routes/Statistics/StatistRegion';
 import StatistBehavior from '../routes/Statistics/StatistBehavior';
 import Member from '../routes/Member/MemberIndex';
+import SystemTags from '../routes/System/SystemTags';
+import SystemUser from '../routes/System/SystemUser';
 
 const data = [{
   component: BasicLayout,
@@ -148,7 +150,21 @@ const data = [{
     path: 'equipment',
     component: Equipment,
     
-  }],
+  },{
+    name: '系统管理',
+    icon: 'setting',
+    path: 'system',
+    children: [{
+      name: '特别人员标签管理',
+      path: 'system-tags',
+      component: SystemTags,
+    }, {
+        name: '用户管理',
+        path: 'system-user',
+        component: SystemUser,
+    }],
+  }
+],
 }, {
   component: BlankLayout,
   layout: 'BlankLayout',

@@ -1,12 +1,14 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Popconfirm, Modal, Tree, Form, Table, List, Card, Row, Col, Tooltip, Input, Button, Icon, Menu, Avatar, Select, Layout, Radio, DatePicker } from 'antd';
+import { Popconfirm, Modal, Tree, Form, Table, List, Card, Row, Col, Tooltip, Input, Button, Icon, Menu, Avatar, Select, Layout, Radio, DatePicker, message } from 'antd';
 import moment from 'moment';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './MemberIndex.less';
 import StandardFormRow from '../../components/StandardFormRow';
 import { getTimeDistance } from '../../utils/utils';
 import ReactEcharts from 'echarts-for-react';
+import io from "socket.io-client";
+import cloneDeep from 'lodash/cloneDeep';
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
 const { Content } = Layout;
@@ -146,40 +148,84 @@ const Scatterdata = [
 @Form.create()
 @connect(state => ({
     skulist: state.skulist,
-    shop: state.shop,
     region: state.region,
+    shop: state.region,
     expandedKeys: [],
     nature: undefined,
     autoExpandParent: true,
-    // checkedKeys: ['0-0-0'],
     selectedKeys: [],
 }))
 export default class Member extends PureComponent {
+    constructor(props, context) {
+        super(props, context);
+    }
     state = {
         region: {},
         modalVisible: false,
         leftOpenStaus: true,
         current: 'week',
+        modelBtn: "1",
         getdataNmb: getTimeDistance('week'),
-        showInfo: true,
+        showInfo: false,
+        scatterPickerValue: 'age',
+        shopcardList: [],
+        shop_id: undefined
     };
 
     componentDidMount() {
-        this.props.region.region = [];
+        this.props.region.shop = [];
         this.props.dispatch({
-            type: 'region/fetch',
+            type: 'region/queryRSList',
             payload: {
-                ancestor_key: 0,
-            },
-        });
-        this.props.shop.shop = [];
-        this.props.dispatch({
-            type: 'shop/fetch',
-            payload: {
-
+                // type: 0,
             },
         });
 
+    }
+    getSocketDataFn =(shopid) =>{
+        console.log(shopid)
+        this.setState({
+            shopcardList: [],
+        });
+        // 47.92.107.250
+        const socket = io('http://47.92.107.250:1080',{
+            query: {
+                shop_id: shopid
+            }
+        });
+
+        socket.on('new', (msg) => {
+            console.log(msg.message.data.shop_id)
+            console.log(this.state.shop_id)
+            const { shopcardList } = this.state;
+            // let CardData = {};
+            if (msg.message && msg.message.code == 200 && msg.message.data.shop_id == this.state.shop_id) {
+                shopcardList.unshift(msg.message.data);
+                let newArr = cloneDeep(shopcardList);
+                this.setState({
+                    shopcardList: newArr
+                }
+                );
+            }
+
+        });
+        socket.on('leave', (msg) => {
+            const { shopcardList } = this.state;
+            if (msg.message && msg.message.code == 200) {
+                for (let i = 0; i < shopcardList.length; i++) {
+                    if (shopcardList[i].group_id == msg.message.group_id) {
+                        shopcardList.splice(i, 1);
+                    }
+                }
+                let newArr = cloneDeep(shopcardList);
+                this.setState({
+                    shopcardList: newArr,
+                });
+            }
+
+        })
+        let value = 'test'
+        socket.emit('disconnect', value); //发射事件
 
     }
 
@@ -203,6 +249,9 @@ export default class Member extends PureComponent {
     }
     handleDateChange = (e) => {
         this.setState({ current: e.target.value });
+    }
+    handleBtnChange = (e) => {
+        this.setState({ modelBtn: e.target.value });
     }
 
     getOtionScatter() {
@@ -339,8 +388,6 @@ export default class Member extends PureComponent {
     }
 
     onExpand = (expandedKeys) => {
-        console.log('onExpand', expandedKeys);
-        console.log('onExpand', arguments);
         // if not set autoExpandParent to false, if children expanded, parent can not collapse.
         // or, you can remove all expanded children keys.
         this.setState({
@@ -360,28 +407,56 @@ export default class Member extends PureComponent {
 
     onSelect = (selectedKeys, info) => {
 
-        var list = new Array();
-        this.getRegionIdList(list, info.node.props.dataRef)
-        this.setState({ selectedKeys });
-        this.props.shop.shop = [];
-        this.props.dispatch({
-            type: 'shop/fetch',
-            payload: {
-                region_id: list
-            },
-        });
+        if (selectedKeys.length > 0 && selectedKeys[0].length < 11) {
+            message.info('请选择门店');
+        }
+        if (selectedKeys.length > 0 && selectedKeys[0].length > 11) {
+            console.log(selectedKeys[0])
+            this.getSocketDataFn(selectedKeys[0]);
+            this.setState({
+                selectedKeys: selectedKeys,
+                shop_id: selectedKeys[0],
+
+            })
+        }
     }
     renderTreeNodes = (data) => {
         return data.map((item) => {
-            if (item.children) {
-                return (
-                    <TreeNode title={item.name} key={item.id} dataRef={item}>
-                        {this.renderTreeNodes(item.children)}
-                    </TreeNode>
-                );
+            var shop = new Array();
+            if (item.shop) {
+                item.shop.map((s) => {
+                    (
+                        shop.push(s)
+                    );
+                });
             }
-            return <TreeNode title={item.name} key={item.id} dataRef={item} />;
-            // return <TreeNode {...item} />;
+            if (item.children || shop.length > 0) {
+                if (item.children) {
+                    item.children.map((s) => {
+                        (
+                            shop.push(s)
+                        );
+                    });
+                }
+                var r = (
+                    <TreeNode title={item.name} key={item.id} dataRef={item}>
+                        {this.renderTreeNodes(shop)}
+                    </TreeNode>
+                )
+
+                return (
+                    r
+                );
+
+            }
+            if (item.id.length > 11) {
+                var c = (<TreeNode title={<span><Icon type='shop' style={{ fontSize: 16, color: '#08c' }} />&nbsp;{item.name}</span>} key={item.id} dataRef={item} />)
+            } else {
+                var c = (<TreeNode title={item.name} key={item.id} dataRef={item} />)
+            }
+            return (
+                c
+            );
         });
     }
     showChart = () => {
@@ -389,27 +464,20 @@ export default class Member extends PureComponent {
             showInfo: false,
         });  
     }
-
+    showInfo = () => {
+        this.setState({
+            showInfo: true,
+        });
+    }
 
     render() {
 
         // const { shop: { shop, shoploading, shopSubmitting } } = this.props;
-        const shop = [{id:1}, {id:2}];
-
-        const { region: { region, loading, skuSubmitting } } = this.props;
+        const { shopcardList, shop_id} = this.state;
+        const { shop: { shop, loading, skuSubmitting } } = this.props;
+        // const { region: { region, loading, skuSubmitting } } = this.props;
         const { getFieldDecorator, getFieldValue } = this.props.form;
 
-        const paginationProps = {
-            // size:'small',
-            // showSizeChanger: true,
-            showQuickJumper: true,
-            pageSize: 5,
-            // current:this.state.current,
-            total: shop.length,
-            onChange: (page) => {
-                console.log(page)
-            }
-        };
         const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
@@ -436,9 +504,13 @@ export default class Member extends PureComponent {
                     />
                 </StandardFormRow>
                 <Row>
-                    <Col className={styles.shopBtn}>
-                        <Button icon="shopping-cart" onClick={() => { this.showChart() }}>推荐商品购买信息</Button>
-                        <Button icon="environment">店铺到访信息</Button>
+                    <Col>
+                        <Radio.Group value={modelBtn} onChange={this.handleBtnChange} className={styles.shopBtn}>
+                            <Radio.Button icon="shopping-cart" value="1">推荐商品购买信息</Radio.Button>
+                            <Radio.Button icon="environment" value="2">店铺到访信息</Radio.Button>
+                        </Radio.Group>
+                        {/* <Button icon="shopping-cart" onClick={() => { this.showChart() }}></Button>
+                        <Button icon="environment" onClick={() => { this.showInfo() }}></Button> */}
                     </Col>
                     <Col>
                         {this.state.showInfo ? <div>111</div> : <ReactEcharts
@@ -459,77 +531,90 @@ export default class Member extends PureComponent {
         const bodyHeight = document.body.clientHeight - 150 + 'px';
         const bodyRightHeight = document.body.clientHeight - 130 + 'px';
         const tableHeight = document.body.clientHeight - 182 + 'px';
-        const { current } = this.state;
+        const { current, modelBtn} = this.state;
 
 
         return (
             <PageHeaderLayout>
                 <Row gutter={24}>
-                    <Col span={this.state.leftOpenStaus ? "5" : "0"}  style={{paddingRight:"0"}}>
-                        <Card bordered={false} className={styles.leftCard}>
-                            <Row type="flex" justify="space-around" style={{ height: bodyHeight, maxHeight: bodyHeight}}>
-                                <Col span={this.state.leftOpenStaus ? "21" : "0"}>
-                                    <Search
-                                        placeholder="请输入搜索关键词"
-                                        onSearch={value => console.log(value)}
-                                    />
-                                    <Layout>
-                                        <div style={{ background: '#fff' }}>
-                                            <Content style={{ overflow: 'auto', border: '1px solid #d9d9d9',  height: tableHeight }}>
-                                                <Tree
-                                                    onExpand={this.onExpand}
-                                                    expandedKeys={this.state.expandedKeys ? this.state.expandedKeys : ['6']}
-                                                    autoExpandParent={this.state.autoExpandParent}
-                                                    // checkedKeys={this.state.checkedKeys}
-                                                    onSelect={this.onSelect}
-                                                    selectedKeys={this.state.selectedKeys}
-                                                >
-                                                    {this.renderTreeNodes(region)}
-                                                </Tree>
-                                            </Content>
-                                        </div>
-                                    </Layout>
-                                </Col>
-                                
-                            </Row>
-                        </Card>
+                    <Col span={this.state.leftOpenStaus ? "6" : "1"} style={{ paddingRight: "0", position: 'relative'}}>
+                        <Row gutter={24}>
+                            <Col span={this.state.leftOpenStaus ? "20" : "0"} style={{ paddingRight: "0"}}>
+                                <Card bordered={false} className={styles.leftCard}>
+                                    <Row type="flex" justify="space-around" style={{ height: bodyHeight, maxHeight: bodyHeight }}>
+                                        <Col span={this.state.leftOpenStaus ? "21" : "0"}>
+                                            <Search
+                                                placeholder="请输入搜索关键词"
+                                                onSearch={value => console.log(value)}
+                                            />
+                                            <Layout>
+                                                <div style={{ background: '#fff' }}>
+                                                    <Content style={{ overflow: 'auto', border: '1px solid #d9d9d9', height: tableHeight }}>
+                                                        <Tree
+                                                            onExpand={this.onExpand}
+                                                            expandedKeys={this.state.expandedKeys ? this.state.expandedKeys : ['6']}
+                                                            autoExpandParent={this.state.autoExpandParent}
+                                                            // checkedKeys={this.state.checkedKeys}
+                                                            onSelect={this.onSelect}
+                                                            selectedKeys={this.state.selectedKeys}
+                                                        >
+                                                            {this.renderTreeNodes(shop)}
+                                                        </Tree>
+                                                    </Content>
+                                                </div>
+                                            </Layout>
+                                        </Col>
+
+
+                                    </Row>
+                                </Card>
+                            </Col>
+                            <Col span={this.state.leftOpenStaus ? "4" : "24"} style={{ paddingLeft: "0" }}>
+                                <div className={styles.openLeft} onClick={this.leftCardOpen.bind(this, this.state.leftOpenStaus)} style={{ paddingLeft: 0, height: bodyRightHeight }} >
+                                    <Icon type={this.state.leftOpenStaus ? "left" : "right"} />
+                                </div>
+                            </Col>
+                        </Row>
+                            
+                        
                     </Col>
-                    <Col span={1} className={styles.openLeft} onClick={this.leftCardOpen.bind(this, this.state.leftOpenStaus)} style={{ paddingLeft: 0,height: bodyRightHeight}}>
-                        <Icon type={this.state.leftOpenStaus ? "left" : "right"} />
-                    </Col>
-                    <Col span={this.state.leftOpenStaus ? "18" : "22"} style={{ background: "#fff", height: bodyRightHeight, overflow:"hidden"}}>
+                   
+                    <Col span={this.state.leftOpenStaus ? "18" : "23"} style={{ background: "#fff", minHeight: bodyRightHeight, overflow:"hidden"}}>
+                        {shopcardList.length == 0 && !shop_id ?
+                        <div className={styles.cardlistnull}>
+                          请选择左侧店铺后查看人员信息！
+                        </div>:
                         <List
                             size="large"
                             rowKey="id"
                             loading={loading}
                             grid={{ gutter: 24, xl: this.state.leftOpenStaus ? 2 : 3, lg: this.state.leftOpenStaus ? 2 : 3, md: 2, sm: this.state.leftOpenStaus ? 1 : 2, xs: this.state.leftOpenStaus ? 1 : 2 }}
-                            pagination={paginationProps}
-                            dataSource={shop}
+                            dataSource={shopcardList}
                             renderItem={item => (
                                 <List.Item key={item.id} style={{ border: 0 }}>
                                     <Card className={styles.memberCards}>
                                         <div className="memberCardtitle">
                                             <Row type="flex" justify="space-between">
                                                 <Col className="titleleft">
-                                                    <label>店员</label>
-                                                    <Button>新人</Button>
+                                                    <label>会员</label>
+                                                    {item.is_new ? <Button >新人</Button> : ''}
                                                 </Col>
                                                 <Col className="titleright">
-                                                    <span>20180105 16:07</span>
+                                                    <span>{moment(item.first_time).format('YYYYMMDD HH:mm')}</span>
                                                 </Col>
                                             </Row>
                                         </div>
                                         <div className="memberCardBody">
                                             <Row type="flex" justify="space-around" align="middle">
                                                 <Col span={8} className="body-avatar">
-                                                    <Avatar shape="square" src="http://jianfu.ufile.ucloud.com.cn/a1944ec9-d1ca-4e4e-bdf0-5ecb1daafe78" size="large" />
+                                                    <Avatar shape="square" src={item.image_uri} size="large" />
                                                 </Col>
                                                 <Col span={16} className="body-lable">
                                                     <FormItem
                                                         label="会员"
                                                         {...formItemLayout}
                                                     >
-                                                        34567890987656
+                                                        {item.first_time}
                                                     </FormItem>
                                                     <FormItem
                                                         label="手机"
@@ -551,17 +636,17 @@ export default class Member extends PureComponent {
                                                 </Col>
                                                 <Col span={12}>
                                                     <FormItem
-                                                        label="微信"
+                                                        label="年龄"
                                                         {...formItemLayout}
                                                     >
-                                                        yinyin990
+                                                        {item.age}
                                                     </FormItem>
                                                 </Col>
                                                 
                                             </Row>
                                             <Row type="flex" justify="space-around">
                                                 <Col span={this.state.leftOpenStaus ? 6 : 7}>
-                                                    来店 <span className="special-nmb">345</span> 次
+                                                    来店 <span className="special-nmb">{item.count}</span> 次
                                                 </Col>
                                                 <Col span={this.state.leftOpenStaus ? 6 : 7}>
                                                     消费<span className="special-nmb">43</span> 单 
@@ -581,7 +666,7 @@ export default class Member extends PureComponent {
                                     </Card>
                                 </List.Item>
                             )}
-                        />
+                        />}
                     </Col>
                 </Row>
             </PageHeaderLayout>
