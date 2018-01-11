@@ -182,7 +182,14 @@ export default class Member extends PureComponent {
         });
 
     }
-    getSocketDataFn =(shopid) =>{
+    setStateAsync(state) {
+        return new Promise((resolve) => {
+        this.setState({
+            resolve:state
+        })
+        });
+    }
+    getSocketDataFn(shopid){
         console.log(shopid)
         this.setState({
             shopcardList: [],
@@ -194,22 +201,25 @@ export default class Member extends PureComponent {
             }
         });
 
-        socket.on('new', (msg) => {
+        socket.on('new',async (msg) => {
             console.log(msg.message.data.shop_id)
-            console.log(this.state.shop_id)
             const { shopcardList } = this.state;
             // let CardData = {};
             if (msg.message && msg.message.code == 200 && msg.message.data.shop_id == this.state.shop_id) {
                 shopcardList.unshift(msg.message.data);
-                let newArr = cloneDeep(shopcardList);
-                this.setState({
-                    shopcardList: newArr
-                }
-                );
+                // let newArr = cloneDeep(shopcardList);
+                await this.setStateAsync({shopcardList:shopcardList});
+                // await this.setState({
+                //     shopcardList:shopcardList,
+                //   }, () => {
+                //     console.log(this.state.shopcardList);
+                //     console.log('加载完成')
+                //   });
             }
 
         });
-        socket.on('leave', (msg) => {
+        socket.on('leave', async (msg) => {
+            console.log('msg----',msg)
             const { shopcardList } = this.state;
             if (msg.message && msg.message.code == 200) {
                 for (let i = 0; i < shopcardList.length; i++) {
@@ -217,10 +227,18 @@ export default class Member extends PureComponent {
                         shopcardList.splice(i, 1);
                     }
                 }
-                let newArr = cloneDeep(shopcardList);
-                this.setState({
-                    shopcardList: newArr,
-                });
+                console.log('list----',shopcardList)
+                // var index = shopcardList.indexOf(msg.message.person_id);
+                // if (index !== -1) {
+                //     shopcardList.splice(index, 1);
+                // }
+
+                await this.setStateAsync({shopcardList:shopcardList});
+
+                // let newArr = cloneDeep(shopcardList);
+                // this.setState({
+                //     shopcardList: newArr,
+                // });
             }
 
         })
