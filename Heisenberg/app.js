@@ -126,7 +126,17 @@ app.on('error', (err, ctx) => {
   
 //const Consumer = require("./routes/consumer")
 //Consumer();
+
 const kafka = require("./routes/kafka")
+const ws = require("./routes/websocketService")
+var WS = new ws();
+// console.log('----------------------------',require('http').createServer(app.callback()))
+ws(app.listen(1080));
+WS.listenConnection();
+kafka.on('push', (msg) => {
+  //console.log("mgs===========push====",msg.type);
+  WS.sendNew(msg);
+});
 // kafka.on();
 //const Consumer1 = require("./routes/consumer1")
 //Consumer1();

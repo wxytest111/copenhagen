@@ -13,6 +13,16 @@ class EquipmentRepo{
         
     }
     
+    async getBySensor(sensor){
+        var equipmentDao = equipment(db.sequelize,db.Sequelize.DataTypes);
+        var equ = await equipmentDao.findOne({
+            where: {
+                equipment_ID:sensor
+              }
+        });
+        return equ
+    }
+    
     async add(model){
         var equipmentDao = equipment(db.sequelize,db.Sequelize.DataTypes);
         

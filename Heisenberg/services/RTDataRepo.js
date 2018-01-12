@@ -33,6 +33,15 @@ class RTDataRepo{
          return r[0];
     }
 
+    async pCount(pid){
+        var dao = RTData(db.sequelize,db.Sequelize.DataTypes);
+        var m = await dao.count({
+            where:{
+                pid:pid
+            }
+        })
+        return m;
+    }
     
     async max(str){
         var dao = RTData(db.sequelize,db.Sequelize.DataTypes);
@@ -40,13 +49,14 @@ class RTDataRepo{
         return m;
     }
 
-    async add(m){
+    async add(m,msg){
         var dao = RTData(db.sequelize,db.Sequelize.DataTypes);
         // var max = await dao.max('offset');
         // if(!max) max = -1;
         // if(message.offset > max){
             
-            let msg = JSON.parse(m.message.value.toString('utf8'));
+            // let msg = m.message.value;
+            // let msg = JSON.parse(m.message.value.toString('utf8'));
             if(msg.type === 'add'){
                 // console.log('msg---dao---',msg)
                 var info = new RTDataInfo();
