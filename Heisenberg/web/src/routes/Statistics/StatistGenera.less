@@ -1,0 +1,55 @@
+@import "~antd/lib/style/themes/default.less";
+@import "../../utils/utils.less";
+
+.bodyTab{
+   &>label{ 
+    border:0;
+   }
+   &>lable:first-child{
+      border-left: 0px solid #fff;
+   }
+   &>.antRadioButtonWrapperChecked{
+      background-color: #1890ff;
+   }
+   
+}
+.cardHead{
+    &>h4{
+        font-size: 14px;
+        &>span{
+            font-size: 10px;
+            color:#d1d1d1;
+            margin-left:10px; 
+        }
+    }
+}
+
+.salesExtra {
+  position: absolute;
+  z-index: 10;
+  display: inline-block;
+  margin-top: 10px;
+  margin-right: 10px;
+  a {
+    color: @text-color;
+    padding: 3px 8px;
+    border-top: 1px solid #d1d1d1;
+    border-bottom: 1px solid #d1d1d1;
+    border-right: 1px solid #d1d1d1;
+    &:first-child{
+        border-left: 1px solid #d1d1d1;
+    }
+    &:hover {
+      color: @primary-color;
+      border: 1px solid @primary-color;
+      -webkit-box-shadow: -1px 0 0 0 @primary-color;
+      box-shadow: -1px 0 0 0 @primary-color;
+      z-index: 1;
+    }
+    &.currentDate {
+      color: @body-background;
+      background-color: @primary-color;
+      border: 1px solid @primary-color;
+    }
+  }
+}
