@@ -194,7 +194,7 @@ export default class Member extends PureComponent {
 
     getSocketHost(){
         var addr = Address;
-        addr = '47.92.107.250';
+        // addr = '47.92.107.250';
         if(addr.indexOf(":") !== -1){
             addr = addr.split(":")[0];
         }
