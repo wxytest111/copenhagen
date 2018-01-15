@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Link } from 'dva/router';
 import { Popconfirm, Modal, Checkbox, InputNumber, Form, List, Card, Row, Col, Input, Upload, Button, Icon, Table, Menu, Avatar, TreeSelect, Tree, Select, Layout } from 'antd';
 const Search = Input.Search;
 const TreeNode = Tree.TreeNode;
@@ -639,7 +638,7 @@ export default class SystemTags extends PureComponent {
                                         </Popconfirm>
                                     }
                                     <Icon type="right-circle"style={{ fontSize: 18, color: '#d9d9d9'}} />
-                                    <Link to='system-members'>详情</Link>
+                                    <a onClick={() => this.shop(record)}>详情</a>
                                 </span>
                             }
                         </div>
@@ -820,7 +819,7 @@ export default class SystemTags extends PureComponent {
                     <Card
                         className={styles.listCard}
                         bordered={false}
-                        // title="标签列表"
+                        title="会员列表"
                         extra={
                             <div>
                             <Row>
