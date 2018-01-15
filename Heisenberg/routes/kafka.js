@@ -20,13 +20,14 @@ function parse(ms) {
     case "add":
     	data.type = "add";
       data.message["data"] = {};
+      data.message.data["id"] = ms["id"];
       data.message.data["age"] = ms["attribute"]["age"];
-      data.message.data["first_time"] = ms["cover"]["time"];
+      data.message.data["createdAt"] = ms["cover"]["time"];
       data.message.data["gender"] = ms["attribute"]["gender"];
-      data.message.data["group_id"] = ms["gid"];
-      data.message.data["image_uri"] = ms["cover"]["uri"];
-      data.message.data["is_new"] = ms["new"];
-      data.message.data["person_id"] = ms["pid"];
+      data.message.data["gid"] = ms["gid"];
+      data.message.data["image"] = ms["cover"]["uri"];
+      data.message.data["news"] = ms["new"];
+      data.message.data["pid"] = ms["pid"];
       data.message.data["shop_id"] = ms["shop"];
       data.message.data["ts"] = ms["time"];
       data.message.data["sensor"] = ms["Sensor"];
@@ -36,24 +37,24 @@ function parse(ms) {
     case "delete":
       data.type = "delete";
       data.message["data"] = {};
-      data.message["person_id"] = ms["pid"];
-      data.message["group_id"] = ms["gid"];
+      data.message["pid"] = ms["pid"];
+      data.message["gid"] = ms["gid"];
       data.message.data["shop_id"] = ms["shop"];
       data.message["time"] = ms["time"];
       data.message["duration"] = ms["duration"];
       break;
     case "tag":
     	data.type = "alarm";
-      data.message["person_id"] = ms["pid"];
-      data.message["group_id"] = ms["gid"];
+      data.message["pid"] = ms["pid"];
+      data.message["gid"] = ms["gid"];
       data.message["time"] = ms["time"];
       data.message["tag"] = ms["tags"];
       break;
     case "update":
     	data.type = "update";
-      data.message["person_id"] = ms["pid"];
-      data.message["group_id"] = ms["gid"];
-      data.message["image_uri"] = ms["img"]["uri"];
+      data.message["pid"] = ms["pid"];
+      data.message["gid"] = ms["gid"];
+      data.message["image"] = ms["img"]["uri"];
       break;
   }
   return data;
@@ -70,14 +71,17 @@ function parse(ms) {
       if(equ){
         cur.shop = equ.shop_id;
       }
-      var pcount = await dao.pCount(cur.pid);
+      var pcount = await dao.pCount(cur.pid,cur.shop);
       if(pcount){
         cur.count = pcount;
       } else {
         cur.count = 1;
       }
     }
-    dao.add(m,cur);
+    var info = await dao.add(m,cur);
+    if(cur.type === 'add'){
+      cur.id = info.id;
+    }
     let parsedData = parse(cur);
     module.exports.emit("push", parsedData);
     });

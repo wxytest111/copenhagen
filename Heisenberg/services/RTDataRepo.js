@@ -13,6 +13,21 @@ class RTDataRepo{
         
     }
 
+    async getListByShop(shop_id){
+
+        var dao = RTData(db.sequelize,db.Sequelize.DataTypes);
+        
+        var r=await dao.findAll({
+            where:{
+                shop_id:shop_id,
+                deletedAt: null
+            },
+            order: [ [ 'createdAt', 'DESC' ]] 
+        });
+
+        return r;
+    }
+
     async ages(model){
         var dao = RTData(db.sequelize,db.Sequelize.DataTypes);
         //var r = new AgesInfo();
@@ -33,11 +48,12 @@ class RTDataRepo{
          return r[0];
     }
 
-    async pCount(pid){
+    async pCount(pid,shop_id){
         var dao = RTData(db.sequelize,db.Sequelize.DataTypes);
         var m = await dao.count({
             where:{
-                pid:pid
+                pid:pid,
+                shop_id:shop_id
             }
         })
         return m;
@@ -73,11 +89,17 @@ class RTDataRepo{
                 info.Glass = msg.attribute.glass;
                 info.Offset = m.offset;
     
-                await dao.create(info);
+                return await dao.create(info);
             } else if(msg.type === 'delete'){
                 var info = new RTDataInfo();
                 info.DeletedAt = msg.time;
                 info.Duration = msg.duration;
+                await dao.update(info,{  
+                    'where':{'gid':msg.gid}
+                });
+            } else if(msg.type === 'tag'){
+                var info = new RTDataInfo();
+                info.tag = msg.tags.tag;
                 await dao.update(info,{  
                     'where':{'gid':msg.gid}
                 });

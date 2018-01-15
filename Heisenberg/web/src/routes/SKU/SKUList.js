@@ -908,7 +908,7 @@ handleOkShop = (e) => {
         </Modal>
     );
     const submitShopForm = () => (
-      <Modal title="添加商品规则属性" visible={this.state.modalVisibleShop} onOk={this.handleOkShop} onCancel={this.handleCancelShop} 
+      <Modal title="关联门店" visible={this.state.modalVisibleShop} onOk={this.handleOkShop} onCancel={this.handleCancelShop} 
       confirmLoading={shopSubmitting}>
       <Row style={{padding: '10px 0px 0px' }}>
         <Col>

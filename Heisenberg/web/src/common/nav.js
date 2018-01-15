@@ -49,6 +49,7 @@ import StatistBehavior from '../routes/Statistics/StatistBehavior';
 import Member from '../routes/Member/MemberIndex';
 import SystemTags from '../routes/System/SystemTags';
 import SystemUser from '../routes/System/SystemUser';
+import SystemMembers from '../routes/System/SystemMembers';
 
 const data = [{
   component: BasicLayout,
@@ -158,10 +159,15 @@ const data = [{
       name: '特别人员标签管理',
       path: 'system-tags',
       component: SystemTags,
-    }, {
-        name: '用户管理',
-        path: 'system-user',
-        component: SystemUser,
+    },{
+          name: '会员管理',
+          path: 'system-members',
+          component: SystemMembers,
+      
+    // }, {
+    //     name: '用户管理',
+    //     path: 'system-user',
+    //     component: SystemUser,
     }],
   }
 ],

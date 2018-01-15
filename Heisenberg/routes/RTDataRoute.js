@@ -14,4 +14,23 @@ router.post('/ages', async function (ctx, next) {
   
 })
 
+router.get('/list', async function (ctx, next) {
+  ctx.body = ctx.request.body;
+  // ctx.body.createAt = new Date().toDateString();
+  ctx.compress = true;
+  var dao =  new RTData();
+  var vr = await dao.getListByShop(ctx.query.shop_id);
+  for (let index = 0; index < vr.length; index++) {
+    var pcount = await dao.pCount(vr[index].pid,ctx.query.shop_id);
+    if(pcount){
+      vr[index].dataValues.count = pcount;
+    } else {
+      vr[index].dataValues.count = 1;
+    }
+  }
+  console.log(vr)
+  ctx.body = vr;
+  
+})
+
 module.exports = router;

@@ -1,5 +1,5 @@
 /* jshint indent: 2 */
-
+var moment = require('moment');  
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('real_time_data', {
     id: {
@@ -50,10 +50,21 @@ module.exports = function(sequelize, DataTypes) {
     },
     createdAt: {
       type: DataTypes.DATE,
-      allowNull: true
+      
+      allowNull: true,
+      get() {
+        return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD HH:mm:ss');
+      }
     },
     deletedAt: {
       type: DataTypes.DATE,
+      allowNull: true,
+      get() {
+        return moment(this.getDataValue('deletedAt')).format('YYYY-MM-DD HH:mm:ss');
+      }
+    },
+    tag: {
+      type: DataTypes.STRING(255),
       allowNull: true
     },
     duration: {

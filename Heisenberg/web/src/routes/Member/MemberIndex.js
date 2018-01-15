@@ -150,6 +150,7 @@ const Scatterdata = [
 @Form.create()
 @connect(state => ({
     skulist: state.skulist,
+    rtd: state.rtd,
     region: state.region,
     shop: state.region,
     expandedKeys: [],
@@ -182,7 +183,7 @@ export default class Member extends PureComponent {
                 // type: 0,
             },
         });
-
+        
     }
     setStateAsync(state) {
         return new Promise((resolve) => {
@@ -195,40 +196,39 @@ export default class Member extends PureComponent {
     getSocketHost(){
         var addr = Address;
         // addr = '47.92.107.250';
+        addr = 'console.tman.ai';
         if(addr.indexOf(":") !== -1){
             addr = addr.split(":")[0];
         }
         return 'http://'+addr+':1080';
     }
 
-    getSocketDataFn(shopid){
+    getSocketDataFn = async (shopid,list) => {
         // console.log(shopid)
-        this.setState({
-            shopcardList: [],
-        });
+        // this.setState({
+        //     shopcardList: [],
+        // });
         // 47.92.107.250
-        
         const socket = io(this.getSocketHost(),{
             query: {
                 shop_id: shopid
             }
         });
-
         socket.on('new',async (msg) => {
-            // console.log(msg.message.data.shop_id)
+            // console.log(msg.message.data)
             const { shopcardList } = this.state;
             if (msg.message && msg.message.code == 200 && msg.message.data.shop_id == this.state.shop_id) {
                 shopcardList.unshift(msg.message.data);
                 await this.setStateAsync({shopcardList:shopcardList});
             }
-
+            // console.log(shopcardList)
         });
         socket.on('leave', async (msg) => {
             
             const { shopcardList } = this.state;
             if (msg.message && msg.message.code == 200) {
                 for (let i = 0; i < shopcardList.length; i++) {
-                    if (shopcardList[i].group_id == msg.message.group_id) {
+                    if (shopcardList[i].gid == msg.message.gid) {
                         shopcardList.splice(i, 1);
                     }
                 }
@@ -242,7 +242,7 @@ export default class Member extends PureComponent {
             const { shopcardList } = this.state;
             if (msg.message && msg.message.code == 200) {
                 for (let i = 0; i < shopcardList.length; i++) {
-                    if (shopcardList[i].group_id == msg.message.group_id) {
+                    if (shopcardList[i].gid == msg.message.gid) {
                         shopcardList[i].tag = msg.message.tag
                     }
                 }
@@ -431,14 +431,26 @@ export default class Member extends PureComponent {
         }
     }
 
-    onSelect = (selectedKeys, info) => {
+    onSelect = async (selectedKeys, info) => {
 
         if (selectedKeys.length > 0 && selectedKeys[0].length < 11) {
             message.info('请选择门店');
         }
+        
         if (selectedKeys.length > 0 && selectedKeys[0].length > 11) {
+            this.props.rtd.rtd = [];
+            await this.props.dispatch({
+                type: 'rtd/fetch',
+                payload: {
+                    shop_id: selectedKeys[0],
+                },
+            });
+        // console.log(this.props.rtd.rtd)
+        this.setState({
+            shopcardList:this.props.rtd.rtd
+        })
             // console.log(selectedKeys[0])
-            this.getSocketDataFn(selectedKeys[0]);
+            this.getSocketDataFn(selectedKeys[0],this.props.rtd.rtd);
             this.setState({
                 selectedKeys: selectedKeys,
                 shop_id: selectedKeys[0],
@@ -582,7 +594,7 @@ export default class Member extends PureComponent {
                                         <Col span={this.state.leftOpenStaus ? "21" : "0"}>
                                             <Search
                                                 placeholder="请输入搜索关键词"
-                                                onSearch={value => console.log(value)}
+                                                // onSearch={value => console.log(value)}
                                             />
                                             <Layout>
                                                 <div style={{ background: '#fff' }}>
@@ -636,24 +648,24 @@ export default class Member extends PureComponent {
                                             <Row type="flex" justify="space-between">
                                                 <Col className="titleleft">
                                                     <label>{item.tag ? item.tag : '普通会员'}</label>
-                                                    {item.is_new ? <Button >新人</Button> : ''}
+                                                    {item.news || item.news === 1 ? <Button >新人</Button> : ''}
                                                 </Col>
                                                 <Col className="titleright">
-                                                    <span>{moment(item.first_time).format('YYYYMMDD HH:mm')}</span>
+                                                    <span>{moment(item.createdAt).format('YYYY-MM-DD HH:mm')}</span>
                                                 </Col>
                                             </Row>
                                         </div>
                                         <div className="memberCardBody">
                                             <Row type="flex" justify="space-around" align="middle">
                                                 <Col span={8} className="body-avatar">
-                                                    <Avatar shape="square" src={item.image_uri} size="large" />
+                                                    <Avatar shape="square" src={item.image} size="large" />
                                                 </Col>
                                                 <Col span={16} className="body-lable">
                                                     <FormItem
                                                         label="会员"
                                                         {...formItemLayout}
                                                     >
-                                                        {item.first_time}
+                                                        {item.id}
                                                     </FormItem>
                                                     <FormItem
                                                         label="手机"
@@ -694,12 +706,12 @@ export default class Member extends PureComponent {
                                                     <span className="special-nmb">456</span>元
                                                 </Col>
                                             </Row>
-                                            <Row type="flex" justify="end">
-                                                <Col className="model-btn">
+                                            {/* <Row type="flex" justify="end"> */}
+                                                {/* <Col className="model-btn"> */}
                                                     {/* onClick={() => { this.hideTableEx(record) }} */}
-                                                    <Button onClick={() => {this.showModal()}}>购物行为分析</Button>
-                                                </Col>
-                                            </Row>
+                                                    {/* <Button onClick={() => {this.showModal()}}>购物行为分析</Button> */}
+                                                {/* </Col> */}
+                                            {/* </Row> */}
                                             {MemberModal()}
                                         </div>
                                     </Card>

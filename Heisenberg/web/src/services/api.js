@@ -144,6 +144,10 @@ export async function queryRegionList(params) {
   return request(`http://${Address}/api/region/list?${stringify(params)}`);
 }
 
+export async function getListByShop(params) {
+  return request(`http://${Address}/api/RTData/list?${stringify(params)}`);
+}
+
 export async function queryRSList(params) {
   return request(`http://${Address}/api/region/RSlist?${stringify(params)}`);
 }

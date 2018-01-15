@@ -21,6 +21,8 @@ const PromotionMsg = require("./services/promotionMsg")
 const TestRoute = require('./routes/testRoute');
 const IdentifyRoute = require('./routes/IdentifyRoute');
 const RTDataRoute = require('./routes/RTDataRoute');
+const MembersRoute = require('./routes/MembersRoute');
+const MembersLabelRoute = require('./routes/MembersLabelRoute');
 const Index = require('./routes/indexRoute');
 
 if(process.env.ND_CORS){
@@ -114,6 +116,8 @@ app.use(UserRoute.routes(), UserRoute.allowedMethods());
 app.use(FeedbackRoute.routes(), FeedbackRoute.allowedMethods());
 app.use(IdentifyRoute.routes(), IdentifyRoute.allowedMethods());
 app.use(RTDataRoute.routes(), RTDataRoute.allowedMethods());
+app.use(MembersRoute.routes(), MembersRoute.allowedMethods());
+app.use(MembersLabelRoute.routes(), MembersLabelRoute.allowedMethods());
 app.use(Index.routes(), Index.allowedMethods());
 
 
