@@ -44,6 +44,7 @@ import Equipment from '../routes/Equipment/Equipment';
 import ShopSKU from '../routes/ShopSKU/ShopSKU';
 import StatistGenera from '../routes/Statistics/StatistGenera';
 import StatistPromotion from '../routes/Statistics/StatistPromotion';
+import StatistHumanCargo from '../routes/Statistics/StatistHumanCargo';
 import StatistRegion from '../routes/Statistics/StatistRegion';
 import StatistBehavior from '../routes/Statistics/StatistBehavior';
 import Member from '../routes/Member/MemberIndex';
@@ -123,6 +124,10 @@ const data = [{
       name: '推荐转化分析',
       path: 'statist-promotion',
       component: StatistPromotion,
+    }, {
+        name: '人货数据分析',
+        path: 'statist-humanCargo',
+        component: StatistHumanCargo,
     },{
         name: '区域分布',
         path: 'statist-region',

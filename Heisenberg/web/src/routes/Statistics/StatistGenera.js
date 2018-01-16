@@ -17,6 +17,7 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import { getTimeDistance } from '../../utils/utils';
 
 import styles from './StatistGenera.less';
+import List from 'antd/lib/list';
 // import styles from './Analysis.less';
 
 const Scatterdata = [
@@ -174,70 +175,117 @@ export default class StatistGenera extends PureComponent {
     // 绘制图表
   }
   
-  getOtionLine() {
-    const { current } = this.state;
-    const { getdataNmb } = this.state;
-    
-    for (let index = 0; index < getdataNmb.length; index++) {
-      getdataNmb[index] = moment(getdataNmb[index]).format('MM/DD');
+  getOtionScaCircle() {
+    var types = ['食品类', '服装类', '日用品类', '家具类','家用电器类'];
+    var ages = ['18岁以下', '18-24岁', '25-35岁','36-46岁', '47-56岁', '57岁以上'];
+    var data = [];
+    for (let i = 0; i < 100; i++) {
+      var itemdata = [];
+      itemdata[0] = parseInt(Math.floor(Math.random() * 6))
+      itemdata[1] = parseInt(Math.floor(Math.random() * 6))
+      itemdata[2] = parseInt(Math.floor(Math.random() * 1000))
+      data.push(itemdata)
     }
-    const allAata = [
-      [3, 5, 13, 10, 22, 15, 7],
-      [3, 5, 13, 10, 22, 15, 7,23,2,33,44,22,7,4],
-      [3, 5, 13, 10, 22, 15, 7, 23, 2, 33, 44, 22, 7, 4, 55,66,33,55,5,7,8,24,35,45,67,35,44,23,34,13]
-    ]
-    let getData = [], xValue = [], yValue = [];
-    xValue = getdataNmb
-    if (current == 'week') {
-      yValue = allAata[0];
-    } else if (current == 'towWeek') {
-      yValue = allAata[1];
-    }else{
-      yValue = allAata[2];
-    };
+
+    const option = {
+      color: ['#6ea5e2', '#91cb63', '#e9cb70', '#d99666', '#d36e5d', '#dea8fb', '#e9b6ae'],
+        legend: {
+          data: ['购买次数'],
+            left: 'right'
+        },
+        polar: { },
+        tooltip: {
+          formatter: function (params) {
+            return ages[params.value[0]] + '购买' + types[params.value[0]] + '商品'+ params.value[2] + '次';
+          }
+        },
+        angleAxis: {
+          type: 'category',
+          data: types,
+          boundaryGap: false,
+          splitLine: {
+            show: true,
+              lineStyle: {
+              color: '#999',
+                type: 'dashed'
+            }
+          },
+          axisLine: {
+            show: false
+          }
+        },
+        radiusAxis: {
+          type: 'category',
+            data: ages,
+              axisLine: {
+            show: false
+          },
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: '#999',
+              type: 'dashed'
+            }
+          },
+          axisLabel: {
+            rotate: 30
+          }
+        },
+        series: [{
+          name: '购买次数',
+          type: 'scatter',
+          coordinateSystem: 'polar',
+          symbolSize: function (val) {
+            return val[2] * 0.02;
+          },
+          data: data,
+          animationDelay: function (idx) {
+            return idx * 5;
+          }
+        }]
+      };
+    return option;
+  }
+  getOtionPie (){
+    var types = ['食品类', '服装类', '日用品类', '家具类', '家用电器类'];
+    var data = [];
+    for (let i = 0; i < 5; i++) {
+      var itemdata = {};
+      itemdata.name = types[i];
+      itemdata.value = parseInt(Math.floor(Math.random() * 1000))
+      data.push(itemdata)
+    }
     const option = {
       color: ['#6ea5e2', '#91cb63', '#e9cb70', '#d99666', '#d36e5d', '#dea8fb', '#e9b6ae'],
       tooltip: {
-        trigger: 'axis'
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} 次 ({d}%)"
       },
-      // legend: {
-      //   data: ['最高气温', '最低气温']
-      // },
-      // grid: {
-      //   left: '5%',
-      //   right: '5%',
-      //   bottom: '5%',
-      //   top: '5%',
-      //   containLabel: true
-      // },
-      xAxis: {
-        axisTick: {
-          alignWithLabel:true
-        },
-        data: xValue
-      },
-      yAxis: {
-        type: 'value',
-        axisLine:{
-          show:false
-        },
-        axisTick:{
-          show:false
-        },
-        axisLabel: {
-          formatter: '{value}'
-        }
+      legend: {
+        orient: 'vertical',
+        left: 'left',
+        bottom:"5%",
+        data: types
       },
       series: [
         {
-          name: '购买频次',
-          type: 'line',
-          data: yValue,
+          name: '热销品类TOP5',
+          type: 'pie',
+          radius: '55%',
+          center: ['55%', '50%'],
+          data: data,
+          itemStyle: {
+            emphasis: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          }
         }
       ]
-  }
+    }
     return option;
-}
+  }
   getOtionCustPie (){
     const option = {
       color: ['#6ea5e2', '#91cb63', '#e9cb70', '#d99666', '#d36e5d', '#dea8fb', '#e9b6ae'],
@@ -469,30 +517,20 @@ export default class StatistGenera extends PureComponent {
       [
         { value: 405, name: '男' },
         { value: 460, name: '女' }
-      ],
-      [
-        { value: 135, name: '有帽子' },
-        { value: 710, name: '没帽子' },
-      ],
-      [
-        { value: 335, name: '有眼镜' },
-        { value: 510, name: '没眼镜' }
       ]
       
 
     ];
+    let alldata = 0;
     let pieData = [], xValue = [], yValue = [] ;
     if(rangePickerValue == 'age'){
       pieData = pieAllData[0];
     }else if(rangePickerValue == 'sex'){
       pieData = pieAllData[1];
-    }else if(rangePickerValue == 'hat'){
-      pieData = pieAllData[2];
-    }else{
-      pieData = pieAllData[3];
     };
     if(pieData.length){
       for(var i = 0; i < pieData.length; i++){ 
+        alldata = alldata + pieData[i].value;
         var abj = {};
         abj.icon ='circle';
         abj.name = pieData[i].name;
@@ -523,18 +561,18 @@ export default class StatistGenera extends PureComponent {
         align:'right',
         data: xValue
       },
-      // graphic: {
-      //   show:false,
-      //   type: 'text',
-      //   left: 'center',
-      //   top: 'center',
-      //   style: {
-      //     text: '总人数\n 11000',
-      //     textAlign: 'center',
-      //     fill: '#3b91f7',
-      //     fontSize: '26'
-      //   }
-      // },
+      graphic: {
+        show:true,
+        type: 'text',
+        left: 'center',
+        top: 'center',
+        style: {
+          text: `会员总数\n\n ${alldata}(人）`,
+          textAlign: 'center',
+          fill: '#3b91f7',
+          fontSize: '20'
+        }
+      },
       series: [
         {
           name: '年龄',
@@ -544,13 +582,14 @@ export default class StatistGenera extends PureComponent {
           label: {
             normal: {
               show: false,
-              position: 'center',
-              formatter: '{c}\n{b}'
+              position: 'outside',
             },
             emphasis: {
               show: true,
+              formatter: '{c}\n{b}',
               textStyle: {
-                fontSize: '28',
+                fontSize: '20',
+                // align:'center',
                 fontWeight: 'bold',
               }
             }
@@ -772,8 +811,7 @@ export default class StatistGenera extends PureComponent {
               <Row type="flex" justify="space-between" align="bottom" >
                
                 <Col className={styles.cardHead}>
-                    <h4>推荐商品购买频次
-                   <span>全会员购买推荐商品频次</span>
+                  <h4>热销品类TOP5在不同年龄段的购买人数情况
                     </h4>
                   </Col>
                   <Col>
@@ -786,7 +824,7 @@ export default class StatistGenera extends PureComponent {
                 ref= {(e) => {
                   this.echarts_react = e;
                 }}
-                option={this.getOtionLine()}
+                option={this.getOtionScaCircle()}
                 notMerge={true}
                 lazyUpdate={true}
                 style={{ height: '300px', width: '100%' }}
@@ -797,7 +835,7 @@ export default class StatistGenera extends PureComponent {
             <Card style={{ width: '100%' }} bordered={false} bodyStyle={{ padding: 10 }} >
               <Row type="flex" justify="space-between" align="bottom">
                 <Col className={styles.cardHead}>
-                  <h4>支付方式</h4>
+                  <h4>热销品类TOP5的购买人数在全部会员中的占比图</h4>
                 </Col>
                 {/* <Col>
                   <Icon type="right-circle" style={{ fontSize: 16, color: '#d1d1d1' }} />
@@ -807,7 +845,7 @@ export default class StatistGenera extends PureComponent {
                 ref={(e) => {
                   this.echarts_react = e;
                 }}
-                option={this.getOtionCustPie()}
+                option={this.getOtionPie()}
                 notMerge={true}
                 lazyUpdate={true}
                 style={{ height: '300px', width: '100%' }}
@@ -880,12 +918,6 @@ export default class StatistGenera extends PureComponent {
                   <a className={this.isActive('sex', 'pie')} onClick={() => this.selectDate('sex', 'pie')}>
                     性别
                   </a>
-                  <a className={this.isActive('hat', 'pie')} onClick={() => this.selectDate( 'hat', 'pie')}>
-                    戴帽子
-                  </a>
-                  <a className={this.isActive('glasses', 'pie')} onClick={() => this.selectDate('glasses', 'pie')}>
-                    戴眼镜
-                  </a>
                 </div>
               </div>
               <ReactEcharts
@@ -903,30 +935,17 @@ export default class StatistGenera extends PureComponent {
             <Card style={{ width: '100%' }} bordered={false} bodyStyle={{ padding: 10 }} >
               <Row type="flex" justify="space-between" align="bottom">
                 <Col className={styles.cardHead}>
-                  <h4>购物行为
-                    <span>消费金额与驻留时间</span>
-                  </h4>
+                  <h4>支付方式</h4>
                 </Col>
                 {/* <Col>
                   <Icon type="right-circle" style={{ fontSize: 16, color: '#d1d1d1' }} />
                 </Col> */}
               </Row>
-              <div style={{position: 'relative'}}>
-                <div className={styles.salesExtra}>
-                  <a className={this.isActive('age')} onClick={() => this.selectDate('age')}>
-                    年龄
-                  </a>
-                  <a className={this.isActive('sex')} onClick={() => this.selectDate('sex')}>
-                    性别
-                  </a>
-                </div>
-              </div>
-               
               <ReactEcharts
                 ref={(e) => {
                   this.echarts_react = e;
                 }}
-                option={this.getOtionScatter()}
+                option={this.getOtionCustPie()}
                 notMerge={true}
                 lazyUpdate={true}
                 style={{ height: '300px', width: '100%' }}

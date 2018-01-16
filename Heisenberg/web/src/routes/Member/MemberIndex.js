@@ -250,8 +250,6 @@ export default class Member extends PureComponent {
             }
 
         })
-        let value = 'test'
-        socket.emit('disconnect', value); //发射事件
 
     }
 
