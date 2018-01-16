@@ -27,6 +27,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(255),
       allowNull: true
     },
+    color: {
+      type: DataTypes.STRING(10),
+      allowNull: true
+    },
     statistics: {
       type: DataTypes.INTEGER(1),
       allowNull: true

@@ -19,6 +19,10 @@ WS.prototype.listenConnection = function () {
       socket.join(roomID,() => {
         console.log(`${user} client joins ${roomID} room`);
       });
+
+      socket.on('exit', function () {
+        socket.emit('disconnect');
+      });
     
       socket.on("disconnect", () => {
         // 从房间名单中移除
@@ -28,7 +32,7 @@ WS.prototype.listenConnection = function () {
         }
 
         socket.leave(roomID);    // 退出房间
-        console.log(user + 'client leaves ' + roomID + ' room');
+        console.log(user + ' client leaves ' + roomID + ' room');
       })
 
     })
