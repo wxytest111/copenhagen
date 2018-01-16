@@ -1,3 +1,5 @@
+.DS_Store
+.idea/
 # Non-project-specific build files:
 build.xml
 local.properties
