@@ -33,15 +33,15 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     gender: {
-      type: DataTypes.ENUM('3','2','1'),
+      type: DataTypes.ENUM('1','2','3'),
       allowNull: true
     },
     hat: {
-      type: DataTypes.ENUM('3','2','1'),
+      type: DataTypes.ENUM('1','2','3'),
       allowNull: true
     },
     glass: {
-      type: DataTypes.ENUM('3','2','1'),
+      type: DataTypes.ENUM('1','2','3'),
       allowNull: true
     },
     age: {

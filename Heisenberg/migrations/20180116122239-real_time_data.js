@@ -34,13 +34,13 @@ module.exports = {
         allowNull: false
       },
       gender: {
-        type: Sequelize.ENUM('3','2','1'),
+        type: Sequelize.ENUM('1','2','3'),
       },
       hat: {
-        type: Sequelize.ENUM('3','2','1'),
+        type: Sequelize.ENUM('1','2','3'),
       },
       glass: {
-        type: Sequelize.ENUM('3','2','1'),
+        type: Sequelize.ENUM('1','2','3'),
       },
       age: {
         type: Sequelize.INTEGER(3),

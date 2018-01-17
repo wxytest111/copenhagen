@@ -13,7 +13,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     type: {
-      type: DataTypes.ENUM('3','2','1'),
+      type: DataTypes.ENUM('1','2','3'),
       allowNull: false
     },
     shop_id: {

@@ -13,7 +13,7 @@ module.exports = {
               type: Sequelize.STRING(20)
           },
           type: {
-              type: Sequelize.ENUM('3','2','1')
+              type: Sequelize.ENUM('1','2','3')
           },
           shop_id: {
               type: Sequelize.STRING(38)

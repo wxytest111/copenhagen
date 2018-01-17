@@ -5,6 +5,16 @@ const router = require('koa-router')();
 
 router.prefix("/api/RTData");
 
+router.post('/nature', async function (ctx, next) {
+  ctx.body = ctx.request.body;
+  // ctx.body = ctx.query;
+  // ctx.body.createAt = new Date().toDateString();
+  ctx.compress = true;
+  var vr = await new RTData().nature(ctx.body);
+  ctx.body = vr;
+  
+})
+
 router.post('/ages', async function (ctx, next) {
   ctx.body = ctx.request.body;
   // ctx.body.createAt = new Date().toDateString();
@@ -28,7 +38,7 @@ router.get('/list', async function (ctx, next) {
       vr[index].dataValues.count = 1;
     }
   }
-  console.log(vr)
+  // console.log(vr)
   ctx.body = vr;
   
 })
