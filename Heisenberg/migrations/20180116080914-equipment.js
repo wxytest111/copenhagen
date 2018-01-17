@@ -21,9 +21,6 @@ module.exports = {
           desc: {
               type: Sequelize.STRING
           },
-          createdAt: {
-              type: Sequelize.DATE
-          },
 
       });
   },

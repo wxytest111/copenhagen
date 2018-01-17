@@ -78,9 +78,11 @@ function parse(ms) {
         cur.count = 1;
       }
     }
-    var info = await dao.add(m,cur);
-    if(cur.type === 'add'){
-      cur.id = info.id;
+    if(process.env.NODE_ENV === 'production'){
+      var info = await dao.add(m,cur);
+      if(cur.type === 'add'){
+        cur.id = info.id;
+      }
     }
     let parsedData = parse(cur);
     module.exports.emit("push", parsedData);
