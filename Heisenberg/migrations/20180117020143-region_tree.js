@@ -3,6 +3,12 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('region_tree', { 
+      id: {
+        type: Sequelize.INTEGER(11).UNSIGNED,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
+      },
       ancestor_key: {
         type: Sequelize.INTEGER(11).UNSIGNED,
         allowNull: false
