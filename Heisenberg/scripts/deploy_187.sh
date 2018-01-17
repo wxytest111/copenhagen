@@ -9,5 +9,5 @@ git co .
 git pr
 cd Heisenberg
 cp -R web/dist/* public/
-forever restart bin/www
+pm2 restart bin/www
 EOF
