@@ -14,10 +14,11 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "member",
+    "username": "tman",
     "password": "Football123",
-    "database": "gcc_m",
-    "host": "rm-m5eb696r4arxzd6y4.mysql.rds.aliyuncs.com",
+    "database": "tman_member",
+    "host": "sh-cdb-fsy2cvng.sql.tencentcdb.com",
+    "port": 63495,
     "dialect": "mysql"
   }
 }
