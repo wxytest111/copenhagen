@@ -14,10 +14,10 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": "password01!",
-    "database": "copenhagen",
-    "host": "127.0.0.1",
+    "username": "member",
+    "password": "Football123",
+    "database": "gcc_m",
+    "host": "rm-m5eb696r4arxzd6y4.mysql.rds.aliyuncs.com",
     "dialect": "mysql"
   }
 }
