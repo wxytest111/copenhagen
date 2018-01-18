@@ -15,6 +15,9 @@ module.exports = {
 			mobile: {
 			  type: Sequelize.STRING(11),
 			},
+			division: {
+			  type: Sequelize.STRING(11),
+			},
 			dept: {
 			  type: Sequelize.STRING(11),
 			},
