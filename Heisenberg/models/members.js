@@ -7,6 +7,16 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
+	entity_id: {
+      type: DataTypes.STRING(36),
+      allowNull: false,
+    },
+	mobile: {
+      type: DataTypes.STRING(11),
+    },
+	dept: {
+      type: DataTypes.STRING(11),
+    },
     name: {
       type: DataTypes.STRING(255),
       allowNull: false

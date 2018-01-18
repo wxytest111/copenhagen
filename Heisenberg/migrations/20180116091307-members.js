@@ -8,6 +8,16 @@ module.exports = {
                 primaryKey: true,
                 type: Sequelize.STRING(36)
             },
+			entity_id: {
+			  type: Sequelize.STRING(36),
+			  allowNull: false,
+			},
+			mobile: {
+			  type: Sequelize.STRING(11),
+			},
+			dept: {
+			  type: Sequelize.STRING(11),
+			},
             name: {
                 allowNull: false,
                 type: Sequelize.STRING
