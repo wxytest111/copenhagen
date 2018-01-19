@@ -15,7 +15,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(11),
     },
   division: {
-    type: Sequelize.STRING(11),
+    type: DataTypes.STRING(11),
   },
 	dept: {
       type: DataTypes.STRING(11),
