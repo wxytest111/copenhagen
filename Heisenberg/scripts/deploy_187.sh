@@ -9,6 +9,6 @@ git co .
 git pr
 cd Heisenberg
 npm install
-cp -R web/dist/* public/
+yes|cp -R web/dist/* public/
 pm2 restart bin/www
 EOF
