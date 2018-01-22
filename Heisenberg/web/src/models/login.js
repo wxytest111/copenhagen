@@ -61,6 +61,7 @@ export default {
       yield put({
         type: 'changeLoginStatus',
         payload: {
+          code:undefined,
           status: false,
         },
       });
@@ -72,8 +73,10 @@ export default {
     changeLoginStatus(state, { payload }) {
       return {
         ...state,
+        code:payload.code,
         status: payload.status,
         type: payload.type,
+        user: {},
       };
     },
     getUserInfo(state, { payload }) {
