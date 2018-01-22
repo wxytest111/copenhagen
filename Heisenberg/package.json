@@ -35,9 +35,7 @@
     "umq-nodejs-sdk": "^0.2.3",
     "url": "^0.11.0",
     "utf8": "^2.1.2",
-    "winston": "^2.4.0"
-  },
-  "devDependencies": {
+    "winston": "^2.4.0",
     "async": "^2.5.0",
     "async-busboy": "^0.6.2",
     "babel-cli": "^6.26.0",
@@ -59,5 +57,7 @@
     "underscore": "*",
     "utf8": "*",
     "ws": "^3.3.0"
+  },
+  "devDependencies": {
   }
 }

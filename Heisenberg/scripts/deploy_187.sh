@@ -3,11 +3,12 @@
 set -e
 
 ssh root@106.75.81.187 /bin/bash << EOF
-cd /root/copenhagen
+cd /opt/works/copenhagen
 pwd
 git co .
 git pr
 cd Heisenberg
+npm install
 cp -R web/dist/* public/
 pm2 restart bin/www
 EOF
