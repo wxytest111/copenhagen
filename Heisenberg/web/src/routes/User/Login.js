@@ -26,7 +26,8 @@ export default class Login extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.login.code && nextProps.login.code === 200 ) {
-      this.props.dispatch(routerRedux.push('/sku/sku-list'));
+      this.props.dispatch(routerRedux.push('/member'));
+      // this.props.dispatch(routerRedux.push('/sku/sku-list'));
     }
   }
 
